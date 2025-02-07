@@ -1,0 +1,190 @@
+{
+  "info": {
+    "name": "Payment Integration Tests",
+    "_postman_id": "a12b345c-6789-0123-abc4-567890defgh1",
+    "description": "Test PayPal & Toyyibpay endpoints in Postman",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Toyyibpay - Create Bill",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "userSecretKey",
+              "value": "{{TOYYIBPAY_SECRET}}", 
+              "type": "text"
+            },
+            {
+              "key": "categoryCode",
+              "value": "{{TOYYIBPAY_CATEGORY_CODE}}",
+              "type": "text"
+            },
+            {
+              "key": "billName",
+              "value": "Rental Payment",
+              "type": "text"
+            },
+            {
+              "key": "billDescription",
+              "value": "Payment for rental booking",
+              "type": "text"
+            },
+            {
+              "key": "billPriceSetting",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "key": "billPayorInfo",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "key": "billAmount",
+              "value": "14000",
+              "type": "text"
+            },
+            {
+              "key": "billReturnUrl",
+              "value": "https://example.com/payment-success",
+              "type": "text"
+            },
+            {
+              "key": "billCallbackUrl",
+              "value": "https://example.com/payment-callback",
+              "type": "text"
+            },
+            {
+              "key": "billExternalReferenceNo",
+              "value": "rental_12345",
+              "type": "text"
+            },
+            {
+              "key": "billTo",
+              "value": "John Doe",
+              "type": "text"
+            },
+            {
+              "key": "billEmail",
+              "value": "johndoe@example.com",
+              "type": "text"
+            },
+            {
+              "key": "billPhone",
+              "value": "0123456789",
+              "type": "text"
+            },
+            {
+              "key": "billSplitPayment",
+              "value": "0",
+              "type": "text"
+            },
+            {
+              "key": "billSplitPaymentArgs",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "billPaymentChannel",
+              "value": "0",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://dev.toyyibpay.com/index.php/api/createBill",
+          "protocol": "https",
+          "host": [
+            "dev.toyyibpay",
+            "com"
+          ],
+          "path": [
+            "index.php",
+            "api",
+            "createBill"
+          ]
+        }
+      }
+    },
+    {
+      "name": "PayPal - Get OAuth Token (Sandbox)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          },
+          {
+            "key": "Authorization",
+            "value": "Basic {{PAYPAL_BASE64_ENCODED_CREDENTIALS}}"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "client_credentials"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+          "protocol": "https",
+          "host": [
+            "api-m",
+            "sandbox",
+            "paypal",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "oauth2",
+            "token"
+          ]
+        }
+      }
+    },
+    {
+      "name": "PayPal - Create Order (Sandbox)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{PAYPAL_ACCESS_TOKEN}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"intent\": \"CAPTURE\",\n  \"purchase_units\": [\n    {\n      \"amount\": {\n        \"currency_code\": \"MYR\",\n        \"value\": \"140.00\"\n      }\n    }\n  ],\n  \"application_context\": {\n    \"cancel_url\": \"https://example.com/payment-cancel\",\n    \"return_url\": \"https://example.com/payment-success\"\n  }\n}"
+        },
+        "url": {
+          "raw": "https://api-m.sandbox.paypal.com/v2/checkout/orders",
+          "protocol": "https",
+          "host": [
+            "api-m",
+            "sandbox",
+            "paypal",
+            "com"
+          ],
+          "path": [
+            "v2",
+            "checkout",
+            "orders"
+          ]
+        }
+      }
+    }
+  ]
+}
