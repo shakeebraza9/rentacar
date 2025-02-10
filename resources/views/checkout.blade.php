@@ -67,33 +67,33 @@
                         {{-- Name Field --}}
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" 
-                                   name="name" 
-                                   id="name" 
-                                   class="form-control" 
-                                   placeholder="Enter your full name" 
+                            <input type="text"
+                                   name="name"
+                                   id="name"
+                                   class="form-control"
+                                   placeholder="Enter your full name"
                                    required>
                         </div>
 
                         {{-- Email Field --}}
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   class="form-control" 
-                                   placeholder="Enter your email address" 
+                            <input type="email"
+                                   name="email"
+                                   id="email"
+                                   class="form-control"
+                                   placeholder="Enter your email address"
                                    required>
                         </div>
 
                         {{-- Phone Number Field --}}
                         <div class="mb-3">
                             <label for="phone_number" class="form-label">Phone Number</label>
-                            <input type="text" 
-                                   name="phone_number" 
-                                   id="phone_number" 
-                                   class="form-control" 
-                                   placeholder="Enter your phone number" 
+                            <input type="text"
+                                   name="phone_number"
+                                   id="phone_number"
+                                   class="form-control"
+                                   placeholder="Enter your phone number"
                                    required>
                         </div>
 
@@ -102,21 +102,21 @@
                             <label class="form-label d-block">Select Payment Method</label>
                             <div class="btn-group d-flex" role="group" aria-label="Payment Method Toggle">
                                 <!-- PayPal option -->
-                                <input type="radio" class="btn-check" 
-                                       name="payment_method" 
-                                       id="paypal" 
-                                       value="paypal" 
-                                       autocomplete="off" 
-                                       checked 
+                                <input type="radio" class="btn-check"
+                                       name="payment_method"
+                                       id="paypal"
+                                       value="paypal"
+                                       autocomplete="off"
+                                       checked
                                        required>
                                 <label class="btn btn-outline-primary flex-fill" for="paypal">PayPal</label>
 
                                 <!-- Toyyibpay option -->
-                                <input type="radio" class="btn-check" 
-                                       name="payment_method" 
-                                       id="toyyibpay" 
-                                       value="toyyibpay" 
-                                       autocomplete="off" 
+                                <input type="radio" class="btn-check"
+                                       name="payment_method"
+                                       id="toyyibpay"
+                                       value="toyyibpay"
+                                       autocomplete="off"
                                        required>
                                 <label class="btn btn-outline-primary flex-fill" for="toyyibpay">Toyyibpay</label>
                             </div>

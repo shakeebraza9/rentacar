@@ -61,7 +61,7 @@ Launch demo modal
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <!-- <img src="..." class="d-block w-100" alt="..."> -->
-                                        <img src="uploads/promotion/e5305f80-91b5-40c6-ad8e-1817efef616b.webp"
+                                        <img src="{{ asset($global_d['popup_image']->path) }}"
                                             class="img-fluid" alt="">
                                     </div>
                                 </div>
@@ -2015,8 +2015,8 @@ Launch demo modal
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
                 <?php
-                $ourTypes = getProductTypesByCategoryw(44); 
-                $isActive = true; 
+                $ourTypes = getProductTypesByCategoryw(44);
+                $isActive = true;
                 ?>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <?php foreach ($ourTypes as $index => $type): ?>
@@ -2092,7 +2092,7 @@ Launch demo modal
                                                     <?php
                                                     // Current date and time
                                                     $today = date('Y-m-d H:i:s');
-                                                    
+
                                                     // Next day with the same time
                                                     $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
                                                     ?>
@@ -2100,8 +2100,8 @@ Launch demo modal
                                                        class="btn btn-primary">
                                                         Book Now
                                                     </a>
-                                                    
-                                                    
+
+
                                                 </div>
                                             </div>
                                         </div>

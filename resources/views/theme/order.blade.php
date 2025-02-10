@@ -15,6 +15,7 @@
 
         justify-content: center;
     }
+
 </style>
 
 @endsection
@@ -151,7 +152,7 @@
                 <div class="col-md-7 mt-4 mt-md-0">
                     <h3 class="text-primary">Add-ons</h3>
                     <form method="post" accept-charset="utf-8" action="/customer/orders/complete">
-                        <div id="step1" class="step">
+                        <div id="step1" class="stepfrom">
                             <h3>Step 1: Select Add-ons</h3>
                             <table class="table">
                                 <thead>
@@ -254,7 +255,7 @@
                             <button type="button" class="btn btn-primary" onclick="showStep(2)">Next</button>
                         </div>
 
-                        <div id="step2" class="step d-none">
+                        <div id="step2" class="stepfrom d-none">
                             <div class="card mb-4">
                                 <h3 class="card-header text-primary">Customer Details</h3>
                                 <div class="card-body">
@@ -345,9 +346,58 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="user-age" class="form-label">Age</label>
-                                                <select class="form-select" name="user_age" required id="user-age">
+                                                <select class="form-select " name="user_age" required="required" id="user-age">
                                                     <option value="">Select Age</option>
-                                                    <!-- Add age options here -->
+                                                    <option value="20">20</option>
+                                                    <option value="21">21</option>
+                                                    <option value="22">22</option>
+                                                    <option value="23">23</option>
+                                                    <option value="24">24</option>
+                                                    <option value="25">25</option>
+                                                    <option value="26">26</option>
+                                                    <option value="27">27</option>
+                                                    <option value="28">28</option>
+                                                    <option value="29">29</option>
+                                                    <option value="30">30</option>
+                                                    <option value="31">31</option>
+                                                    <option value="32">32</option>
+                                                    <option value="33">33</option>
+                                                    <option value="34">34</option>
+                                                    <option value="35">35</option>
+                                                    <option value="36">36</option>
+                                                    <option value="37">37</option>
+                                                    <option value="38">38</option>
+                                                    <option value="39">39</option>
+                                                    <option value="40">40</option>
+                                                    <option value="41">41</option>
+                                                    <option value="42">42</option>
+                                                    <option value="43">43</option>
+                                                    <option value="44">44</option>
+                                                    <option value="45">45</option>
+                                                    <option value="46">46</option>
+                                                    <option value="47">47</option>
+                                                    <option value="48">48</option>
+                                                    <option value="49">49</option>
+                                                    <option value="50">50</option>
+                                                    <option value="51">51</option>
+                                                    <option value="52">52</option>
+                                                    <option value="53">53</option>
+                                                    <option value="54">54</option>
+                                                    <option value="55">55</option>
+                                                    <option value="56">56</option>
+                                                    <option value="57">57</option>
+                                                    <option value="58">58</option>
+                                                    <option value="59">59</option>
+                                                    <option value="60">60</option>
+                                                    <option value="61">61</option>
+                                                    <option value="62">62</option>
+                                                    <option value="63">63</option>
+                                                    <option value="64">64</option>
+                                                    <option value="65">65</option>
+                                                    <option value="66">66</option>
+                                                    <option value="67">67</option>
+                                                    <option value="68">68</option>
+                                                    <option value="69">69</option>
                                                 </select>
                                                 <div class="invalid-feedback">Please select your age.</div>
                                             </div>
@@ -392,25 +442,29 @@
                                     </div>
 
                                     <!-- Invoice Details (Hidden by Default) -->
-                                    <div id="invoice-area" class="d-none">
+                                    <div id="invoice-area" class="">
                                         <div class="row">
                                             <div class="col-md-6">
+                                                <div class="mb-3"><label for="invoice-name">Name</label><input class=" form-control " type="text" name="invoice_name" placeholder="e.g. John Doe" id="invoice-name" aria-required="true"><span class="help-block text-muted"> </span><div class="invalid-feedback"></div></div>                            </div>
+                                            <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="invoice-name" class="form-label">Name</label>
-                                                    <input class="form-control" type="text" name="invoice_name"
-                                                        placeholder="e.g. John Doe" id="invoice-name" disabled>
-                                                    <div class="invalid-feedback">Please provide a valid name.</div>
+                                                    <label for="phone-number" class="form-label">Phone Number</label>
+                                                    <div class="input-group" style="display: flex; align-items: center;">
+                                                        <select class="form-select" name="country_code" id="country-code"  style="width: auto; min-width: 100px; flex-shrink: 0;">
+                                                            <option value="+1">+1 (USA)</option>
+                                                            <option value="+44">+44 (UK)</option>
+                                                            <option value="+60">+60 (Malaysia)</option>
+                                                            <option value="+92">+92 (Pakistan)</option>
+                                                            <option value="+91">+91 (India)</option>
+                                                            <!-- Add more country codes as needed -->
+                                                        </select>
+                                                        <input class="form-control" type="tel" name="phone_number"  placeholder="e.g. 1234567890" id="phone-number" style="flex-grow: 1; max-width: 250px;">
+                                                    </div>
+                                                    <div class="invalid-feedback">Please provide a valid phone number.</div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="invoice-address" class="form-label">Invoice Address</label>
-                                            <textarea class="form-control" name="invoice_address"
-                                                placeholder="e.g. Taman Bukit Katil Baiduri, Ayer Keroh, Melaka"
-                                                id="invoice-address" rows="5" disabled></textarea>
-                                            <div class="invalid-feedback">Please provide a valid address.</div>
-                                        </div>
-                                    </div>
+                                        <div class="mb-3"><label for="invoice-address">Invoice Address</label><textarea class="form-control " type="" name="invoice_address" placeholder="e.g. Taman Bukit Katil Baiduri, Ayer Keroh, Melaka" id="invoice-address" aria-required="true" rows="5"></textarea><span class="help"> </span></div>                    </div>
 
                                     <hr>
 
@@ -494,7 +548,7 @@
                             <button type="button" class="btn btn-primary" onclick="showStep(3)">Next</button>
                         </div>
 
-                        <div id="step3" class="step d-none">
+                        <div id="step3" class="stepfrom d-none">
                             <div class="col-md-7">
                                 <div class="card mb-4">
                                     <div class="card-header">
@@ -705,15 +759,69 @@
 @endsection
 @section('js')
 <script>
-    function showStep(step) {
-        // Hide all steps
-        document.querySelectorAll('.step').forEach(stepDiv => stepDiv.classList.add('d-none'));
+    function validateStep2() {
+    const step2 = document.getElementById('step2');
+    const inputs = step2.querySelectorAll('input[required], select[required], textarea[required]');
+    let isValid = true;
 
-        // Show the current step
-        document.getElementById('step' + step).classList.remove('d-none');
+    // Loop through all required fields in Step 2
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            input.classList.add('is-invalid'); // Add error styling
+            isValid = false;
+        } else {
+            input.classList.remove('is-invalid'); // Remove error styling
+        }
+    });
+
+    return isValid; // Return true if all fields are valid, otherwise false
+}
+
+function showStep(step) {
+    // If the user is moving from Step 2 to Step 3, validate Step 2
+    if (step === 3) {
+        const isStep2Valid = validateStep2();
+        if (!isStep2Valid) {
+            alert('Please fill out all required fields in Step 2.'); // Show error message
+            return; // Stop from going to Step 3
+        }
     }
 
-    // Show the first step initially
-    showStep(1);
+    // Hide all steps
+    document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
+
+    // Show the current step
+    document.getElementById('step' + step).classList.remove('d-none');
+
+    // Update wizard indicators (if you have them)
+    document.querySelectorAll('.wizard-indicator li').forEach(stepLi => {
+        stepLi.classList.remove('active');
+    });
+    document.getElementById('step' + step).classList.add('active');
+}
+
+// Show the first step initially
+showStep(1);
+
+
+
+        function toggleSection(checkboxId, sectionId) {
+        const checkbox = document.getElementById(checkboxId);
+        const section = document.getElementById(sectionId);
+
+        checkbox.addEventListener("change", function () {
+            if (this.checked) {
+                section.classList.remove("d-none"); // Show section
+                section.querySelectorAll("input, textarea, select").forEach(el => el.removeAttribute("disabled")); // Enable inputs
+            } else {
+                section.classList.add("d-none"); // Hide section
+                section.querySelectorAll("input, textarea, select").forEach(el => el.setAttribute("disabled", "true")); // Disable inputs
+            }
+        });
+    }
+
+    // Attach event listeners
+    toggleSection("invoice", "invoice-area");
+    toggleSection("other-driver", "area_driver");
 </script>
 @endsection

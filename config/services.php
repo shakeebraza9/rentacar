@@ -32,7 +32,7 @@ return [
     'paypal' => [
     'client_id' => env('PAYPAL_CLIENT_ID'),
     'client_secret'    => env('PAYPAL_SECRET'),
-    'settings'  => [
+    'settingss'  => [
         'mode'                  => env('PAYPAL_MODE', 'live'),
         'http.ConnectionTimeOut'=> 30,
         'log.LogEnabled'        => true,
