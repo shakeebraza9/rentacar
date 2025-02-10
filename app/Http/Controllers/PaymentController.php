@@ -27,18 +27,7 @@ class PaymentController extends Controller
             // dd( config('services.paypal') );
             try {
                 $provider = new PayPalClient;
-                // $provider->setApiCredentials(config('services.paypal'));
-                $provider->setApiCredentials([
-                    'client_id' => 'AWh0IFZzNEnf_K3sQHmY4X-2IinJDO7bIEM4-LFpQ6aThAAOs5ac1ANt2TqkDO2-RmPz2q6zz7kKMslh',
-                    'client_secret' => 'EAETb_i5fjqgsKcGeFswsGOQFWjTlfrBGHXxNGgU4xATl-HTk7zJB2X18Yshw0DupRcVEje3vsHPEJuE',
-                    'settings' => [
-                        'mode' => 'sandbox',
-                        'http.ConnectionTimeOut' => 30,
-                        'log.LogEnabled' => true,
-                        'log.FileName' => storage_path('logs/paypal.log'),
-                        'log.LogLevel' => 'ERROR',
-                    ],
-                ]);
+                $provider->setApiCredentials(config('services.paypal'));
 
 
                 $paypalToken = $provider->getAccessToken();
