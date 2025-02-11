@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Cart;
+use App\Models\Setting;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Crypt;
+
 class BookingController extends Controller
 {
     public function show($slug, Request $request)
@@ -39,8 +45,90 @@ public function index($slug)
     $booking = Product::where('slug', $slug)->firstOrFail();
 
     // Pass the booking data to the view
-    return view('theme.order', compact('booking'));
+    return view('theme.order', compact('booking','slug'));
 }
+
+public function checkout(Request $request)
+{
+    try {
+        // Validate incoming request
+        $validatedData = $request->validate([
+            'slug' => 'required|string|exists:products,slug',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'country_code' => 'required|string|max:10',
+            'country' => 'required|string|max:100',
+            'user_passport' => 'nullable|string|max:100',
+            'user_license' => 'nullable|string|max:100',
+            'from_date' => 'nullable|date|after_or_equal:today',
+            'to_date' => 'nullable|date|after_or_equal:from_date',
+        ]);
+
+        // Fetch product using slug
+        $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
+
+        // Handle rental duration dates
+        $fromDate = $validatedData['from_date'] ?? now()->toDateString();
+        $toDate = $validatedData['to_date'] ?? \Carbon\Carbon::parse($fromDate)->addDay()->toDateString();
+
+        // Fetch settings
+        $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
+            ->pluck('value', 'field');
+
+        $rental = (float) ($settings['rental'] ?? 0);
+        $extra_hour = (float) ($settings['extra_hour'] ?? 0);
+        $pickup_fee = (float) ($settings['pickup_fee'] ?? 0);
+        $return_fee = (float) ($settings['return_fee'] ?? 0);
+        $addons = (float) ($settings['add-ons'] ?? 0);
+        $discount = (float) ($settings['discount'] ?? 0);
+        $productPrice = (float) ($product->selling_price ?? 0);
+
+        // Calculate total price
+        $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $addons + $productPrice;
+        $total = max(0, $totalBeforeDiscount - $discount); // Ensure total doesn't go negative
+
+        // Create the order
+        $order = Order::create([
+            'pro_id' => $product->id,
+            'userid' => auth()->id(),
+            'buyer_name' => $validatedData['name'],
+            'buyer_email' => $validatedData['email'],
+            'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
+            'buyer_country_of_origin' => $validatedData['country'],
+            'buyer_sec_name' => $request->invoice_name ?? null,
+            'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,
+            'buyer_sec_invoice_address' => $request->invoice_address ?? null,
+            'driver_name' => $request->driver_name ?? null,
+            'driver_id_passport_number' => $request->driver_ic_number ?? null,
+            'driver_license_number' => $request->driver_license_number ?? null,
+            'driver_age' => $request->driver_age ?? null,
+            'driver_mobile_number' => $request->driver_mobile_number ?? null,
+            'note' => $request->note ?? null,
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+            'status' => $request->status ?? 'pending',
+            'payment_status' => $request->payment_status ?? 0,
+            'amount' => $total,
+        ]);
+
+        return redirect()->route('checkout', [
+            'order_id' => Crypt::encryptString($order->id),
+        ])->with('success', 'Order placed successfully!');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Handle validation errors
+        return response()->json([
+            'error' => 'Validation Error',
+            'details' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        // Handle general errors
+        return response()->json([
+            'error' => 'An error occurred while processing your order.',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 
 
 

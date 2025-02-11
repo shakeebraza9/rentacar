@@ -4,26 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'orders';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'user_id',
-        'car_id',
+        'pro_id',
+        'userid',
         'buyer_name',
         'buyer_email',
         'buyer_phone_number',
@@ -41,40 +34,19 @@ class Order extends Model
         'from_date',
         'to_date',
         'status',
+        'payment_status',
+        'amount'
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'from_date' => 'date',
         'to_date' => 'date',
+        'driver_age' => 'integer',
+        'payment_status' => 'integer',
     ];
 
-
-    public function Findproduct()
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(product::class);
-    }
-
-    /**
-     * Check if the car is available for the given date range.
-     *
-     * @param int $carId
-     * @param string $fromDate
-     * @param string $toDate
-     * @return bool
-     */
-    public static function isCarAvailable($carId, $fromDate, $toDate)
-    {
-        return !self::where('pro_id', $carId)
-            ->where(function ($query) use ($fromDate, $toDate) {
-                $query->where('from_date', '<=', $toDate)
-                      ->where('to_date', '>=', $fromDate);
-            })
-            ->where('status', 'confirmed')
-            ->exists();
+        return $this->belongsTo(Product::class, 'id', 'id');
     }
 }

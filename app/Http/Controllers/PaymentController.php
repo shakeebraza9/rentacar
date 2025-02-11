@@ -5,110 +5,129 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use App\Models\Order;
+use Illuminate\Support\Facades\Crypt;
 
 class PaymentController extends Controller
 {
 
-    public function checkout()
+    public function checkout($encrypted_order_id)
     {
-        return view('checkout');
+        try {
+            // Order ID decrypt karein
+            $order_id = Crypt::decryptString($encrypted_order_id);
+
+            // Order fetch karein
+            $order = Order::with('product')->findOrFail($order_id);
+
+            return view('checkout', compact('order'));
+        } catch (\Exception $e) {
+            return abort(404, 'Invalid Order ID.');
+        }
     }
+
 
 
     public function processPayment(Request $request)
-    {
-        // dd(env('PAYPAL_CLIENT_ID'), env('PAYPAL_SECRET'), env('PAYPAL_MODE'),env('APP_NAME'));
+{
+    $order = Order::find($request->input('order_id'));
 
-        $paymentMethod = $request->input('payment_method');
+    if (!$order) {
+        return back()->with('error', 'Order not found.');
+    }
 
-        if ($paymentMethod === 'paypal') {
+    $paymentMethod = $request->input('payment_method');
 
+    if ($paymentMethod === 'paypal') {
+        try {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('services.paypal'));
+            $paypalToken = $provider->getAccessToken();
 
-            // dd( config('services.paypal') );
-            try {
-                $provider = new PayPalClient;
-                $provider->setApiCredentials(config('services.paypal'));
-
-
-                $paypalToken = $provider->getAccessToken();
-
-                $orderData = [
-                    "intent" => "CAPTURE",
-                    "purchase_units" => [
-                        [
-                            "amount" => [
-                                "currency_code" => "MYR",
-                                "value" => "140.00"
-                            ]
+            $orderData = [
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "MYR",
+                            "value" => $order->amount
                         ]
-                    ],
-                    "application_context" => [
-                        "cancel_url" => route('payment.cancel'),
-                        "return_url" => route('payment.success')
                     ]
-                ];
-
-                $order = $provider->createOrder($orderData);
-
-                if (isset($order['id'])) {
-                    foreach ($order['links'] as $link) {
-                        if ($link['rel'] === 'approve') {
-                            return redirect()->away($link['href']);
-                        }
-                    }
-                }
-
-                return redirect()->route('checkout')->with('error', 'Error processing PayPal payment.');
-            } catch (\Exception $e) {
-                return redirect()->route('checkout')->with('error', 'PayPal Error: ' . $e->getMessage());
-            }
-
-        } elseif ($paymentMethod === 'toyyibpay') {
-
-            $toyyibpayUrl   = 'https://toyyibpay.com/index.php/api/createBill';
-            $userSecretKey  = config('services.toyyibpay.secret');
-            $categoryCode   = config('services.toyyibpay.user_id');
-
-            $billData = [
-                'userSecretKey'          => $userSecretKey,
-                'categoryCode'           => $categoryCode,
-                'billName'               => 'Rental Payment',
-                'billDescription'        => 'Payment for rental booking',
-                'billPriceSetting'       => 1,
-                'billPayorInfo'          => 1,
-                'billAmount'             => 14000, // RM140 = 14000 cents
-                'billReturnUrl'          => route('payment.success'),
-                'billCallbackUrl'        => route('payment.success'),
-                'billExternalReferenceNo' => uniqid('rental_'),
-                'billTo'                 => $request->input('name'),
-                'billEmail'              => $request->input('email'),
-                'billPhone'              => $request->input('phone_number'),
-                'billSplitPayment'       => 0,
-                'billSplitPaymentArgs'   => '',
-                'billPaymentChannel'     => '0',
+                ],
+                "application_context" => [
+                    "cancel_url" => route('payment.cancel'),
+                    "return_url" => route('payment.success', ['order_id' => $order->id])
+                ]
             ];
 
-            $response = Http::asForm()->post($toyyibpayUrl, $billData);
-            $result   = $response->json();
+            $paypalOrder = $provider->createOrder($orderData);
 
-            if (is_array($result) && isset($result[0]['BillCode'])) {
-                $billCode = $result[0]['BillCode'];
-                return redirect()->away("https://toyyibpay.com/{$billCode}");
+            if (isset($paypalOrder['id'])) {
+                foreach ($paypalOrder['links'] as $link) {
+                    if ($link['rel'] === 'approve') {
+                        return redirect()->away($link['href']);
+                    }
+                }
             }
 
-            return redirect()->route('checkout')->with('error', 'Error processing Toyyibpay payment.');
+            return back()->with('error', 'Error processing PayPal payment.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'PayPal Error: ' . $e->getMessage());
+        }
+    } elseif ($paymentMethod === 'toyyibpay') {
+        $toyyibpayUrl   = 'https://toyyibpay.com/index.php/api/createBill';
+        $userSecretKey  = config('services.toyyibpay.secret');
+        $categoryCode   = config('services.toyyibpay.user_id');
+
+        $billData = [
+            'userSecretKey'          => $userSecretKey,
+            'categoryCode'           => $categoryCode,
+            'billName'               => 'Rental Payment',
+            'billDescription'        => 'Payment for rental booking',
+            'billPriceSetting'       => 1,
+            'billPayorInfo'          => 1,
+            'billAmount'             => $order->amount * 100,
+            'billReturnUrl'          => route('payment.success', ['order_id' => $order->id]),
+            'billCallbackUrl'        => route('payment.success', ['order_id' => $order->id]),
+            'billExternalReferenceNo' => uniqid('rental_'),
+            'billTo'                 => $request->input('name'),
+            'billEmail'              => $request->input('email'),
+            'billPhone'              => $request->input('phone_number'),
+            'billSplitPayment'       => 0,
+            'billSplitPaymentArgs'   => '',
+            'billPaymentChannel'     => '0',
+        ];
+
+        $response = Http::asForm()->post($toyyibpayUrl, $billData);
+        $result   = $response->json();
+
+        if (is_array($result) && isset($result[0]['BillCode'])) {
+            $billCode = $result[0]['BillCode'];
+            return redirect()->away("https://toyyibpay.com/{$billCode}");
         }
 
-        return redirect()->route('checkout')->with('error', 'Please select a valid payment method.');
+        return back()->with('error', 'Error processing Toyyibpay payment.');
     }
 
-    /**
-     * Handle payment success callback.
-     */
-    public function success(Request $request)
+    return back()->with('error', 'Please select a valid payment method.');
+}
+
+
+
+    public function paymentSuccess(Request $request)
     {
-        return view('payment_success');
+        $order = Order::find($request->input('order_id'));
+
+        if (!$order) {
+            return redirect()->route('checkout')->with('error', 'Order not found.');
+        }
+
+        $order->payment_status = 1;
+        $order->save();
+
+        return redirect()->route('dashboard')->with('success', 'Payment successful! Your order is confirmed.');
     }
+
 
     /**
      * Handle payment cancellation.

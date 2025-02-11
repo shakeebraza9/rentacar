@@ -31,6 +31,9 @@ Route::get('/booking/{slug}', [App\Http\Controllers\BookingController::class, 's
 Route::get('/customer/orders/{slug}', [App\Http\Controllers\BookingController::class, 'index'])
     ->name('customers.orders');
 
+    Route::post('/cusmotercheckout', [App\Http\Controllers\BookingController::class, 'checkout'])
+    ->name('cusmoter.checkout');
+
 
 Route::get('/products/{id}', [App\Http\Controllers\HomeController::class, 'product']);
 
@@ -53,7 +56,7 @@ Route::get('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'ca
 //Checkout
 Route::get('/order-tracking', [App\Http\Controllers\CheckoutController::class, 'order_tracking']);
 
-Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index']);
+
 Route::get('/order-confirmaton/{id}', [App\Http\Controllers\CheckoutController::class, 'order_confirmaton']);
 Route::post('/checkout/submit', [App\Http\Controllers\CheckoutController::class, 'checkout_submit']);
 Route::get('/get_invoice/{id}', [App\Http\Controllers\CheckoutController::class, 'get_invoice']);
@@ -214,9 +217,10 @@ Route::delete('/admin/subcategory/{id}', [App\Http\Controllers\Admin\CategoryCon
 
 
     // payments
-    Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/{order_id}', [PaymentController::class, 'checkout'])->name('checkout');
+
     Route::post('/process-payment', [PaymentController::class, 'processPayment'])->name('process.payment');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/success{order_id}', [PaymentController::class, 'success'])->name('payment.success');
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 
 });

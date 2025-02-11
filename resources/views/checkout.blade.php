@@ -64,6 +64,12 @@
                     <form action="{{ route('process.payment') }}" method="POST">
                         @csrf
 
+                        {{-- Order ID (Hidden) --}}
+                        <input type="hidden" name="order_id" value="{{ $order->id }}">
+
+                        {{-- Amount (Hidden) --}}
+                        <input type="hidden" name="amount" value="{{ $order->amount }}">
+
                         {{-- Name Field --}}
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -71,7 +77,7 @@
                                    name="name"
                                    id="name"
                                    class="form-control"
-                                   placeholder="Enter your full name"
+                                   value="{{ $order->buyer_name }}"
                                    required>
                         </div>
 
@@ -82,7 +88,7 @@
                                    name="email"
                                    id="email"
                                    class="form-control"
-                                   placeholder="Enter your email address"
+                                   value="{{ $order->buyer_email }}"
                                    required>
                         </div>
 
@@ -93,39 +99,33 @@
                                    name="phone_number"
                                    id="phone_number"
                                    class="form-control"
-                                   placeholder="Enter your phone number"
+                                   value="{{ $order->buyer_phone_number }}"
                                    required>
+                        </div>
+
+                        {{-- Amount Display --}}
+                        <div class="mb-3">
+                            <label class="form-label">Total Amount</label>
+                            <input type="text" class="form-control" value="${{ number_format($order->amount, 2) }}" readonly>
                         </div>
 
                         {{-- Payment Method Toggle Switcher --}}
                         <div class="mb-4">
                             <label class="form-label d-block">Select Payment Method</label>
-                            <div class="btn-group d-flex" role="group" aria-label="Payment Method Toggle">
-                                <!-- PayPal option -->
-                                <input type="radio" class="btn-check"
-                                       name="payment_method"
-                                       id="paypal"
-                                       value="paypal"
-                                       autocomplete="off"
-                                       checked
-                                       required>
+                            <div class="btn-group d-flex" role="group">
+                                <input type="radio" class="btn-check" name="payment_method" id="paypal" value="paypal" checked required>
                                 <label class="btn btn-outline-primary flex-fill" for="paypal">PayPal</label>
 
-                                <!-- Toyyibpay option -->
-                                <input type="radio" class="btn-check"
-                                       name="payment_method"
-                                       id="toyyibpay"
-                                       value="toyyibpay"
-                                       autocomplete="off"
-                                       required>
+                                <input type="radio" class="btn-check" name="payment_method" id="toyyibpay" value="toyyibpay" required>
                                 <label class="btn btn-outline-primary flex-fill" for="toyyibpay">Toyyibpay</label>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn  btn-lg w-100 text-white">
+                        <button type="submit" class="btn btn-lg w-100 text-white">
                             <i class="bi bi-lock-fill me-2"></i> Pay Now
                         </button>
                     </form>
+
                 </div>
             </div>
         </div>

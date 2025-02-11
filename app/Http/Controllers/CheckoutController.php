@@ -36,7 +36,7 @@ class CheckoutController extends Controller
      */
     public function __construct()
     {
-        
+
 
     }
 
@@ -48,12 +48,7 @@ class CheckoutController extends Controller
     public function index()
     {
 
-        $cart = Cart::get_cart_details();
-        if(count($cart['cart_items']) == 0){
-            return back()->with('error','Cart Is Empty');
-        }
 
-        // dd($cart);
 
         return view('theme.checkout',compact('cart'));
 
@@ -106,8 +101,8 @@ class CheckoutController extends Controller
                 'subtotal'  => $cart['total'],
                 'is_enable'  => 1,
             ]);
-        
-     
+
+
             foreach ($cart['cart_items'] as $cart_item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -144,12 +139,12 @@ class CheckoutController extends Controller
     public function order_confirmaton(Request $request,$id)
     {
 
-        $order = Order::where('tracking_id',$id)->first(); 
+        $order = Order::where('tracking_id',$id)->first();
         if(!$order){
           return redirect('/shop')->with('error','Record Not Found');
         }
 
-     
+
         return view('theme.order_confirmation',compact('order'));
 
     }
@@ -193,7 +188,7 @@ class CheckoutController extends Controller
         // echo $html;
          // Write HTML content to PDF
          $mpdf->WriteHTML($html);
-         
+
          // Output the PDF as a downloadable file
          $mpdf->Output();
 
@@ -201,9 +196,9 @@ class CheckoutController extends Controller
 
 
 
-    
-    
 
 
-    
+
+
+
 }
