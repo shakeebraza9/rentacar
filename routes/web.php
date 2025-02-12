@@ -27,6 +27,13 @@ Route::get('/pages/{slug}', [App\Http\Controllers\HomeController::class, 'pageCo
 Route::get('/reviews', [App\Http\Controllers\HomeController::class, 'reviews'])->name('reviews.index');
 
 
+// attractions
+Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
+
+
+
+
+
 Route::get('/booking/{slug}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking');
 Route::get('/customer/orders/{slug}', [App\Http\Controllers\BookingController::class, 'index'])
     ->name('customers.orders');
