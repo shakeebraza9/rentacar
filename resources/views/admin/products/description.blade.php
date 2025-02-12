@@ -4,8 +4,9 @@
     </header>
     <div class="card-body">
         <div class="editor-container">
-        <textarea id="long_description"  class="form-control" 
-        name="description">{{$product->description}}</textarea>    
+        <textarea id="long_description"  class="form-control"
+        name="description">{{$product->description}}</textarea>
         </div>
     </div>
 </section>
+

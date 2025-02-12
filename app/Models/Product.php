@@ -28,6 +28,8 @@ class Product extends Model
         "hover_image",
         "is_featured",
         "is_popular",
+        "stock",
+        "discount_text",
         "details",
         "description",
         "meta_title",
@@ -69,29 +71,29 @@ class Product extends Model
         }
 
         $result = [[]]; // Initialize with an empty combination
-        
+
         foreach ($attributes as $attribute) {
             $currentResult = [];
-    
+
             foreach ($result as $item) {
                 foreach ($attribute['values'] as $value) {
                     $currentResult[] = array_merge($item, [ $value]);
                 }
             }
-    
+
             $result = $currentResult;
         }
-    
+
         return $result;
     }
 
     public function get_images()
-    {  
+    {
         return Filemanager::whereIn('id',array_map('intval', explode(',',$this->images)))->get();
     }
 
     public function get_gallery()
-    {  
+    {
 
         $img = explode(',',$this->images);
         array_push($img,$this->image);
@@ -105,7 +107,7 @@ class Product extends Model
     }
 
     public function get_thumbnail()
-    {   
+    {
         return $this->belongsTo(Filemanager::class, 'image');
     }
 
@@ -117,11 +119,11 @@ class Product extends Model
     public function get_category()
     {
         return Category::where('id',$this->category_id)->first();
-        
+
     }
 
 
 
 
-   
+
 }

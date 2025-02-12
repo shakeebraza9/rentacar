@@ -1,16 +1,5 @@
 <section class="card">
     <header class="card-header bg-info">
-        <h4 class="mb-0 text-white">Select Tags</h4>
-    </header>
-    <div class="card-body">
-        <div class="tags-default">
-            <input type="text" name="tags" value="{{$product->tags}}" data-role="tagsinput" placeholder="" /> 
-        </div>
-    </div>
-</section>
-
-<section class="card">
-    <header class="card-header bg-info">
         <h4 class="mb-0 text-white">Select Type</h4>
     </header>
     <div class="card-body">
@@ -25,4 +14,47 @@
             </select>
         </div>
     </div>
+</section>
+<section class="card">
+    <header class="card-header bg-info">
+        <h4 class="mb-0 text-white">Select Sub-Category</h4>
+    </header>
+    <div class="card-body">
+        <div class="tags-default">
+            <label for="sub_category">Select Sub-Category</label>
+            <select name="sub_category" id="sub_category" class="form-control">
+                <option value="">Select a Sub Category</option>
+
+
+                @foreach($Subcategory as $sub)
+                @if ($sub->category_id == 44)
+
+                <option value="{{ $sub->id }}" {{ $product->subcategory_id == $sub->id ? 'selected' : '' }}>
+                    {{ $sub->title}}
+                </option>
+                @endif
+                @endforeach
+            </select>
+        </div>
+    </div>
+</section>
+
+
+<section class="card">
+    <header class="card-header bg-info">
+        <h4 class="mb-0 text-white">Information discount</h4>
+    </header>
+    <div class="card-body">
+        <div class="tags-default">
+    <label for="rms_text">RMS Text</label>
+    <input type="text" id="rms_text" name="rms_text" class="form-control" placeholder="Enter RMS Text" value="{{ $product->discount_text ?? '' }}">
+</div>
+<div class="form-group">
+    <div class="tags-default">
+    <label for="unit">Unit</label>
+    <input type="number" id="unit" name="unit" class="form-control" placeholder="Enter Unit" value="{{ $product->stock ?? '' }}">
+</div>
+</div>
+</div>
+
 </section>

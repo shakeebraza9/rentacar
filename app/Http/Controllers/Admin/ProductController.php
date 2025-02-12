@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Subcategory;
 use App\Models\Product;
 use App\Models\Attribute;
 use App\Models\Collection;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\Setting;
 use Auth;
 use Collator;
 use Illuminate\Support\Facades\Crypt;
@@ -38,7 +40,7 @@ class ProductController extends Controller
     |
     */
 
- 
+
     /**
      * Create a new controller instance.
      *
@@ -54,7 +56,7 @@ class ProductController extends Controller
 
             $query = Product::Query();
 
-    
+
             if($request->title){
                 $query->where('title','like','%'.$request->title.'%');
             }
@@ -86,7 +88,7 @@ class ProductController extends Controller
             $records = $query->skip($request->start)
             ->take($request->length)->orderBy('id','desc')
             ->get();
-            
+
             $data = [];
             foreach ($records as $key => $value) {
 
@@ -100,27 +102,27 @@ class ProductController extends Controller
 
                 $action .= '</div>';
 
-                $thumb_path = $value->get_thumbnail ? 'public/'.$value->get_thumbnail->path : ''; 
+                $thumb_path = $value->get_thumbnail ? 'public/'.$value->get_thumbnail->path : '';
                 $img = '<img  style="width:100px;height:50px" src="'.asset($thumb_path).'" />';
 
                 array_push($data,[
                     $action,
                     $value->id,
-                   
+
                     $value->get_category() ? $value->get_category()->title : '-',
                     $img,
                     $value->title,
                     $value->slug,
                     $value->price,
-                   
+
                     '<div class="switchery-demo m-b-30">
                     <input data-id="'.Crypt::encryptString($value->id).'" '.$is_enable.' type="checkbox"  class="is_enable js-switch" data-color="#009efb"/></div>',
                     '<div class="switchery-demo m-b-30">
                     <input data-id="'.Crypt::encryptString($value->id).'" '.$is_featured.' type="checkbox"  class="is_featured js-switch" data-color="#009efb"/></div>',
-                    
+
                  ]
                 );
-                
+
             }
 
 
@@ -131,15 +133,15 @@ class ProductController extends Controller
                 'data'=> $data,
             ]);
         }
-        
+
 
         $categories = Category::all();
-        
-        
+
+
         return view('admin.products.index',compact('categories','categoryDropdown'));
     }
 
-    
+
 
 
     /**
@@ -182,10 +184,10 @@ class ProductController extends Controller
             'is_enable' => 0,
         ]);
 
-        return redirect('/admin/products/edit/'.Crypt::encryptString($product->id))->with('success','Record Created Success'); 
+        return redirect('/admin/products/edit/'.Crypt::encryptString($product->id))->with('success','Record Created Success');
     }
 
-   
+
 
      /**
      * Create a new controller instance.
@@ -194,14 +196,17 @@ class ProductController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        
+
         $id = Crypt::decryptString($id);
         $product = Product::find($id);
-        if($product == false){  
+        if($product == false){
             return back()->with('error','Record Not Found');
          }
-
          $categories = Category::all();
+         $Subcategory = Subcategory::all();
+         $location = Setting::whereIn('field', ['location'])
+            ->pluck('value', 'field');
+
          $brands = Brand::all();
          $attributes = Attribute::with('values')->get();
          $collections = Collection::where('is_enable',1)->get();
@@ -210,24 +215,24 @@ class ProductController extends Controller
          $filemanager = Filemanager::where('is_enable',1)->get();
 
 
-        return view('admin.products.edit',compact('product','categories','brands','attributes','collections','product_details','filemanager'));
+        return view('admin.products.edit',compact('product','categories','brands','location','attributes','collections','product_details','filemanager','Subcategory'));
     }
 
     function generateAttributeCombinations($attributes) {
         $result = [[]]; // Initialize with an empty combination
-    
+
         foreach ($attributes as $attribute) {
             $currentResult = [];
-    
+
             foreach ($result as $item) {
                 foreach ($attribute['values'] as $value) {
                     $currentResult[] = array_merge($item, [ $value]);
                 }
             }
-    
+
             $result = $currentResult;
         }
-    
+
         return $result;
     }
 
@@ -242,7 +247,7 @@ class ProductController extends Controller
 
         // dd($request->all());
 
-        
+
         $id = Crypt::decryptString($id);
         $validator = Validator::make($request->all(), [
             "title" => 'required|max:255',
@@ -266,7 +271,7 @@ class ProductController extends Controller
         }
 
         $product = Product::find($id);
-        if($product == false){  
+        if($product == false){
            return back()->with('error','Record Not Found');
         }
 
@@ -286,7 +291,7 @@ class ProductController extends Controller
         ProductCollection::where('product_id',$product->id)->delete();
         if($request->has('collections')){
             foreach ($request->collections as $collect) {
-                
+
                 ProductCollection::create([
                     'product_id' =>    $product->id,
                     'collection_id' => $collect,
@@ -320,26 +325,29 @@ class ProductController extends Controller
         if ($request->has('oil_type')) {
             $productDetails['oil_type'] = $request->input('oil_type');
         }
+        if ($request->has('oil_type')) {
+            $productDetails['oil_type'] = $request->input('oil_type');
+        }
 
         foreach ($productDetails as $key => $value) {
             DB::table('product_details')->updateOrInsert(
                 [
-                    'proid' => $id, 
-                    'key_title' => $key, 
+                    'proid' => $id,
+                    'key_title' => $key,
                 ],
                 [
-                    'value' => $value, 
+                    'value' => $value,
                     'updated_at' => now(),
                 ]
             );
         }
-
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->details = $request->details;
         $product->description = $request->description;
 
         $product->category_id = $request->category_id;
+        $product->subcategory_id = $request->sub_category;
 
         $product->meta_title = $request->meta_title;
         $product->meta_description = $request->meta_description;
@@ -351,9 +359,14 @@ class ProductController extends Controller
         $product->selling_price = $request->selling_price;
         $product->price = $request->price;
 
-        $product->sku = $request->sku;   
+        $product->sku = $request->sku;
         $product->tags = $request->tags;
         $product->type = $request->car_type;
+        $product->discount_text = $request->rms_text ?? NULL;
+        $product->stock = $request->unit ?? 1;
+        $product->type = $request->car_type;
+        $product->dropoff_location = $request->dropoff_location;
+        $product->pickup_location = $request->pickup_location;
         $product->save();
 
         return back()->with('success','Record Updated');
@@ -375,12 +388,12 @@ class ProductController extends Controller
         }else{
             ProductCollection::where('product_id',$product->id)->delete();
             $product->delete();
-            return redirect('/admin/products/index')->with('success','Record Deleted Success'); 
+            return redirect('/admin/products/index')->with('success','Record Deleted Success');
         }
 
     }
 
-    
+
 
         /**
      * Create a new controller instance.
@@ -391,19 +404,19 @@ class ProductController extends Controller
     {
         $id = Crypt::decryptString($id);
         $product = Product::find($id);
-        if($product == false){  
+        if($product == false){
            return back()->with('error','Record Not Found');
         }
 
-         $images = explode(',',$product->images); 
+         $images = explode(',',$product->images);
          $array_without_strawberries = array_diff($images, array($request->image));
          $product->images = implode(',',$array_without_strawberries);
          $product->save();
-        return back()->with('success','Record Removed Success'); 
+        return back()->with('success','Record Removed Success');
 
     }
 
-    
+
 
     /**
      * Create a new controller instance.
@@ -426,9 +439,9 @@ class ProductController extends Controller
 
             $ProductVariation = Variation::create([
                 "product_id"=> $id,
-                "title" => implode('-',$sku), 
+                "title" => implode('-',$sku),
                 "sku" => implode('-',$sku),
-                "value" => implode('-',$sku) 
+                "value" => implode('-',$sku)
             ]);
 
             foreach ($values as $item) {
@@ -440,7 +453,7 @@ class ProductController extends Controller
                 ]);
             }
         }
-      
+
         return back()->with('success','Variation Generated Successfully');
     }
 
@@ -455,5 +468,5 @@ class ProductController extends Controller
         return back()->with('success','Remove Variation Successfully');
     }
 
-    
+
 }

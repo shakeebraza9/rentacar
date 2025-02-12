@@ -17,7 +17,7 @@
     min-height: 200px;
    }
 
-   
+
 
    .gallery-box{
 
@@ -32,7 +32,7 @@
    }
 
 </style>
-<?php 
+<?php
 // dd()
 ?>
 <link href="{{asset('admin/assets/node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css')}}" rel="stylesheet" />
@@ -44,7 +44,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD YOUR PRODUCT 
+        <h4 class="text-themecolor">ADD YOUR PRODUCT
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -74,44 +74,44 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" >Title</label>
-                                            <input type="text" value="{{$product->title}}" name="title" class="title form-control" 
+                                            <input type="text" value="{{$product->title}}" name="title" class="title form-control"
                                             placeholder="Title">
                                             @if($errors->has('title'))
                                              <p class="invalid-feedback" >{{ $errors->first('title') }}</p>
-                                            @endif 
+                                            @endif
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label">Slug</label>
-                                            <input type="text" value="{{$product->slug}}" name="slug" class="slug form-control" 
+                                            <input type="text" value="{{$product->slug}}" name="slug" class="slug form-control"
                                             placeholder="Slug">
                                             @if($errors->has('slug'))
                                              <p class="invalid-feedback" >{{ $errors->first('slug') }}</p>
-                                            @endif 
+                                            @endif
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Price</label>
-                                            <input type="text" value="{{$product->price}}" name="price" class="form-control" 
+                                            <input type="text" value="{{$product->price}}" name="price" class="form-control"
                                             placeholder="Price">
                                             @if($errors->has('price'))
                                             <p class="invalid-feedback" >{{ $errors->first('price') }}</p>
-                                            @endif 
+                                            @endif
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Selling Price</label>
-                                            <input type="text" value="{{$product->selling_price}}" name="selling_price" class="form-control" 
+                                            <input type="text" value="{{$product->selling_price}}" name="selling_price" class="form-control"
                                             placeholder="Selling Price">
                                             @if($errors->has('selling_price'))
                                             <p class="invalid-feedback" >{{ $errors->first('selling_price') }}</p>
-                                            @endif 
+                                            @endif
                                         </div>
                                     </div>
 
@@ -120,8 +120,8 @@
                     </section>
 
 
-            
-                 <section class="card variation_box">
+
+                 {{--  <section class="card variation_box">
                         <header class="card-header bg-info">
                             <div class="row">
                                 <div class="col-6">
@@ -138,7 +138,7 @@
                         <div class="card-body variations ">
                             <div class="table-responsive">
 
-                            
+
                            <table class="table" >
                             <thead>
                                 <tr>
@@ -153,23 +153,23 @@
                                 @foreach($product->variations as $key => $variation)
                                 <tr>
                                     <td>
-                                        <input type="hidden" 
-                                           name="variation[{{$key}}][id]" 
-                                           class="form-control" 
+                                        <input type="hidden"
+                                           name="variation[{{$key}}][id]"
+                                           class="form-control"
                                            value="{{$variation->id}}" />
-                                        <input style="width: 124px;" readonly name="variation[{{$key}}][sku]" 
-                                           class="form-control" 
+                                        <input style="width: 124px;" readonly name="variation[{{$key}}][sku]"
+                                           class="form-control"
                                            value="{{$variation->sku}}" />
                                     </td>
-                                    <td><input required name="variation[{{$key}}][quantity]" class="form-control" 
+                                    <td><input required name="variation[{{$key}}][quantity]" class="form-control"
                                         style="width: 70px;" value="{{$variation->quantity}}" /></td>
-                                    <td><input style="width: 70px;" required name="variation[{{$key}}][price]" class="form-control" 
+                                    <td><input style="width: 70px;" required name="variation[{{$key}}][price]" class="form-control"
                                         value="{{$variation->price}}" /></td>
-                                    <td><input style="width: 70px;" name="variation[{{$key}}][thumbnail]" class="form-control" 
+                                    <td><input style="width: 70px;" name="variation[{{$key}}][thumbnail]" class="form-control"
                                         value="{{$variation->image}}" /></td>
                                     <td>
-                                        <a class="btn btn-danger" 
-                                         href="{{URL::to('admin/products/remove-variation/'.$variation->id)}}" 
+                                        <a class="btn btn-danger"
+                                         href="{{URL::to('admin/products/remove-variation/'.$variation->id)}}"
                                          >Remove</a>
                                     </td>
                                 </tr>
@@ -178,20 +178,22 @@
                            </table>
                         </div>
                         </div>
-                    </section>
+                    </section>  --}}
 
                     @include('admin.products.description')
-                    @include('admin.products.gallery')
-                    @include('admin.products.seo')                    
+                    @include('admin.products.cardata')
+                    {{--  @include('admin.products.gallery')  --}}
+                    @include('admin.products.seo')
 
                 </div>
                 <div class="col-md-3">
-                
+
                     @include('admin.products.thumbnail')
                     @include('admin.products.collections')
-                    @include('admin.products.category')
+                    {{--  @include('admin.products.category')  --}}
                     @include('admin.products.tags')
-                    @include('admin.products.details')
+                    @include('admin.products.location')
+                    {{--  @include('admin.products.details')  --}}
                 </div>
             </div>
          <div class="pt-3 form-group row">
@@ -217,8 +219,8 @@
                     @foreach ($attributes as $attribute)
                         <div class="">
                             <label class="form-label">{{$attribute->title}}:</label>
-                            <select  multiple 
-                            class="attributes select2" 
+                            <select  multiple
+                            class="attributes select2"
                             name="attr[{{$attribute->id}}][]" >
                                 @foreach ($attribute->values as $option)
                                 <option value="{{$option->id}}">{{$option->title}}</option>
@@ -226,7 +228,7 @@
                             </select>
                         </div>
                     @endforeach
-                    
+
                     <div class="f pt-3">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success text-white">Update</button>
@@ -255,14 +257,14 @@
 
 <script>
      $(function () {
-        
+
 
            $(".select2").select2();
 
             ClassicEditor.create(document.querySelector('#long_description')).catch(error => {
                 console.error(error);
             });
-           
+
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
             $('.js-switch').each(function () {
@@ -276,8 +278,8 @@
                             <div class="card">
                                 <div class="el-card-item mb-0 pb-0">
                                 <label class="form-label" >File Code</label>
-                                <input class="form-control" type="text" 
-                                name="gallery[${id}]" />                     
+                                <input class="form-control" type="text"
+                                name="gallery[${id}]" />
                                 </div>
                             </div>
                     </div>`);
@@ -287,7 +289,7 @@
             var Text = $(this).val();
             Text = Text.toLowerCase();
             Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-            $(".slug").val(Text);        
+            $(".slug").val(Text);
         });
 
         // $(".type").change(function() {
@@ -302,23 +304,23 @@
         //     }
         // }).trigger('change');
 
-        
-            
-    });  
+
+
+    });
     function handleCategoryChange(selectElement) {
         const selectedOption = selectElement.options[selectElement.selectedIndex];
 
- 
+
         const categorySlug = selectedOption.getAttribute('data-slug');
 
-    
+
         if (categorySlug === 'car') {
             console.log("Car category selected. Perform the desired action here.");
             getSubCategories();
         } else {
             console.log("Other category selected.");
         }
-    }  
+    }
 
     function getSubCategories() {
         let categoryId = document.getElementById("category_id").value;
@@ -329,5 +331,5 @@
 
     }
 </script>
-    
+
 @endsection
