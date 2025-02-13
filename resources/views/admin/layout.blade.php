@@ -12,6 +12,7 @@
     <!-- ============================================================== -->
     <!-- Plugins -->
     <!-- ============================================================== -->
+    <link rel="stylesheet" href="{{asset('admin/assets/node_modules/select2/dist/css/select2.css')}}">
     <link href="{{asset('admin/assets/node_modules/morrisjs/morris.css')}}" rel="stylesheet">
     <link href="{{asset('admin/assets/node_modules/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
     <link href="{{asset('admin/assets/node_modules/toast-master/css/jquery.toast.css')}}" rel="stylesheet">
@@ -352,6 +353,17 @@
     <script src="{{asset('admin/assets/js/perfect-scrollbar.jquery.min.js')}}"></script>
     <script src="{{asset('admin/assets/js/waves.js')}}"></script>
     <script src="{{asset('admin/assets/js/custom.js')}}"></script>
+
+
+    <script src="{{asset('admin/assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{asset('admin/assets/node_modules/select2/dist/js/select2.js')}}"></script>
+
+
+
+
+
+    <script src="{{asset('admin/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{asset('admin/assets/js/tinymce.js')}}"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

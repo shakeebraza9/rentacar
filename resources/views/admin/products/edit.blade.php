@@ -330,6 +330,39 @@
         additionalFields.style.display = "block";
 
     }
+    $(document).ready(function () {
+        // Thumbnail Selector with Image
+        $('#image-selector').select2({
+            templateResult: formatOption,
+            templateSelection: formatOption,
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+        // Hover Image Selector with Image
+        $('#hover-image-selector').select2({
+            templateResult: formatOption,
+            templateSelection: formatOption,
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+        // Format dropdown options with image
+        function formatOption(option) {
+            if (!option.id) {
+                return option.text;
+            }
+            const imageUrl = $(option.element).data('image');
+            return `<div style="display: flex; align-items: center;">
+                        <img src="${imageUrl}" style="width: 30px; height: 30px; margin-right: 10px; border-radius: 4px;" />
+                        <span>${option.text}</span>
+                    </div>`;
+        }
+    });
+
+
 </script>
 
 @endsection
