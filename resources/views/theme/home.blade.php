@@ -51,11 +51,11 @@ Launch demo modal
                                         class="active" aria-current="true" aria-label="Slide 1"></button>
                                 </div>
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <!-- <img src="..." class="d-block w-100" alt="..."> -->
-                                        <img src="{{ asset($global_d['popup_image']->path) }}"
-                                            class="img-fluid" alt="">
-                                    </div>
+                                    @if (!empty($global_d['popup_image']) && !empty($global_d['popup_image']->path))
+                                        <div class="carousel-item active">
+                                            <img src="{{ asset($global_d['popup_image']->path) }}" class="img-fluid" alt="">
+                                        </div>
+                                    @endif
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#PromoCaptions"
                                     data-bs-slide="prev">
