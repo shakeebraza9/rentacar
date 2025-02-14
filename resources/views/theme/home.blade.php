@@ -2011,7 +2011,7 @@ Launch demo modal
             </div>
         </section>
 
-        <section class="my-7">
+        {{--  <section class="my-7">
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
                 <?php
@@ -2038,7 +2038,7 @@ Launch demo modal
 
 
             </div>
-        </section>
+        </section>  --}}
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active mb-5" id="sedan" role="tabpanel" aria-labelledby="sedan-tab">
