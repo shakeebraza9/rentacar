@@ -156,6 +156,26 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::post('/admin/products/variations/{id}', [App\Http\Controllers\Admin\ProductController::class, 'variations']);
     Route::get('/admin/products/remove-variation/{id}', [App\Http\Controllers\Admin\ProductController::class, 'remove_variation']);
 
+
+
+
+    //Attractions
+    Route::get('/admin/attractions/index', [App\Http\Controllers\Admin\AttractionsController::class, 'index'])->name('attractions.index');
+    Route::get('/admin/attractions/create', [App\Http\Controllers\Admin\AttractionsController::class, 'create'])->name('attractions.create');
+    Route::post('/admin/attractions/store', [App\Http\Controllers\Admin\AttractionsController::class, 'store']);
+    Route::get('/admin/attractions/edit/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'edit'])->name('attractions.edit');
+    Route::post('/admin/attractions/update/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'update']);
+    Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'delete'])->name('attractions.delete');
+
+    //Ticket
+    Route::get('/admin/ticket/index', [App\Http\Controllers\Admin\AttractionsController::class, 'index'])->name('attractions.index');
+    Route::get('/admin/ticket/create', [App\Http\Controllers\Admin\AttractionsController::class, 'create'])->name('attractions.create');
+    Route::post('/admin/ticket/store', [App\Http\Controllers\Admin\AttractionsController::class, 'store']);
+    Route::get('/admin/ticket/edit/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'edit'])->name('attractions.edit');
+    Route::post('/admin/ticket/update/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'update']);
+    Route::get('/admin/ticket/delete/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'delete'])->name('attractions.delete');
+
+
     //orders
     Route::get('/admin/orders/index', [App\Http\Controllers\Admin\OrderController::class, 'index']);
     Route::get('/admin/orders/edit/{id}', [App\Http\Controllers\Admin\OrderController::class, 'edit']);

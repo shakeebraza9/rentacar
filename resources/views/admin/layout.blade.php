@@ -8,6 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('admin/assets/images/favicon.png')}}">
     <title>{{$global_d['site_title']}}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- ============================================================== -->
     <!-- Plugins -->
@@ -215,6 +216,13 @@
                         </li>
 
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>
+                            <span class="hide-menu"> Attractions </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{URL::to('admin/attractions/index')}}">Attractions</a></li>
+                                <li><a href="{{URL::to('admin/ticket/index')}}">Ticket</a></li>
+                            </ul>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>
                             <span class="hide-menu"> Products </span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{URL::to('admin/products/create')}}">Add New Product</a></li>
@@ -362,8 +370,6 @@
 
 
 
-    <script src="{{asset('admin/tinymce/tinymce.min.js')}}"></script>
-    <script src="{{asset('admin/assets/js/tinymce.js')}}"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

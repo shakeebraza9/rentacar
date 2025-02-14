@@ -1,120 +1,21 @@
-<!DOCTYPE html>
-<html>
+@extends('theme.attractions.layout')
 
+@php
 
+@endphp
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('metatags')
+    <title>{{$global_d['site_title']}}</title>
+@endsection
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Langkawi Car Rental at Airport & Jetty - MRR HOLIDAYS</title>
-    <link rel="stylesheet" href="{{ asset('theme/asset/node_modules/mburger-css/dist/mburger.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/asset/node_modules/%40splidejs/splide/dist/css/splide.min.css') }}">
-    <link href="{{ asset('favicon.ico') }}" type="image/x-icon" rel="icon">
-    <link rel="stylesheet" href="{{ asset('theme/asset/css/mmenu.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/asset/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/asset/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/asset/css/flatpickr.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/asset/css/frontend.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+@section('css')
 
-    <script src="{{ asset('theme/asset/js/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ asset('theme/asset/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('theme/asset/js/rangePlugin.js') }}"></script>
-    <script src="{{ asset('theme/asset/js/flatpickr.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide/dist/js/splide.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<style>
 
+</style>
 
-
-</head>
-
-<body>
-
-
-
-
-
-
-    <nav class="navbar navbar-main navbar-expand-md navbar-light fixed-top">
-        <div class="container-fluid d-flex justify-content-between px-0 px-md-2">
-            <a href="../index.html"><img src="../img/logo-langkawibook.svg" class="logo" alt=""></a>
-            <div class="ms-auto">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-                    aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse col justify-content-end" id="navbarMain">
-                <ul class="navbar-nav mb-2 mb-lg-0 pt-4 pt-md-0 align-items-center">
-                    <li class="nav-item border-bottom pb-3 mb-2 d-md-none">
-                        <h6 class="text-primary">CONTACT</h6>
-                        <div>
-                            <a href="tel:+60128084008">+60 12-8084008</a>
-                        </div>
-                        <div>
-                            enquiry@langkawibook.my
-                        </div>
-                    </li>
-                    <li class="nav-item text-nowrap">
-                        <a href="../index.html" class="nav-link border-right px-md-4 py-md-0 my-md-2">Car Rental</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../attractions.html"
-                            class="nav-link border-right px-md-4 py-md-0 my-md-2">Attractions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../blogs.html" class="nav-link border-right px-md-4 py-md-0 my-md-2">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://langkawibook.tawk.help/" target="_blank"
-                            class="nav-link border-right px-md-4 py-md-0 my-md-2">Help</a>
-                    </li>
-                    <li class="nav-item dropdown mx-3">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-expanded="false"><span class="flag-icon flag-icon-gb"></span></a>
-                        <ul class="dropdown-menu dropdown-menu-end text-center text-md-left">
-                            <li class="dropdown-header text-start">Select Language</li>
-                            <li>
-                                <a href="../attractions.html" data-value="en"
-                                    class="lang nav-link text-dark d-flex align-items-center">
-                                    <span class="flag-icon flag-icon-gb" style="margin-right: 8px;"></span>
-                                    <span class="small text-nowrap">English</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../ms/attractions.html" data-value="ms"
-                                    class="lang nav-link text-dark d-flex align-items-center">
-                                    <span class="flag-icon flag-icon-my" style="margin-right: 8px;"></span>
-                                    <span class="small text-nowrap">Bahasa Malaysia</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown d-none d-md-block">
-                        <a href="../customer/user/carts.html" class="text-dark border-right px-md-4 py-md-0 my-md-2"><i
-                                class="fas fa-shopping-cart fa-lg"></i></a> <span class="badge rounded-pill bg-danger"
-                            style="position: absolute; top: -10px; right: 5px;">
-                            0 </span>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../login.html" class="nav-link px-md-4 py-md-0 mt-3 my-md-2">Login</a>
-                    </li>
-                    <li class="nav-item" style="border:0">
-                        <a href="../register.html"
-                            class="btn btn-outline-white mt-3 mt-md-0 ms-md-2 bg-primary text-white">Create Account</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@endsection
+@section('content')
     <main class="main">
         <div>
 
@@ -848,6 +749,8 @@
                     </div>
                 </div>
             </section>
+
+
 
             <section class="my-5">
                 <div class="container">
@@ -2207,213 +2110,6 @@ good job team" id="buttonRead-691">Show more</button>
             </script>
         </div>
     </main>
-
-    <style>
-        .new-word {
-            font-size: 9px;
-            position: absolute;
-            margin-left: 3px;
-        }
-
-        .list-footer-supported {
-            li {
-                display: inline;
-            }
-
-            /* img {
-            max-height: 70px;
-        } */
-        }
-    </style>
-
-    <footer class="footer-main pt-5 mb-5 mb-md-0 text-center text-md-start">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-md-auto mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Company</h6>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="../about-us.html">About Us</a>
-                        </li>
-                        <li>
-                            <a href="../en/blogs.html">Blogs</a>
-                        </li>
-                        <li>
-                            <a href="../fleet-reviews.html">Reviews</a>
-                        </li>
-                        <li>
-                            <a href="../faq.html">FAQ</a>
-                        </li>
-                        <li>
-                            <a href="../our-team.html">Our Team</a>
-                        </li>
-                        <li>
-                            <a href="../careers.html">Careers</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Services</h6>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="../index.html">Car Rental</a>
-                        </li>
-                        <li>
-                            <a href="../attractions.html">Attractions</a>
-                        </li>
-                        <!-- <li>
-                        <a href="/hotel">Hotel</a>                    </li> -->
-                    </ul>
-                    <h6 class="mb-3 text-uppercase mt-5">Legal</h6>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="../terms-and-conditions.html">Terms and Conditions</a>
-                        </li>
-                        <li>
-                            <a href="../privacy-policy.html">Privacy Policy</a>
-                        </li>
-                        <li><a href="https://langkawibook.tawk.help/" target="_blank">Help Center</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Top Attractions</h6>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="langkawi-premium-cruise.html">Langkawi Premium Cruise<span
-                                    class="text-warning fw-bold new-word">NEW</span></a>
-                        </li>
-                        <li>
-                            <a href="maha-tower-langkawi.html">Maha Tower Langkawi<span
-                                    class="text-warning fw-bold new-word">NEW</span></a>
-                        </li>
-                        <li>
-                            <a href="dream-forest-langkawi.html">Dream Forest Langkawi<span
-                                    class="text-warning fw-bold new-word">NEW</span></a>
-                        </li>
-                        <li>
-                            <a href="langkawi-skycab-cable-car.html">Langkawi SkyCab Cable Car</a>
-                        </li>
-                        <li>
-                            <a href="langkawi-mangrove-tour.html">Langkawi Mangrove Tour</a>
-                        </li>
-                        <li>
-                            <a href="island-hopping-langkawi.html">Langkawi Island Hopping Tour</a>
-                        </li>
-                        <li>
-                            <a href="underwater-world-langkawi.html">Underwater World Langkawi</a>
-                        </li>
-                        <li>
-                            <a href="atv-adventure-ride.html">ATV Adventure Ride</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="text-uppercase mb-3">Address</h6>
-                    <div>
-                        <a href="https://maps.app.goo.gl/18nUAdf7kXY8bDmT6" target="_blank">LOT 6, BUKIT NAU,<br>
-                            JALAN LAPANGAN TERBANG,<br>
-                            PADANG MATSIRAT,<br>
-                            07000 LANGKAWI,<br>
-                            KEDAH.<br><br></a>
-                        LB Travel Tech Sdn Bhd<br>
-                        202201002811 (1448508-H)<br>
-                    </div>
-                </div>
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Social Media</h6>
-                    <ul class="list-footer-socmed">
-                        <li>
-                            <a href="https://www.facebook.com/langkawibook.my" target="_blank"><i
-                                    class="fab fa-facebook"></i></a>
-                        </li>
-                        <!-- <li>
-                        <a href="/"><i class="fab fa-twitter"></i></a>                    </li> -->
-                        <li>
-                            <a href="https://www.instagram.com/langkawibook.my/" target="_blank"><i
-                                    class="fab fa-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="https://wa.me/+60128084008" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                        </li>
-                    </ul>
-                    <h6 class="mt-5 text-uppercase">Hotline</h6>
-                    <span><i class="fa fa-phone"></i><a href="tel:+60128084008"> +60 12-8084008</a></span>
-                </div>
-            </div>
-        </div>
-        <div class="bg-white text-dark p-4 mt-5">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md mt-5 mt-md-0 order-2 order-md-1">
-                        <img src="../img/logo-langkawibook.svg" class="img-fluid logo" alt="">
-                        <div class="mt-2 text-muted">
-                            &copy; Copyright 2021 - 2025 Langkawibook. All rights reserved. </div>
-                    </div>
-                    <div class="col-md-auto order-1 order-md-2">
-                        <h6 class="text-uppercase">SUPPORTED BY</h6>
-                        <ul class="list-footer-supported d-flex flex-column flex-md-row align-items-center gap-4 mt-4">
-                            <li>
-                                <a href="https://www.lada.gov.my/" target="_blank"><img src="../img/logo-lada.png"
-                                        target="_blank" class="img-fluid" style="height:75px" alt=""></a>
-                            </li>
-                            <li>
-                                <a href="https://naturallylangkawi.my/" target="_blank"><img
-                                        src="../img/logo-naturally-langkawi.png" target="_blank" class="img-fluid"
-                                        style="height:40px" alt=""></a>
-                            </li>
-                            <li>
-                                <a href="https://www.langkawigeopark.com.my/" target="_blank"><img
-                                        src="../img/logo-langkawi-geopark.png" target="_blank" class="img-fluid"
-                                        style="height:50px" alt=""></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Modal -->
-    <div class="modal fade modal-coming-soon" id="coming-soon" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close bg-white rounded-circle text-dark" data-bs-dismiss="modal"
-                        aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="body text-center p-4 p-md-5 mx-md-8 mb-4 mb-md-5 rounded">
-                        <p>WE’RE COMING SOON!</p>
-                        <hr class="bg-white">
-                        <div class="h5">
-                            We’re coming soon! We’re working hard to give you the best experience.
-                            <br>
-                            For any enquiries, please contact us at +0133188088.
-                        </div>
-                    </div>
-                    <img src="../img/logo-langkawibook.svg" class="logo" style="height: 50px" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/61656a4e86aee40a573628ed/1fhq2ei08';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-    <!--End of Tawk.to Script-->
-</body>
-
-
-</html>
+    @endsection
+    @section('js')
+    @endsection
