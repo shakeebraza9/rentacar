@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\StoreCategory;
+use App\Models\Filemanager;
 use App\Models\Store;
 use Carbon\Carbon;
 use Auth;
@@ -27,7 +28,7 @@ class SettingController extends Controller
     |
     */
 
- 
+
     /**
      * Create a new controller instance.
      *
@@ -38,10 +39,10 @@ class SettingController extends Controller
         $group = $request->group;
         $data = Setting::where('grouping',$request->group)->orderBy('grouping')->get();
         $data = $data->groupBy('section');
+        $fileManager=Filemanager::all();
 
-        
 
-        return view('admin.settings.edit',compact('data','group'));
+        return view('admin.settings.edit',compact('data','group','fileManager'));
     }
 
 
@@ -53,16 +54,16 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
-        
+
         foreach ($request->all() as $key => $value) {
             if(isset($value['value'])){
                 if(in_array($value['type'],['text','textarea','keywords','image'])){
                      Setting::where('field',$key)->update(["value" => $value['value']]);
-                }       
+                }
             }
         }
         return back()->with('success','Record Updated');
-        
+
     }
-  
+
 }

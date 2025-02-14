@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @section('css')
- 
+
 <link href="{{asset('admin/assets/summernote/summernote-bs4.css')}}" rel="stylesheet">
 <style>
     .error{
@@ -29,13 +29,13 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <section class="card">            
+        <section class="card">
             <header class="card-header bg-info">
                 <h4 class="mb-0 text-white">{{ ucwords(str_ireplace("_", " ",$kk))}}</h4>
                 </header>
             <div class="card-body">
-                <form method="post" 
-                enctype="multipart/form-data" 
+                <form method="post"
+                enctype="multipart/form-data"
                 action="{{URL::to('admin/settings/update/')}}" >
                     @csrf
                     <div class="row">
@@ -45,47 +45,60 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>{{ ucwords(str_ireplace("_", " ",$item->field))}}</label>
-                                    <input 
-                                      id="tagsinput" 
+                                    <input
+                                      id="tagsinput"
                                       class="tagsinput"
-                                      type="text" 
-                                      value="{{$item->value}}"  
-                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}" 
+                                      type="text"
+                                      value="{{$item->value}}"
+                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}"
                                       name="[fields][{{$key}}]{{$item->field}}" >
-                                            
+
                                 </div>
                             </div>
                             @break
-                            
+
 
                             @case('image')
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>{{ ucwords(str_ireplace("_", " ",$item->field))}} :</label>
-                                        <input 
-                                        class="image form-control"
-                                        type="text" 
-                                        value="{{$item->value}}"  
-                                        placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}" 
-                                        name="{{$item->field}}[value]" >
-                                        <input type="hidden" name="{{$item->field}}[type]"
-                                        value="{{$item->type}}" >
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>{{ ucwords(str_ireplace("_", " ", $item->field)) }} :</label>
+                                    <select
+                                        id="hover-image-selector-{{$item->field}}"
+                                        class="form-control select2 image-selector"
+                                        name="{{$item->field}}[value]">
+                                        <option value="">Select an Image</option>
+                                        @foreach($fileManager as $file)
+                                            <option
+                                                value="{{ $file->path }}"
+                                                data-image="{{ asset($file->path) }}"
+                                                @if($file->path == $item->value) selected @endif>
+                                                {{ $file->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="{{$item->field}}[type]" value="{{$item->type}}">
                                 </div>
-                                <div class="col-md-6 text-center">
-                                        @if($item->image)
-                                        <img style="width:100px;height:100px;" 
-                                        src="{{asset('public/'.$item->image->path)}}" />
-                                        @endif
-                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                @if($item->image)
+                                    <img id="image-preview-{{$item->field}}"
+                                        style="width:100px;height:100px;"
+                                        src="{{ asset('public/'.$item->image->path) }}" />
+                                @else
+                                    <p id="image-preview-{{$item->field}}">No Image Selected</p>
+                                @endif
+                            </div>
+
+
                             @break
+
 
                             @case('textarea')
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>{{ ucwords(str_ireplace("_", " ",$item->field))}}</label>
-                                    <textarea class="summernote form-control"  
-                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}" 
+                                    <textarea class="summernote form-control"
+                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}"
                                       name="{{$item->field}}[value]">{!!$item->value!!}</textarea>
                                       <input type="hidden" name="{{$item->field}}[type]"
                                       value="{{$item->type}}" >
@@ -97,28 +110,28 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>{{ ucwords(str_ireplace("_", " ",$item->field))}}</label>
-                                    <input 
-                                      type="text" 
-                                      value="{{$item->value}}" 
-                                      class="form-control" 
-                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}" 
-                                      
+                                    <input
+                                      type="text"
+                                      value="{{$item->value}}"
+                                      class="form-control"
+                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}"
+
                                       name="{{$item->field}}[value]" >
-                                      
+
                                       <input type="hidden" name="{{$item->field}}[type]"
                                       value="{{$item->type}}" >
-                                             
+
                                 </div>
-                            </div>      
+                            </div>
                           @endswitch
-                        
+
                         @endforeach
-            
+
                         <div class="col-md-12 text-center pt-5">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
-                </form>       
+                </form>
               </div>
           </section>
         </div>
@@ -145,6 +158,43 @@
         $(".tagsinput").tagsInput();
     });
 
+    $(document).ready(function () {
+        // Initialize Select2 with image dropdown
+        $('.image-selector').select2({
+            templateResult: formatOption, // Use custom formatting for dropdown options
+            templateSelection: formatOption, // Use custom formatting for selected item
+            escapeMarkup: function (markup) {
+                return markup; // Prevent escaping of HTML
+            }
+        });
+
+        // Format dropdown options with image and text
+        function formatOption(option) {
+            if (!option.id) {
+                return option.text;
+            }
+            const imageUrl = $(option.element).data('image');
+            return `<div style="display: flex; align-items: center;">
+                        <img src="${imageUrl}" style="width: 30px; height: 30px; margin-right: 10px; border-radius: 4px;" />
+                        <span>${option.text}</span>
+                    </div>`;
+        }
+
+        // Update image preview dynamically when selecting a new image
+        $('.image-selector').on('change', function () {
+            const selectedOption = $(this).find(':selected');
+            const imageUrl = selectedOption.data('image');
+            const previewId = '#image-preview-' + $(this).attr('id').replace('hover-image-selector-', '');
+
+            if (imageUrl) {
+                $(previewId).attr('src', imageUrl).show();
+            } else {
+                $(previewId).hide().text('No Image Selected');
+            }
+        });
+    });
+
+
 </script>
-    
+
 @endsection

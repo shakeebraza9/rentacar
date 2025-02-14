@@ -23,7 +23,7 @@ $attractions= MenuHelper::getsubAttractions(45);
     <title>Langkawi Car Rental at Airport & Jetty - MRR HOLIDAYS</title>
     <link rel="stylesheet" href="{{ asset('theme/asset/node_modules/mburger-css/dist/mburger.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/asset/node_modules/%40splidejs/splide/dist/css/splide.min.css') }}">
-    <link href="{{ asset('favicon.ico') }}" type="image/x-icon" rel="icon">
+    <link href="{{ asset(getset('fav_icon')) }}" type="image/x-icon" rel="icon">
     <link rel="stylesheet" href="{{ asset('theme/asset/css/mmenu.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/asset/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/asset/css/bootstrap.min.css') }}">
