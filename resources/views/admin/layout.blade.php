@@ -335,7 +335,7 @@
         <!-- ============================================================== -->
         <footer class="footer">
             © 2024 {{$global_d['site_title']}} Developed by
-            <a href="https://www.azamsolutions.com/">azamsolutions.com</a>
+            <a href="#">Browndev.com</a>
         </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
