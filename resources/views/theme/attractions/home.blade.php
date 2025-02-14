@@ -10,9 +10,9 @@
 
 @section('css')
 
-<style>
+    <style>
 
-</style>
+    </style>
 
 @endsection
 @section('content')
@@ -23,8 +23,8 @@
 
             <!-- Button trigger modal -->
             <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button> -->
+        Launch demo modal
+    </button> -->
 
             <!-- Modal -->
             <div class="modal fade" id="PromoModal" tabindex="-1" aria-labelledby="PromoModalLabel" aria-hidden="true">
@@ -83,13 +83,12 @@
 
 
 
-            <section class="hero">
+            <section class="hero" style="background: url('{{ asset($randomSlider->image->path) }}') !important">
+
                 <div class="container">
                     <div class="text-center">
-                        <h1 class="text-white mb-0 display-5 fw-bold">Langkawi Activities & Tours Booking</h1>
-                        <p class="text-white mb-4 mt-3">Book your favourite Langkawi activities and tour packages with
-                            our exclusive deals and start planning your dream vacation with your friends and family in
-                            Langkawi today!</p>
+                        <h1 class="text-white mb-0 display-5 fw-bold">{{ $randomSlider->title }}</h1>
+                        <h3 class="text-white mb-4 mt-3">{{ $randomSlider->details }}</h3>
                     </div>
 
                     <div>
@@ -125,10 +124,9 @@
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link btn disabled" id="chauffeur-tab" data-bs-toggle="tab"
-                                            data-bs-target="#chauffeur" type="button" role="tab"
-                                            aria-controls="chauffeur" aria-selected="false"><span class="icon-circle">
-                                                <span class="soon">COMING SOON</span><i
-                                                    class="fa fa-user-tie"></i></span>
+                                            data-bs-target="#chauffeur" type="button" role="tab" aria-controls="chauffeur"
+                                            aria-selected="false"><span class="icon-circle">
+                                                <span class="soon">COMING SOON</span><i class="fa fa-user-tie"></i></span>
                                             <div>Chauffeur</div>
                                         </button>
                                     </li>
@@ -209,9 +207,8 @@
                                                             <div class="form-floating input-group">
                                                                 <span class="input-group-text"><i
                                                                         class="far fa-calendar-alt text-primary"></i></span>
-                                                                <input type="text" name="end_date"
-                                                                    class="form-control pe-0" placeholder="29 Apr 2021"
-                                                                    id="return_date">
+                                                                <input type="text" name="end_date" class="form-control pe-0"
+                                                                    placeholder="29 Apr 2021" id="return_date">
                                                                 <label class="small">Return Date</label>
                                                             </div>
                                                         </div>
@@ -278,9 +275,9 @@
                                                             <div class="form-floating input-group">
                                                                 <span class="input-group-text"><i
                                                                         class="far fa-calendar-alt text-primary"></i></span>
-                                                                <input type="text" name="check_in"
-                                                                    class="form-control pe-0" id="check_in"
-                                                                    placeholder="Add dates" value="2021-08-04">
+                                                                <input type="text" name="check_in" class="form-control pe-0"
+                                                                    id="check_in" placeholder="Add dates"
+                                                                    value="2021-08-04">
                                                                 <label>Check-in Date</label>
                                                             </div>
                                                         </div>
@@ -303,8 +300,8 @@
                                                                 class="form-floating input-group dropdown dropdown-guest-qty">
                                                                 <span class="input-group-text"><i
                                                                         class="fas fa-user-friends text-primary"></i></span>
-                                                                <input type="text" class="form-control pe-0"
-                                                                    id="add-guest" data-bs-toggle="dropdown"
+                                                                <input type="text" class="form-control pe-0" id="add-guest"
+                                                                    data-bs-toggle="dropdown"
                                                                     value="2 Adult, 1 Children, 1 Room">
 
                                                                 <div class="dropdown-menu p-4">
@@ -469,16 +466,15 @@
                                                                 <span
                                                                     class="icon position-absolute top-50 start-0 translate-middle-y"><i
                                                                         class="fa fa-map-marker-alt text-primary"></i></span>
-                                                                <select class="form-control" name="activity"
-                                                                    id="activity" required>
+                                                                <select class="form-control" name="activity" id="activity"
+                                                                    required>
                                                                     <optgroup label="Activity">
                                                                         <option value="2">All Attractions (24)</option>
                                                                     </optgroup>
                                                                     <optgroup label="Attractions">
                                                                         <option value="ATV Adventure Ride">ATV Adventure
                                                                             Ride</option>
-                                                                        <option
-                                                                            value="Crocodile Adventureland Langkawi">
+                                                                        <option value="Crocodile Adventureland Langkawi">
                                                                             Crocodile Adventureland Langkawi</option>
                                                                         <option
                                                                             value="Dayang Bunting Marble Geoforest Park">
@@ -498,15 +494,13 @@
                                                                             value="Langkawi Jet Ski Tour By Mega Water Sports ">
                                                                             Langkawi Jet Ski Tour By Mega Water Sports
                                                                         </option>
-                                                                        <option
-                                                                            value="Langkawi Jetski & Watersports Tour">
+                                                                        <option value="Langkawi Jetski & Watersports Tour">
                                                                             Langkawi Jetski & Watersports Tour</option>
                                                                         <option value="Langkawi Mangrove Tour">Langkawi
                                                                             Mangrove Tour</option>
                                                                         <option value="Langkawi Premium Cruise">Langkawi
                                                                             Premium Cruise</option>
-                                                                        <option
-                                                                            value="Langkawi SkyCab Cable Car Ticket">
+                                                                        <option value="Langkawi SkyCab Cable Car Ticket">
                                                                             Langkawi SkyCab Cable Car Ticket</option>
                                                                         <option value="Langkawi Sunset Cruise">Langkawi
                                                                             Sunset Cruise</option>
@@ -528,8 +522,7 @@
                                                                             Splash Out Langkawi Ticket</option>
                                                                         <option value="The Els Club Teluk Datai">The Els
                                                                             Club Teluk Datai</option>
-                                                                        <option
-                                                                            value="Underwater World Langkawi Ticket">
+                                                                        <option value="Underwater World Langkawi Ticket">
                                                                             Underwater World Langkawi Ticket</option>
                                                                         <option value="Wildlife Park Langkawi">Wildlife
                                                                             Park Langkawi</option>
@@ -799,1137 +792,110 @@
             <section class="my-5">
                 <div class="container">
                     <h2 class="text-center text-primary mt-3">Our Attractions</h2>
-
+            
                     <div id="slider-attractions" class="splide splide-primary mb-4 mb-md-5 mt-4">
                         <div class="splide__track">
                             <ul class="splide__list">
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            4% OFF </div>
-                                        <img src="../uploads/experience/272A1068-min-scaled_3228-1668655150_3228-1684136479.jpg"
-                                            alt="Langkawi SkyCab Cable Car Ticket Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-skycab-cable-car.html" class="text-dark">Langkawi
-                                                    SkyCab Cable Car Ticket</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    23.00</del></p></span>
+                                @foreach ($attractions as $attraction)
+                                    <li class="splide__slide">
+                                        <div class="card mx-3">
+                                            @if ($attraction->discount_price && $attraction->selling_price)
+                                                <div class="label-discount">
+                                                    {{ round((($attraction->selling_price - $attraction->discount_price) / $attraction->selling_price) * 100, 2) }}% OFF
+                                                </div>
+                                            @endif
+                                            <img src="{{ asset($attraction->get_thumbnail->path ?? 'default-image.jpg') }}"
+                                                alt="{{ $attraction->title }}" class="card-img-top img-fluid object-fit-lg">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <a href="{{ route('attractions.detail', $attraction->slug) }}" class="text-dark">
+                                                        {{ $attraction->title }}
+                                                    </a>
+                                                </h5>
+                                                <div class="row">
+                                                    <div class="col">
                                                         <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">22.00</span>
+                                                            @if ($attraction->selling_price)
+                                                                <p class="m-0 text-muted">RM <span class="fs-4">
+                                                                    <del>{{ number_format($attraction->selling_price, 2) }}</del>
+                                                                </span></p>
+                                                            @endif
+                                                            <div class="text-danger">
+                                                                <span class="text-muted">From</span> RM <span class="fs-3 fw-bold">
+                                                                    {{ number_format($attraction->discount_price ?? $attraction->selling_price, 2) }}
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-skycab-cable-car.html"
-                                                        class="btn btn-primary">Book Now</a>
+                                                    <div class="col-auto my-auto">
+                                                        <a href="{{ route('attractions.detail', $attraction->slug) }}" class="btn btn-primary">Book Now</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/3_3228-1686123424.jpg"
-                                            alt="Underwater World Langkawi Ticket Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="underwater-world-langkawi.html" class="text-dark">Underwater
-                                                    World Langkawi Ticket</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    50.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">47.50</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="underwater-world-langkawi.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/WhatsApp-Image-2018-04-26-at-12.46.30-1-1024x768_3228-1686125005.jpg"
-                                            alt="Wildlife Park Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="wildlife-park-langkawi.html" class="text-dark">Wildlife Park
-                                                    Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    45.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">42.75</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="wildlife-park-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            26% OFF </div>
-                                        <img src="../uploads/experience/pulau-langkawi-mangrove-tour_3228-1668045173.jpg"
-                                            alt="Langkawi Mangrove Tour Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-mangrove-tour.html" class="text-dark">Langkawi
-                                                    Mangrove Tour</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    120.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">89.10</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-mangrove-tour.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            22% OFF </div>
-                                        <img src="../uploads/experience/c721e8b93cbcc0e9945c92c41811c59f--maiden-malaysia_3228-1668048419.jpg"
-                                            alt="Langkawi Island Hopping Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="island-hopping-langkawi.html" class="text-dark">Langkawi Island
-                                                    Hopping</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    45.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">35.10</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="island-hopping-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            10% OFF </div>
-                                        <img src="../uploads/experience/Crocodile%20Adventureland%20Langkawi_wte_4_3228-1668742643_3228-1686193924.jpg"
-                                            alt="Crocodile Adventureland Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="crocodile-adventureland-langkawi.html"
-                                                    class="text-dark">Crocodile Adventureland Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    40.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">36.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="crocodile-adventureland-langkawi.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            4% OFF </div>
-                                        <img src="../uploads/experience/Big-Splash-Kingdom_r1-1_3228-1673331519_1_3228-1686199050.jpg"
-                                            alt="Splash Out Langkawi Ticket Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="splash-out-langkawi.html" class="text-dark">Splash Out Langkawi
-                                                    Ticket</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    50.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">48.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="splash-out-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/naam-paradise101-1536x680_3228-1676126920_3228-1686204610.jpg"
-                                            alt="Paradise 101 Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="paradise-101-langkawi.html" class="text-dark">Paradise 101
-                                                    Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    39.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">37.05</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="paradise-101-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/Three%20Island%20Jetski%20Tour%20at%20Langkawi%20by%20Mega%20Water%20Sports_3228-1673855054_3228-1686206020.jpg"
-                                            alt="Langkawi Jet Ski Tour By Mega Water Sports  Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="jetski-tour-by-mega-water-sports.html"
-                                                    class="text-dark">Langkawi Jet Ski Tour By Mega Water Sports </a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    700.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">665.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="jetski-tour-by-mega-water-sports.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            28% OFF </div>
-                                        <img src="../uploads/experience/4df90e_fa1890752af0476abfe3a2ea617f95e7_mv2_3228-1686206978.jpg"
-                                            alt="Skytrex Adventure Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="skytrex-adventure.html" class="text-dark">Skytrex Adventure
-                                                    Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    79.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">57.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="skytrex-adventure.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/morac-adventure-park-langkawi-gokart_3228-1686207677.jpg"
-                                            alt="Morac Adventure Park  Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="morac-adventure-park.html" class="text-dark">Morac Adventure
-                                                    Park </a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    85.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">80.75</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="morac-adventure-park.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            35% OFF </div>
-                                        <img src="../uploads/experience/4a6a7913-1c1f-4033-b8c3-aa9509d06e8c_3228-1686209014.jpg"
-                                            alt="ATV Adventure Ride Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="atv-adventure-ride.html" class="text-dark">ATV Adventure
-                                                    Ride</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    250.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">162.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="atv-adventure-ride.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <img src="../uploads/experience/TheElsClub_Malaysia_TelukDatai_10_7th_3228-1684900583.jpg"
-                                            alt="The Els Club Teluk Datai Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="the-els-club-teluk-datai.html" class="text-dark">The Els Club
-                                                    Teluk Datai</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">445.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="the-els-club-teluk-datai.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/DSC_9597-Top-View-1-scaled%20(1)_3228-1690528611.jpg"
-                                            alt="Langkawi Premium Cruise Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-premium-cruise.html" class="text-dark">Langkawi
-                                                    Premium Cruise</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    250.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">237.50</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-premium-cruise.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/architecture-main%20(1)_3228-1690447207.jpg"
-                                            alt="Maha Tower Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="maha-tower-langkawi.html" class="text-dark">Maha Tower
-                                                    Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    39.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">37.05</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="maha-tower-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/352554009_642575144054703_6358958825190418077_n_3228-1690440126.jpg"
-                                            alt="Dream Forest Langkawi Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="dream-forest-langkawi.html" class="text-dark">Dream Forest
-                                                    Langkawi</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    68.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">64.60</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="dream-forest-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/WhatsApp%20Image%202023-09-27%20at%2011.14.32%20AM%20(1)_3228-1695798240.jpg"
-                                            alt="Langkawi Halal Cruise Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-halal-cruise.html" class="text-dark">Langkawi Halal
-                                                    Cruise</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    195.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">185.25</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-halal-cruise.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/Kayak%20fun_10177-1700466549.jpg"
-                                            alt="Mangrove Kayaking Tour Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-mangrove-kayaking-tour.html"
-                                                    class="text-dark">Mangrove Kayaking Tour</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    255.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">242.25</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-mangrove-kayaking-tour.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            1% OFF </div>
-                                        <img src="../uploads/experience/Mahsuri-2_3228-1706330491.jpg"
-                                            alt="Makam Mahsuri Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="makam-mahsuri.html" class="text-dark">Makam Mahsuri</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    15.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">14.90</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="makam-mahsuri.html" class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            5% OFF </div>
-                                        <img src="../uploads/experience/92811793_2512150272379498_6715617761743077376_n_3228-1708502115.jpg"
-                                            alt="Eco Adventure by Darulaman Sanctuary Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="eco-adventure-by-darulaman-sanctuary.html"
-                                                    class="text-dark">Eco Adventure by Darulaman Sanctuary</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    130.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">123.50</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="eco-adventure-by-darulaman-sanctuary.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            8% OFF </div>
-                                        <img src="../uploads/experience/IMG_6238_3228-1709951071.jpg"
-                                            alt="Langkawi Jetski &amp; Watersports Tour Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-jetski-watersports-tour.html"
-                                                    class="text-dark">Langkawi Jetski &amp; Watersports Tour</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    120.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">110.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-jetski-watersports-tour.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            2% OFF </div>
-                                        <img src="../uploads/experience/LC4_15742-1718874916.jpg"
-                                            alt="Langkawi Sunset Cruise Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="langkawi-sunset-cruise.html" class="text-dark">Langkawi Sunset
-                                                    Cruise</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    110.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">108.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="langkawi-sunset-cruise.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <div class="label-discount">
-                                            0% OFF </div>
-                                        <img src="../uploads/experience/WhatsApp%20Image%202024-07-12%20at%2010.36.44%20AM_3228-1720752834.jpg"
-                                            alt="Dayang Bunting Marble Geoforest Park Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="dayang-bunting-marble-geoforest-park.html"
-                                                    class="text-dark">Dayang Bunting Marble Geoforest Park</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <p class="m-0 text-muted">RM <span class="fs-4"><del>
-                                                                    25.00</del></p></span>
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">24.90</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="dayang-bunting-marble-geoforest-park.html"
-                                                        class="btn btn-primary">Book Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="splide__slide">
-                                    <div class="card mx-3">
-                                        <img src="../uploads/experience/Langkawi-Snorkeling-Tour_3228-1728622011.jpg"
-                                            alt="Pulau Payar Langkawi Tickets Booking Online"
-                                            class="card-img-top img-fluid object-fit-lg">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <a href="pulau-payar-langkawi.html" class="text-dark">Pulau Payar
-                                                    Langkawi Tickets</a>
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="text-danger">
-                                                        <div class="text-danger">
-                                                            <span class="text-muted">From</span> RM <span
-                                                                class="fs-3 fw-bold">350.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto my-auto">
-                                                    <a href="pulau-payar-langkawi.html" class="btn btn-primary">Book
-                                                        Now</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="text-center mt-5">
-                    <a href="all2067.html?activity=2" class="btn btn-outline-primary">See more attractions</a>
+                    <a href="{{ route('attractions.list') }}" class="btn btn-outline-primary">See more attractions</a>
                 </div>
             </section>
+            
 
             <section class="mt-5 bg-light py-4">
                 <h2 class="text-center text-primary mt-3">Our Reviews</h2>
                 <div class="slider-review">
-
-
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/pulau-langkawi-mangrove-tour_3228-1668045173.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-701 content-collapse" id="review-701">
-                                                " Our family loved the 4 hour private boat Kilim Geoforest Park mangrove
-                                                tour and snorkeling at Dangali Island. We learned a lot about the
-                                                different species of mangroves and the animals that live in this
-                                                ecosystem. The kids loved the high speed ride across the waves. Munadi
-                                                was a great guide and we felt looked after throughout. Thoroughly
-                                                recommend! "
+                    @foreach ($reviews as $review)
+                        <div class="m-3">
+                            <div class="card rounded-3 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <img src="{{ asset($review->image_path ?? 'default-image.jpg') }}" class="img-fluid w-100" alt="Product Image">
+                                            <div class="text-center mt-3">
+                                                <div class="stars">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <i class="{{ $i <= $review->rating ? 'fas fa-star' : 'far fa-star' }} fa-1x text-primary"></i>
+                                                    @endfor
+                                                </div>
                                             </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="701"
-                                                data-value="Our family loved the 4 hour private boat Kilim Geoforest Park mangrove tour  and snorkeling at Dangali Island. We learned a lot about the different species of mangroves and the animals that live in this ecosystem. The kids loved the high speed ride across the waves. Munadi was a great guide and we felt looked after throughout. Thoroughly recommend!"
-                                                id="buttonRead-701">Show more</button>
                                         </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Natalee Connor <span class="flag-icon flag-icon-au"></span><br>
-                                            <span class="small text-dark">2 days ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Langkawi Mangrove Tour </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/3_3228-1686123424.jpg" class="img-fluid w-100"
-                                            alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            " Ticket murah..better Langkawi book "
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Asnidawati Binti Abdullah <span
-                                                class="flag-icon flag-icon-my"></span><br>
-                                            <span class="small text-dark">5 days ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Underwater World Langkawi Ticket </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/naam-paradise101-1536x680_3228-1676126920_3228-1686204610.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="far fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-697 content-collapse" id="review-697">
-                                                " Frequent boat ride to and from island. Food at the restaurant are good
-                                                and tasty. A quiet island and felt very private there is just us only
-                                                for the whole island when we arrived. Affordable ticket which included
-                                                boat ride to and from, welcome drinks and kayaking. "
+                                        <div class="col-md-7 position-relative">
+                                            <div class="mb-7">
+                                                <div class="review-body-{{ $review->id }} content-collapse" id="review-{{ $review->id }}">
+                                                    "{{ Str::limit($review->review, 150) }}"
+                                                </div>
+                                                @if (strlen($review->review) > 150)
+                                                    <button class="btn btn-sm btn-light btn-toggle-collapse mt-3"
+                                                        data-id="{{ $review->id }}"
+                                                        data-value="{{ $review->review }}"
+                                                        id="buttonRead-{{ $review->id }}">
+                                                        Show more
+                                                    </button>
+                                                @endif
                                             </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="697"
-                                                data-value="Frequent boat ride to and from island. Food at the restaurant are good and tasty. A quiet island and felt very private there is just us only for the whole island when we arrived. Affordable ticket which included boat ride to and from, welcome drinks and kayaking. "
-                                                id="buttonRead-697">Show more</button>
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Pang Iny Shen <span class="flag-icon flag-icon-my"></span><br>
-                                            <span class="small text-dark">6 days ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Paradise 101 Langkawi </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/352554009_642575144054703_6358958825190418077_n_3228-1690440126.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-696 content-collapse" id="review-696">
-                                                " Very surprised with the quality of the tour. Fantastic experience. The
-                                                staff were very polite and helpful. We enjoyed the satay served there.
-                                                The souvenirs were novel and not bad at all quality. We bought their
-                                                family potrait in support of the venue.
-
-                                                Special shoutout to Fiza Rashid whom was our contact via whatsapp from
-                                                the day we booked our tickets. She recommended everything well and clear
-                                                - from car rental to all our tours and quickly delegated any problems we
-                                                encountered during our holiday.... Thank you everyone at LangkawiBook. "
+                                            <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
+                                                By {{ $review->user_name }} <span class="flag-icon flag-icon-{{ strtolower($review->country ?? 'us') }}"></span><br>
+                                                <span class="small text-dark">{{ $review->created_at->diffForHumans() }}</span>
                                             </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="696"
-                                                data-value="Very surprised  with the quality of the tour. Fantastic experience. The staff were very polite  and helpful. We enjoyed the satay served there. The souvenirs were novel and not bad at all quality.  We bought their family potrait in support of the venue.
-
-Special shoutout to Fiza Rashid whom was our contact via whatsapp from the day we booked our tickets. She recommended everything well and clear - from car rental to all our tours and quickly delegated any problems we encountered during our holiday.... Thank you everyone at LangkawiBook."
-                                                id="buttonRead-696">Show more</button>
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Muhammad ZAUQI <span class="flag-icon flag-icon-my"></span><br>
-                                            <span class="small text-dark">1 week ago</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Dream Forest Langkawi </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/c721e8b93cbcc0e9945c92c41811c59f--maiden-malaysia_3228-1668048419.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-692 content-collapse" id="review-692">
-                                                " The Experience with langkawi Book team was great , i did 3 x cookings
-                                                with them (Car , skycab and island hoping) they even went out of the way
-                                                to take cash payment from me as my Card was having issues
-                                                Response from helpline was also quick and approriate always.
-                                                our Langkawi tour would not have been as good as it was , if it wasnt
-                                                for them.
-                                                good job team "
-                                            </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="692"
-                                                data-value="The Experience with langkawi Book team was great , i did 3 x cookings with them (Car , skycab and island hoping) they even went out of the way to take cash payment from me as my Card was having issues
-Response from helpline was also quick and approriate always.
-our Langkawi tour would not have been as good as it was , if it wasnt for them.
-good job team" id="buttonRead-692">Show more</button>
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Muzzamil Hameed <span class="flag-icon flag-icon-pk"></span><br>
-                                            <span class="small text-dark">1 week ago</span>
-                                        </div>
-                                    </div>
+                                <div class="card-footer text-center">
+                                    {{ $review->product_name }}
                                 </div>
                             </div>
-                            <div class="card-footer text-center">
-                                Langkawi Island Hopping </div>
                         </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/272A1068-min-scaled_3228-1668655150_3228-1684136479.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-691 content-collapse" id="review-691">
-                                                " The Experience with langkawi Book team was great , i did 3 x cookings
-                                                with them (Car , skycab and island hoping) they even went out of the way
-                                                to take cash payment from me as my Card was having issues
-                                                Response from helpline was also quick and approriate always.
-                                                our Langkawi tour would not have been as good as it was , if it wasnt
-                                                for them.
-                                                good job team "
-                                            </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="691"
-                                                data-value="The Experience with langkawi Book team was great , i did 3 x cookings with them (Car , skycab and island hoping) they even went out of the way to take cash payment from me as my Card was having issues
-Response from helpline was also quick and approriate always.
-our Langkawi tour would not have been as good as it was , if it wasnt for them.
-good job team" id="buttonRead-691">Show more</button>
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Muzzamil Hameed <span class="flag-icon flag-icon-pk"></span><br>
-                                            <span class="small text-dark">1 week ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Langkawi SkyCab Cable Car Ticket </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/3_3228-1686123424.jpg" class="img-fluid w-100"
-                                            alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            <div class="review-body-688 content-collapse" id="review-688">
-                                                " During my travel to langkawi recently, I had booked a car and also a
-                                                couple of attractions like sky Cable car and Underworld water aquarium
-                                                passes through this company. I must say they are very very professional
-                                                and also fantastic in their services and customer support all my
-                                                questions and alterations were handled, extremely professionally, and in
-                                                a very friendly way, I would highly recommend this company for your
-                                                travel to Langkawi "
-                                            </div>
-                                            <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="688"
-                                                data-value="During my travel to langkawi recently, I had booked a car and also a couple of attractions like sky Cable car and Underworld water aquarium passes through this company. I must say they are very very professional and also fantastic in their services and customer support all my questions and alterations were handled, extremely professionally, and in a very friendly way, I would highly recommend this company for your travel to Langkawi"
-                                                id="buttonRead-688">Show more</button>
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By SUJAY SUNDER SHETTY <span class="flag-icon flag-icon-in"></span><br>
-                                            <span class="small text-dark">2 weeks ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Underwater World Langkawi Ticket </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/c721e8b93cbcc0e9945c92c41811c59f--maiden-malaysia_3228-1668048419.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            " Had a wonderful experience during island hopping..Dayang bunting view was
-                                            not worth the trek..but the hoping service was good "
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Nikhil Ramachandran <span class="flag-icon flag-icon-in"></span><br>
-                                            <span class="small text-dark">2 weeks ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Langkawi Island Hopping </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/272A1068-min-scaled_3228-1668655150_3228-1684136479.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            " good "
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Hamizal bin Mohd Musa <span class="flag-icon flag-icon-my"></span><br>
-                                            <span class="small text-dark">2 weeks ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Langkawi SkyCab Cable Car Ticket </div>
-                        </div>
-                    </div>
-                    <div class="m-3">
-                        <div class="card rounded-3 shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <img src="../uploads/experience/pulau-langkawi-mangrove-tour_3228-1668045173.jpg"
-                                            class="img-fluid w-100" alt="">
-                                        <div class="text-center mt-3">
-                                            <div class="stars"><i class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i><i
-                                                    class="fas fa-star fa-1x text-primary"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 position-relative">
-                                        <div class="mb-7">
-                                            " Great private tour, good communication with the organiser via whatsapp.
-                                            Friendly and helpful skipper on the boat. We booked last minute the day
-                                            before and it was all smooth. "
-                                        </div>
-                                        <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                            By Brendon Vought <span class="flag-icon flag-icon-au"></span><br>
-                                            <span class="small text-dark">2 weeks ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                Langkawi Mangrove Tour </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="text-center mt-5">
-                    <a href="../attraction-reviews.html" class="btn btn-outline-primary">See more reviews</a>
+                    <a href="{{ route('reviews.index') }}" class="btn btn-outline-primary">See more reviews</a>
                 </div>
             </section>
+            
 
             <section class="mt-7">
                 <div class="container">
@@ -1984,9 +950,9 @@ good job team" id="buttonRead-691">Show more</button>
                                 <div class="accordion-body">
                                     <p>The top 3 exciting outdoor activities in Langkawi are <a
                                             href="jetski-tour-by-mega-water-sports.html" target="_blank">Island Hopping
-                                            via Jet Ski Tour</a>, <a href="skytrex-adventure.html"
-                                            target="_blank">Ziplining at Skytrex</a>, and <a
-                                            href="morac-adventure-park.html" target="_blank">Go-Karting at Morac</a>.
+                                            via Jet Ski Tour</a>, <a href="skytrex-adventure.html" target="_blank">Ziplining
+                                            at Skytrex</a>, and <a href="morac-adventure-park.html"
+                                            target="_blank">Go-Karting at Morac</a>.
                                     </p>
                                 </div>
                             </div>
@@ -2041,7 +1007,8 @@ good job team" id="buttonRead-691">Show more</button>
                         <a href="island-hopping-langkawi.html" target="_blank">Island Hopping Boat Tours</a>, <a
                             href="jetski-tour-by-mega-water-sports.html" target="_blank">Jetski Tour</a>, <a
                             href="paradise-101-langkawi.html" target="_blank">Adventure 101 Paradise Island</a>, <a
-                            href="wildlife-park-langkawi.html" target="_blank">Wildlife Park Langkawi</a> and more! </p>
+                            href="wildlife-park-langkawi.html" target="_blank">Wildlife Park Langkawi</a> and more!
+                    </p>
 
                     <p class="h5 mb-3">
                         Don't miss out on these unforgettable experiences in Langkawi! Book with us today and take
@@ -2110,6 +1077,6 @@ good job team" id="buttonRead-691">Show more</button>
             </script>
         </div>
     </main>
-    @endsection
-    @section('js')
-    @endsection
+@endsection
+@section('js')
+@endsection
