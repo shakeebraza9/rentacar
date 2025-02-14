@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 
-function getProductTypesByCategoryw($categoryId)
+function getProductTypesByCategoryww($categoryId)
     {
         return DB::table('products')
             ->where('category_id', $categoryId)
@@ -2015,7 +2015,7 @@ Launch demo modal
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
                 <?php
-                $ourTypes = getProductTypesByCategoryw(44);
+                $ourTypes = getProductTypesByCategoryww(44);
                 $isActive = true;
                 ?>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
