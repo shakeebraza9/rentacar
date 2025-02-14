@@ -2,15 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 
-function getProductTypesByCategoryww($categoryId)
-    {
-        return DB::table('products')
-            ->where('category_id', $categoryId)
-            ->distinct()
-            ->pluck('type')
-            ->filter()
-            ->toArray();
-    }
+
 
 ?>
 
