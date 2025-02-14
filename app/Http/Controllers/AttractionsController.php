@@ -41,7 +41,7 @@ class AttractionsController extends Controller
         ->where('product_reviews.active', 1)
         ->get();
 
-        $randomSlider = Slider::where('alignment', 'Home')->inRandomOrder()->first();
+        $randomSlider = Slider::where('alignment', 'Attractions')->inRandomOrder()->first();
 
         return view('theme.attractions.home',compact('attractions','reviews','randomSlider'));
 
