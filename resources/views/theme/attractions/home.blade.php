@@ -268,8 +268,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-auto my-auto">
-                                                        <a href="{{ route('attractions.detail', $attraction->slug) }}" class="btn btn-primary">Book Now</a>
+                                                        <a href="{{ route('attractions.detail', ['slug' => $attraction->slug]) }}" class="btn btn-primary">Book Now</a>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>

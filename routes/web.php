@@ -29,7 +29,7 @@ Route::get('/reviews', [App\Http\Controllers\HomeController::class, 'reviews'])-
 
 // attractions
 Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
-Route::get('/attractions/detail', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');
+Route::get('/attractions/detail{slug}', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');
 Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::class, 'attractionslist'])->name('attractions.list');
 
 

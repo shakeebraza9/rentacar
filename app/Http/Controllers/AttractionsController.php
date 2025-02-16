@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Attraction;
 use App\Models\ProductReview;
 use App\Models\Collection;
+use App\Models\Ticket;
 use App\Models\Page;
 use App\Models\ProductCollection;
 use App\Models\Variation;
@@ -27,8 +28,8 @@ class AttractionsController extends Controller
     public function home()
     {
 
-      
-       
+
+
         $attractions  = Attraction::where('status',1)->get();
         $reviews = ProductReview::join('users', 'product_reviews.user_id', '=', 'users.id')
         ->join('products', 'product_reviews.product_id', '=', 'products.id')
@@ -46,4 +47,34 @@ class AttractionsController extends Controller
         return view('theme.attractions.home',compact('attractions','reviews','randomSlider'));
 
     }
-}   
+
+    public function attractionsdetail($slug)
+    {
+        // Find the attraction by slug
+        $attraction = Attraction::where('slug', $slug)->first();
+
+        if (!$attraction) {
+            return abort(404, 'Attraction not found');
+        }
+
+
+        $allAttractions = Attraction::where('status', 1)->get();
+
+        // Fetch tickets for the current attraction
+        $tickets = Ticket::where('attraction_id', $attraction->id)->where('status', 'active')->get();
+        $reviews = ProductReview::join('users', 'product_reviews.user_id', '=', 'users.id')
+        ->join('products', 'product_reviews.product_id', '=', 'products.id')
+        ->join('filemanager', 'products.image', '=', 'filemanager.id') // Join with filemanager
+        ->select('product_reviews.*',
+                 'users.name as user_name',
+                 'users.email as user_email',
+                 'products.title as product_name',
+                 'filemanager.path as image_path') // Select image path from filemanager
+        ->where('product_reviews.active', 1)
+        ->get();
+
+        // Pass data to the view
+        return view('theme.attractions.detail', compact('attraction', 'allAttractions', 'tickets','reviews'));
+    }
+
+}
