@@ -1979,7 +1979,7 @@ Launch demo modal
                 <div class="row gx-xl-10">
                     <div class="col-md">
                         <div class="shadow p-3 d-inline-block rounded-3 mb-3 mb-md-4 box-icon">
-                            <img src="img/icon/icon-choose-car.svg" class="img-fluid" alt="">
+                            <img src="theme/asset/img/icon/icon-choose-car.svg" class="img-fluid" alt="">
                         </div>
                         <h3>Search & Explore</h3>
                         <div>Find vehicles and get quotes that suits your budget and style.</div>
@@ -1987,7 +1987,7 @@ Launch demo modal
 
                     <div class="col-md mt-4 mt-md-0">
                         <div class="shadow p-3 d-inline-block rounded-3 mb-3 mb-md-4 box-icon">
-                            <img src="img/icon/icon-payment-secure.svg" class="img-fluid" alt="">
+                            <img src="theme/asset/img/icon/icon-payment-secure.svg" class="img-fluid" alt="">
                         </div>
                         <h3>Book & Pay</h3>
                         <div>Select and confirm your dates and book securely.</div>
@@ -1995,7 +1995,7 @@ Launch demo modal
 
                     <div class="col-md mt-4 mt-md-0">
                         <div class="shadow p-3 d-inline-block rounded-3 mb-3 mb-md-4 box-icon">
-                            <img src="img/icon/icon-car.svg" class="img-fluid" alt="">
+                            <img src="theme/asset/img/icon/icon-car.svg" class="img-fluid" alt="">
                         </div>
                         <h3>Travel & Enjoy</h3>
                         <div>Collect your car and live like a local anywhere Langkawi.</div>
