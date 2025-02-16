@@ -170,12 +170,12 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'delete'])->name('attractions.delete');
 
     //Ticket
-    Route::get('/admin/ticket/index', [App\Http\Controllers\Admin\AttractionsController::class, 'index'])->name('attractions.index');
-    Route::get('/admin/ticket/create', [App\Http\Controllers\Admin\AttractionsController::class, 'create'])->name('attractions.create');
-    Route::post('/admin/ticket/store', [App\Http\Controllers\Admin\AttractionsController::class, 'store']);
-    Route::get('/admin/ticket/edit/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'edit'])->name('attractions.edit');
-    Route::post('/admin/ticket/update/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'update']);
-    Route::get('/admin/ticket/delete/{id}', [App\Http\Controllers\Admin\AttractionsController::class, 'delete'])->name('attractions.delete');
+    Route::get('/admin/ticket/index', [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
+    Route::get('/admin/ticket/create', [App\Http\Controllers\Admin\TicketController::class, 'create'])->name('ticket.create');
+    Route::post('/admin/ticket/store', [App\Http\Controllers\Admin\TicketController::class, 'store']);
+    Route::get('/admin/ticket/edit/{id}', [App\Http\Controllers\Admin\TicketController::class, 'edit'])->name('ticket.edit');
+    Route::post('/admin/ticket/update/{id}', [App\Http\Controllers\Admin\TicketController::class, 'update'])->name('ticket.update');
+    Route::get('/admin/ticket/delete/{id}', [App\Http\Controllers\Admin\TicketController::class, 'delete'])->name('ticket.delete');
 
 
     //orders
