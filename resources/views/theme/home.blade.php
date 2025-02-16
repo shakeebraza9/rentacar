@@ -2003,108 +2003,109 @@ Launch demo modal
             </div>
         </section>
 
-        {{--  <section class="my-7">
+        <section class="my-7">
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
-                <?php
-                $ourTypes = getProductTypesByCategoryww(44);
-                $isActive = true;
-                ?>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <?php foreach ($ourTypes as $index => $type): ?>
+
+                @php
+                    $vehicleTypes = $products->groupBy('type'); // Group products by type
+                @endphp
+
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs" id="vehicleTabs" role="tablist">
+                    @foreach($vehicleTypes as $type => $vehicles)
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link <?= $isActive ? 'active' : '' ?>"
-                                    id="<?= strtolower($type) ?>-tab"
+                            <button class="nav-link @if ($loop->first) active @endif"
+                                    id="tab-{{ Str::slug($type) }}"
                                     data-bs-toggle="tab"
-                                    data-bs-target="#<?= strtolower($type) ?>"
+                                    data-bs-target="#content-{{ Str::slug($type) }}"
                                     type="button"
                                     role="tab"
-                                    aria-controls="<?= strtolower($type) ?>"
-                                    aria-selected="<?= $isActive ? 'true' : 'false' ?>">
-                                <?= ucfirst($type) ?>
+                                    aria-controls="content-{{ Str::slug($type) }}"
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                {{ ucfirst($type) }}
                             </button>
                         </li>
-                        <?php $isActive = false; ?>
-                    <?php endforeach; ?>
+                    @endforeach
                 </ul>
-
-
             </div>
-        </section>  --}}
+        </section>
 
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active mb-5" id="sedan" role="tabpanel" aria-labelledby="sedan-tab">
-                <div class="container mt-3">
-                    <div class="row gy-4">
-                        <?php foreach ($products as $product): ?>
-                            <div class="col-md-3">
-                                <div class="card ">
-                                    <div class="label-fleet-deals text-uppercase">
-                                        <?= htmlspecialchars($product->discount_text) ?>
-                                    </div>
-                                    <div class="card-img-top" style="background-color:#DEEBEA">
-                                        <?php
-                                            $image = $product->get_thumbnail;
-                                            if ($image):
-                                        ?>
-                                            <img src="<?= asset($image->path) ?>" alt="<?= htmlspecialchars($product->title) ?>" class="img-fluid">
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="text-center"><?= htmlspecialchars($product->title) ?></h5>
-                                        <ul class="list-fleet-specs">
-
-                                            <?php foreach ($product->productDetails as $detail): ?>
-                                                <li>
-                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="<?= htmlspecialchars(ucwords(str_replace('_', ' ', htmlspecialchars($detail->key_title))) ) ?>" class="icon">
-                                                        <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}" class="img-fluid" alt="">
+        <div class="tab-content" id="vehicleTabContent">
+            @foreach($vehicleTypes as $type => $vehicles)
+                <div class="tab-pane fade @if ($loop->first) show active @endif mb-5"
+                     id="content-{{ Str::slug($type) }}"
+                     role="tabpanel"
+                     aria-labelledby="tab-{{ Str::slug($type) }}">
+                    <div class="container mt-3">
+                        <div class="row gy-4">
+                            @foreach($vehicles as $product)
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <div class="label-fleet-deals text-uppercase">
+                                            {{ htmlspecialchars($product->discount_text) }}
+                                        </div>
+                                        <div class="card-img-top" style="background-color:#DEEBEA">
+                                            @if($product->get_thumbnail)
+                                                <img src="{{ asset($product->get_thumbnail->path) }}"
+                                                     alt="{{ htmlspecialchars($product->title) }}"
+                                                     class="img-fluid">
+                                            @endif
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}</h5>
+                                            <ul class="list-fleet-specs">
+                                                @foreach ($product->productDetails as $detail)
+                                                    <li>
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              title="{{ htmlspecialchars(ucwords(str_replace('_', ' ', $detail->key_title))) }}"
+                                                              class="icon">
+                                                            <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}"
+                                                                 class="img-fluid" alt="">
+                                                        </span>
+                                                        {{ htmlspecialchars($detail->value) }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <span class="text-muted fw-bold d-block">From</span>
+                                                    <span class="text-muted fw-bold">RM
+                                                        <h4 class="d-inline-block">
+                                                            <del>{{ htmlspecialchars(number_format($product->price, 2)) }}</del>
+                                                        </h4>
+                                                    </span><br>
+                                                    <span class="text-danger fw-bold">RM
+                                                        <h4 class="d-inline-block">{{ htmlspecialchars(number_format($product->selling_price, 2)) }}</h4>
                                                     </span>
-                                                    <?= htmlspecialchars($detail->value) ?>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <span class="text-muted fw-bold d-block">From</span>
-                                                <span class="text-muted fw-bold">RM
-                                                    <h4 class="d-inline-block">
-                                                        <del><?= htmlspecialchars(number_format($product->price, 2)) ?></del>
-                                                    </h4>
-                                                </span><br>
-                                                <span class="text-danger fw-bold">RM
-                                                    <h4 class="d-inline-block"><?= htmlspecialchars(number_format($product->selling_price, 2)) ?></h4>
-                                                </span>
-                                            </div>
-                                            <div class="col-md-auto my-auto btnBooking_area">
-                                                <div class="fw-bold text-danger text-end">
-                                                    <?= htmlspecialchars($product->stock) ?> unit left!
                                                 </div>
-                                                <div class="row">
-                                                    <?php
-                                                    // Current date and time
-                                                    $today = date('Y-m-d H:i:s');
-
-                                                    // Next day with the same time
-                                                    $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
-                                                    ?>
-                                                    <a href="<?= route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) ?>"
-                                                       class="btn btn-primary">
-                                                        Book Now
-                                                    </a>
-
-
+                                                <div class="col-md-auto my-auto btnBooking_area">
+                                                    <div class="fw-bold text-danger text-end">
+                                                        {{ htmlspecialchars($product->stock) }} unit left!
+                                                    </div>
+                                                    <div class="row">
+                                                        @php
+                                                            $today = date('Y-m-d H:i:s');
+                                                            $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
+                                                        @endphp
+                                                        <a href="{{ route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) }}"
+                                                           class="btn btn-primary">
+                                                            Book Now
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php endforeach; ?>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
+
 
 <section class="mt-5 bg-light py-4">
     <h2 class="text-center text-primary mt-3">Our Reviews</h2>
