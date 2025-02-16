@@ -153,7 +153,8 @@ Launch demo modal
                                                         <div class="input-group select2-floating position-relative">
                                                             <span
                                                                 class="icon position-absolute top-50 start-0 translate-middle-y"><i
-                                                                    class="fa fa-map-marker-alt text-primary"></i></span>
+                                                                style="font-size: 20px;
+                                                                margin-left: 35px;" class="fa fa-map-marker-alt text-primary"></i></span>
                                                             <label class="small">Select Pickup Locations</label>
                                                             <select class="form-control input-group border-0"
                                                                 name="custom_pickup_location" id="input_pickup"

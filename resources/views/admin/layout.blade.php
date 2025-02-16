@@ -176,7 +176,7 @@
                             <span class="hide-menu"> Menus </span></a>
 
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/menus/create')}}">Add New Menus</a></li>
+                                {{--  <li><a href="{{URL::to('admin/menus/create')}}">Add New Menus</a></li>  --}}
                                 <li><a href="{{URL::to('admin/menus/index')}}">All Menus</a></li>
                             </ul>
                         </li>
@@ -225,16 +225,17 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>
                             <span class="hide-menu"> Products </span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/products/create')}}">Add New Product</a></li>
-                                <li><a href="{{URL::to('admin/products/index')}}">All Products</a></li>
+                                <li><a href="{{URL::to('admin/products/create')}}">Add New Car</a></li>
+                                <li><a href="{{URL::to('admin/products/index')}}">All Cars</a></li>
+                                <li><a href="{{URL::to('admin/orders/index')}}">All Orders</a></li>
                             </ul>
                         </li>
 
-                        <li><a class="waves-effect waves-dark"
+                        {{--  <li><a class="waves-effect waves-dark"
                             href="{{URL::to('admin/orders/index')}}"
                             aria-expanded="false"><i class="ti-money"></i>
                             <span class="hide-menu"> Orders </span></a>
-                        </li>
+                        </li>  --}}
                         <li><a class="waves-effect waves-dark"
                             href="{{URL::to('admin/review/index')}}"
                             aria-expanded="false"><i class="ti-star"></i>

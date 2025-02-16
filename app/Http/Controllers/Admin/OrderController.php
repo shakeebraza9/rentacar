@@ -38,93 +38,84 @@ class OrderController extends Controller
     |
     */
 
- 
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function index(Request $request)
-    {
+{
+    if ($request->ajax()) {
+        $query = Order::query();
 
-    
-        if($request->ajax()){
-
-            $query = Order::Query();
-
-            if($request->id){
-                $query->where('id',$request->id);
-            }
-
-            if($request->order_status){
-                $query->where('order_status',$request->order_status);
-            }
-
-            if($request->payment_status){
-                $query->where('payment_status',$request->payment_status);
-            }
-
-            if($request->tracking_id){
-                $query->where('tracking_id',$request->tracking_id);
-            }
-
-            if($request->fullname){
-                $query->where('customer_name','like','%'.$request->fullname.'%');
-            }
-
-            if($request->phone){
-                $query->where('customer_phone','like','%'.$request->phone.'%');
-            }
-
-            if($request->payment_status){
-                $query->where('payment_status',$request->payment_status);
-            }
-
-            if($request->grand_total){
-                $query->where('grand_total',$request->grand_total);
-            }
-
-            $count = $query->get();
-
-            $records = $query->skip($request->start)
-            ->take($request->length)->orderBy('id','desc')
-            ->get();
-            
-            $data = [];
-            foreach ($records as $key => $value) {
-
-      
-                $track = '<a class="" target="_blank" href="'.URL::to('/order-confirmaton/'.$value->tracking_id).'">'.$value->tracking_id.'</a>';
-
-
-                $action = '<a class="" href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'">#'.$value->id.'</a>';
-
-                array_push($data,[
-                    $action,
-                    $value->order_status,
-                    $value->payment_status,  
-                    $track,  
-                    $value->customer_name,
-                    $value->customer_phone,
-                    str_replace('_', ' ',$value->payment_method),
-                    'PKR '.$value->grandtotal,                          
-                 ]
-                );
-            }
-
-            return response()->json([
-                "draw" => $request->draw,
-                "recordsTotal" => count($count),
-                "recordsFiltered" => count($count),
-                'data'=> $data,
-            ]);
+        if ($request->id) {
+            $query->where('id', $request->id);
         }
-        
-        $category = Category::all();    
-        return view('admin.orders.index',compact('category'));
+        if ($request->buyer_name) {
+            $query->where('buyer_name', 'like', '%' . $request->buyer_name . '%');
+        }
+        if ($request->buyer_email) {
+            $query->where('buyer_email', 'like', '%' . $request->buyer_email . '%');
+        }
+        if ($request->buyer_phone_number) {
+            $query->where('buyer_phone_number', 'like', '%' . $request->buyer_phone_number . '%');
+        }
+        if ($request->from_date) {
+            $query->whereDate('from_date', '>=', $request->from_date);
+        }
+        if ($request->to_date) {
+            $query->whereDate('to_date', '<=', $request->to_date);
+        }
+        if ($request->payment_status) {
+            $query->where('payment_status', $request->payment_status);
+        }
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $count = $query->count();
+        $records = $query->skip($request->start)
+            ->take($request->length)
+            ->orderBy('id', 'desc')
+            ->get();
+
+
+        $data = [];
+        foreach ($records as $key => $value) {
+            $payment_status_label = $value->payment_status == 1
+                ? '<span style="color: green; font-weight: bold;">Approved</span>'
+                : '<span style="color: red; font-weight: bold;">Pending</span>';
+
+            $data[] = [
+                'id' => '<a href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'">#'.$value->id.'</a>', // ID (Action)
+                'buyer_name' => $value->buyer_name,
+                'buyer_email' => $value->buyer_email,
+                'buyer_phone_number' => $value->buyer_phone_number,
+                'to_date' => date('d-m-Y h:i A', strtotime($value->to_date)),   // Format To Date
+                'from_date' => date('d-m-Y h:i A', strtotime($value->from_date)), // Format From Date
+                'payment_status' => $payment_status_label,
+                'amount' => 'PKR ' . $value->amount,
+                'status' => $value->status,
+            ];
+        }
+
+
+
+
+        return response()->json([
+            "draw" => $request->draw,
+            "recordsTotal" => $count,
+            "recordsFiltered" => $count,
+            'data' => $data,
+        ]);
     }
 
-    
+    $category = Category::all();
+    return view('admin.orders.index', compact('category'));
+}
+
+
      /**
      * Create a new controller instance.
      *
@@ -132,10 +123,10 @@ class OrderController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        
+
         $id = Crypt::decryptString($id);
         $data = Order::find($id);
-        if($data == false){  
+        if($data == false){
             return back()->with('error','Record Not Found');
          }
 
@@ -154,7 +145,7 @@ class OrderController extends Controller
 
         // dd($request->all());
 
-        
+
         // $id = Crypt::decryptString($id);
 
         $validator = Validator::make($request->all(), [
@@ -178,7 +169,7 @@ class OrderController extends Controller
         }
 
         $model = Order::find($id);
-        if($model == false){  
+        if($model == false){
            return back()->with('error','Record Not Found');
         }
 
@@ -214,17 +205,17 @@ class OrderController extends Controller
         }else{
             ProductCollection::where('product_id',$product->id)->delete();
             $product->delete();
-            return redirect('/admin/products/index')->with('success','Record Deleted Success'); 
+            return redirect('/admin/products/index')->with('success','Record Deleted Success');
         }
 
     }
 
-    
 
 
 
- 
 
-    
-    
+
+
+
+
 }

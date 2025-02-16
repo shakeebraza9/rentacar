@@ -132,7 +132,7 @@
                                     </li>
                                 </ul>
                                 <div class="tab-content p-3" id="searchTabContent">
-                             
+
 
                                     <div class="tab-pane fade show active" id="experience" role="tabpanel"
                                         aria-labelledby="experience-tab">
@@ -145,7 +145,8 @@
                                                             <div class="input-group select2-floating position-relative">
                                                                 <span
                                                                     class="icon position-absolute top-50 start-0 translate-middle-y"><i
-                                                                        class="fa fa-map-marker-alt text-primary"></i></span>
+                                                                    style="font-size: 20px;
+                                                                    margin-left: 35px;" class="fa fa-map-marker-alt text-primary"></i></span>
                                                                         <select class="form-control" name="activity" id="activity" required>
                                                                             <option disabled selected value="">Select an Activity</option>
                                                                             <optgroup label="Activity">
@@ -157,7 +158,7 @@
                                                                                 @endforeach
                                                                             </optgroup>
                                                                         </select>
-                                                                        
+
                                                                 <label>Search activities</label>
                                                             </div>
                                                         </div>
@@ -231,7 +232,7 @@
             <section class="my-5">
                 <div class="container">
                     <h2 class="text-center text-primary mt-3">Our Attractions</h2>
-            
+
                     <div id="slider-attractions" class="splide splide-primary mb-4 mb-md-5 mt-4">
                         <div class="splide__track">
                             <ul class="splide__list">
@@ -282,7 +283,7 @@
                     <a href="{{ route('attractions.list') }}" class="btn btn-outline-primary">See more attractions</a>
                 </div>
             </section>
-            
+
 
             <section class="mt-5 bg-light py-4">
                 <h2 class="text-center text-primary mt-3">Our Reviews</h2>
@@ -334,7 +335,7 @@
                     <a href="{{ route('reviews.index') }}" class="btn btn-outline-primary">See more reviews</a>
                 </div>
             </section>
-            
+
 
             <section class="mt-7">
                 <div class="container">
