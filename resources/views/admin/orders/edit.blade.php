@@ -3,7 +3,7 @@
 
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -14,11 +14,11 @@
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
-    
+
 
     .dataTables_filter{
         display: none!important;
@@ -31,7 +31,7 @@
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">(#{{$data->id}}) Order Detail
+            <h4 class="text-themecolor">(#{{$data->id}})
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -43,224 +43,142 @@
             </div>
         </div>
     </div>
-
-    <form action="{{URL::to('admin/orders/update',$data->id)}}" method="post">
-        @csrf
-        <div class="row">
-            <div class="col-md-12 col-lg-9">
-                <div class="card">
-                    <div class="card-header bg-info">
-                        <h5 class="m-b-0 text-white">Customer Details</h5>
-                    </div>
-                    <div class="card-body">
-
-                    
-              
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Customer Name</label>
-                                <input type="text" value="{{$data->customer_name}}" name="customer_name" class="form-control" 
-                                placeholder="Customer Name">
-                                @if($errors->has('customer_name'))
-                                <p class="invalid-feedback" >{{ $errors->first('customer_name') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Customer Phone</label>
-                                <input type="text" value="{{$data->customer_phone}}" name="customer_phone" class="form-control" 
-                                placeholder="Customer Phone">
-                                @if($errors->has('customer_name'))
-                                <p class="invalid-feedback" >{{ $errors->first('customer_name') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Customer Email</label>
-                                <input type="text" value="{{$data->customer_email}}" name="customer_email" class="form-control" 
-                                placeholder="Customer Email">
-                                @if($errors->has('customer_email'))
-                                <p class="invalid-feedback" >{{ $errors->first('customer_email') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Country</label>
-                                <input type="text" value="{{$data->country}}" name="country" class="form-control" 
-                                placeholder="Country">
-                                @if($errors->has('country'))
-                                <p class="invalid-feedback" >{{ $errors->first('country') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">City</label>
-                                <input type="text" value="{{$data->city}}" name="city" class="form-control" 
-                                placeholder="City">
-                                @if($errors->has('city'))
-                                <p class="invalid-feedback" >{{ $errors->first('city') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Street Address</label>
-                                <input type="text" value="{{$data->address}}" name="address" class="form-control" 
-                                placeholder="Address">
-                                @if($errors->has('address'))
-                                <p class="invalid-feedback" >{{ $errors->first('address') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex; gap: 10px;">
+        <!-- 30% Section for Product Information -->
+        <div style="width: 30%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Product Information</h3>
+            <div style="text-align: center; margin-bottom: 10px;">
+                <img src="{{ asset($data->product->get_thumbnail->path) ?? asset('placeholder.jpg') }}" alt="Product Image" style="width: 100%; max-width: 200px; height: auto; border-radius: 8px;">
             </div>
+            <p><strong>Product Name:</strong> {{ $data->product->title ?? 'N/A' }}</p>
+            <p><strong>Price:</strong> {{ $data->product->selling_price ?? 'N/A' }}</p>
+            <p><strong>Description:</strong> {!! $data->product->description ?? 'N/A' !!}</p>
 
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h5 class="m-b-0 text-white">Your Cart ({{count($data->children)}} items)</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table product-overview">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Product info</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th style="text-align:center">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data->children as $item)
-                                <tr>
-                                    <td width="150">
-                                        <img src="{{asset($item->image_id)}}" width="80">
-                                    </td>
-                                    <td width="550">
-                                        <h5 class="font-500">{{$item->title}} ({{$item->sku}})</h5>
-                                    </td>
-                                    <td >PKR {{$item->price}}</td>
-                                    <td>{{$item->quantity}}</td>
-                                    <td width="150" align="center" class="font-500">PKR {{$item->total}}</td>                            
-                                </tr>
-                                @endforeach
-                                <tr>
-                                    <th colspan="4" class="text-end" >Grand Total</th>
-                                    <td width="150" align="center" class="font-500">
-                                        PKR {{$data->grandtotal}}</td>                            
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
+
+            <h3>User Information</h3>
+            @if ($data->user)
+                <p><strong>Name:</strong> {{ $data->user->name ?? 'N/A' }}</p>
+                <p><strong>Email:</strong> {{ $data->user->email ?? 'N/A' }}</p>
+                <p><strong>Phone:</strong> {{ $data->user->phone ?? 'N/A' }}</p>
+                <p><strong>Address:</strong> {{ $data->user->address ?? 'N/A' }}</p>
+            @else
+                <p>No user information found.</p>
+            @endif
         </div>
 
 
-        <!-- Column -->
-        <div class="col-md-12 col-lg-3">
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h5 class="m-b-0 text-white">Status</h5>
-                </div>
-                <div class="card-body">
-                    
-                    <div class="form-group">
-                        <label class="form-label" >Tracking Id</label>
-                        <input type="text" value="{{$data->tracking_id}}" 
-                            name="tracking_id" 
-                            class="form-control" 
-                            placeholder="Tracking Id">
-                            @if($errors->has('tracking_id'))
-                            <p class="invalid-feedback" >{{ $errors->first('tracking_id') }}</p>
-                            @endif 
+        <!-- 70% Section for Order Details -->
+        <div style="width: 70%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Edit Order</h3>
+            <form method="POST" action="{{ route('admin.orders.update', Crypt::encryptString($data->id)) }}">
+                @csrf
+                @method('PUT')
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="buyer_name" style="display: block; margin-bottom: 5px;">Buyer Name</label>
+                        <input type="text" id="buyer_name" name="buyer_name" value="{{ $data->buyer_name }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label" >Order Status</label>
-                            <select class="form-control" name="order_status" >
-                                @foreach ($global_d['order_status'] as $order_status)
-                                    <option @if($data->order_status == $order_status) selected @endif value="{{$order_status}}">{{$order_status}}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('order_status'))
-                            <p class="invalid-feedback" >{{ $errors->first('order_status') }}</p>
-                            @endif 
+                    <div style="flex: 1;">
+                        <label for="buyer_email" style="display: block; margin-bottom: 5px;">Buyer Email</label>
+                        <input type="email" id="buyer_email" name="buyer_email" value="{{ $data->buyer_email }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label" >Payment Method</label>
-                            <select class="form-control" name="payment_method" >
-                                <option {{$data->payment_method == 'cash_on_delivery' ? 'selected' : ''}} value="cash_on_delivery">Cash On Delivery</option>
-                            </select>
-                            @if($errors->has('payment_method'))
-                            <p class="invalid-feedback" >{{ $errors->first('payment_method') }}</p>
-                            @endif 
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="passport" style="display: block; margin-bottom: 5px;">Passport</label>
+                        <input type="text" id="passport" name="passport" value="{{ $data->passport }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
+                    <div style="flex: 1;">
+                        <label for="license" style="display: block; margin-bottom: 5px;">License</label>
+                        <input type="text" id="license" name="license" value="{{ $data->license }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="buyer_phone_number" style="display: block; margin-bottom: 5px;">Phone Number</label>
+                        <input type="text" id="buyer_phone_number" name="buyer_phone_number" value="{{ $data->buyer_phone_number }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="buyer_country_of_origin" style="display: block; margin-bottom: 5px;">Country of Origin</label>
+                        <input type="text" id="buyer_country_of_origin" name="buyer_country_of_origin" value="{{ $data->buyer_country_of_origin }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="buyer_sec_name" style="display: block; margin-bottom: 5px;">Secondary Name</label>
+                        <input type="text" id="buyer_sec_name" name="buyer_sec_name" value="{{ $data->buyer_sec_name }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="buyer_sec_phone_number" style="display: block; margin-bottom: 5px;">Secondary Phone</label>
+                        <input type="text" id="buyer_sec_phone_number" name="buyer_sec_phone_number" value="{{ $data->buyer_sec_phone_number }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="driver_name" style="display: block; margin-bottom: 5px;">Driver Name</label>
+                        <input type="text" id="driver_name" name="driver_name" value="{{ $data->driver_name }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="driver_license_number" style="display: block; margin-bottom: 5px;">Driver License</label>
+                        <input type="text" id="driver_license_number" name="driver_license_number" value="{{ $data->driver_license_number }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="from_date" style="display: block; margin-bottom: 5px;">From Date & Time</label>
+                        <input type="datetime-local" id="from_date" name="from_date"
+                               value="{{ $data->from_date ? date('Y-m-d\TH:i', strtotime($data->from_date)) : '' }}"
+                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="to_date" style="display: block; margin-bottom: 5px;">To Date & Time</label>
+                        <input type="datetime-local" id="to_date" name="to_date"
+                               value="{{ $data->to_date ? date('Y-m-d\TH:i', strtotime($data->to_date)) : '' }}"
+                               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="form-label" >Payment Status</label>
-                            <select class="form-control" name="payment_status" >
-                                <option {{$data->payment_status == 'paid' ? 'selected' : ''}} value="paid">Paid</option>
-                                <option {{$data->payment_status == 'unpaid' ? 'selected' : ''}} value="unpaid">Unpaid</option>
-                            </select>
-                            @if($errors->has('payment_method'))
-                            <p class="invalid-feedback" >{{ $errors->first('payment_method') }}</p>
-                            @endif 
-                    </div>                
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="status" style="display: block; margin-bottom: 5px;">Status</label>
+                        <select id="status" name="status" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            <option value="pending" {{ $data->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="confirmed" {{ $data->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                            <option value="cancelled" {{ $data->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="payment_status" style="display: block; margin-bottom: 5px;">Payment Status</label>
+                        <select id="payment_status" name="payment_status" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            <option value="0" {{ $data->payment_status == 0 ? 'selected' : '' }}>Unpaid</option>
+                            <option value="1" {{ $data->payment_status == 1 ? 'selected' : '' }}>Paid</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label for="amount" style="display: block; margin-bottom: 5px;">Amount</label>
+                        <input type="text" id="amount" name="amount" value="{{ $data->amount }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="flight_no" style="display: block; margin-bottom: 5px;">Flight Number</label>
+                        <input type="text" id="flight_no" name="flight_no" value="{{ $data->flight_no }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+                <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: #fff; border: none; border-radius: 4px;">Update Order</button>
+            </form>
 
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h5 class="m-b-0 text-white">ORDER NOTES</h5>
-                </div>
-                <div class="card-body">
-                    <textarea class="form-control" name="order_notes">{{$data->order_notes}}</textarea>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header bg-info">
-                    <h5 class="m-b-0 text-white">Invoice</h5>
-                </div>
-                <div class="card-body text-center">
-                    <a class="btn btn-success" href="{{URL::to('/get_invoice/'.$data->id)}}" target="_blank">
-                    Download</a>
-                </div>
-            </div>
-            
-         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 text-center my-3">
-            <button class="btn btn-primary" type="submit" >Update</button>
         </div>
-      </div>
+    </div>
 
-
-    </form>
- </div>
 @endsection
  @section('js')
-        
+
 
        <script>
         $(function () {
-     
+
 
          });
     </script>

@@ -97,6 +97,8 @@ public function checkout(Request $request)
             'buyer_name' => $validatedData['name'],
             'buyer_email' => $validatedData['email'],
             'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
+            'passport' =>  $request->user_passport,
+            'license' =>  $request->user_license,
             'buyer_country_of_origin' => $validatedData['country'],
             'buyer_sec_name' => $request->invoice_name ?? null,
             'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,

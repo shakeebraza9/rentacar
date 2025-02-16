@@ -21,6 +21,8 @@ class Order extends Model
         'buyer_email',
         'buyer_phone_number',
         'buyer_country_of_origin',
+        'passport',
+        'license',
         'buyer_sec_name',
         'buyer_sec_phone_number',
         'buyer_sec_invoice_address',
@@ -45,8 +47,12 @@ class Order extends Model
         'payment_status' => 'integer',
     ];
 
-    public function product(): BelongsTo
+    public function product()
     {
-        return $this->belongsTo(Product::class, 'id', 'id');
+        return $this->belongsTo(Product::class, 'pro_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'pro_id');
     }
 }

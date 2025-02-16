@@ -84,8 +84,8 @@ class OrderController extends Controller
         $data = [];
         foreach ($records as $key => $value) {
             $payment_status_label = $value->payment_status == 1
-                ? '<span style="color: green; font-weight: bold;">Approved</span>'
-                : '<span style="color: red; font-weight: bold;">Pending</span>';
+                ? '<span style="color: green; font-weight: bold;">Paid</span>'
+                : '<span style="color: red; font-weight: bold;">Unpaid</span>';
 
             $data[] = [
                 'id' => '<a href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'">#'.$value->id.'</a>', // ID (Action)
@@ -95,7 +95,7 @@ class OrderController extends Controller
                 'to_date' => date('d-m-Y h:i A', strtotime($value->to_date)),   // Format To Date
                 'from_date' => date('d-m-Y h:i A', strtotime($value->from_date)), // Format From Date
                 'payment_status' => $payment_status_label,
-                'amount' => 'PKR ' . $value->amount,
+                'amount' => 'RM ' . $value->amount,
                 'status' => $value->status,
             ];
         }
@@ -140,55 +140,40 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
+        $id = Crypt::decryptString($id);
 
-        // dd($request->all());
+        // Find the order
+        $order = Order::find($id);
 
-
-        // $id = Crypt::decryptString($id);
-
-        $validator = Validator::make($request->all(), [
-            "customer_name" => "required",
-            "customer_phone" => "required",
-            // "customer_email" => "required",
-            "country" => "required",
-            "city" => "required",
-            // "address" => "required",
-            "tracking_id" => "required",
-            "order_status" => "required",
-            "payment_method" => "required",
-            "payment_status" => "required",
-            // "order_notes" => "required",
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
         }
 
-        $model = Order::find($id);
-        if($model == false){
-           return back()->with('error','Record Not Found');
-        }
+        // Update only the fields provided in the request
+        $order->update($request->only([
+            'buyer_name',
+            'buyer_email',
+            'passport',
+            'license',
+            'buyer_phone_number',
+            'buyer_country_of_origin',
+            'buyer_sec_name',
+            'buyer_sec_phone_number',
+            'driver_name',
+            'driver_license_number',
+            'from_date',
+            'to_date',
+            'status',
+            'payment_status',
+            'amount',
+            'flight_no'
+        ]));
 
-        $model->customer_name = $request->customer_name;
-        $model->customer_phone = $request->customer_phone;
-        $model->customer_email = $request->customer_email;
-        $model->country = $request->country;
-        $model->city = $request->city;
-        $model->address = $request->address;
-        $model->tracking_id = $request->tracking_id;
-        $model->order_status = $request->order_status;
-        $model->payment_method = $request->payment_method;
-        $model->payment_status = $request->payment_status;
-        $model->order_notes = $request->order_notes;
-        $model->save();
-
-        return back()->with('success','Record Updated');
-
+        return back()->with('warning', 'Order updated successfully.');
     }
+
 
 
      /**

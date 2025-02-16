@@ -181,7 +181,7 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     //orders
     Route::get('/admin/orders/index', [App\Http\Controllers\Admin\OrderController::class, 'index']);
     Route::get('/admin/orders/edit/{id}', [App\Http\Controllers\Admin\OrderController::class, 'edit']);
-    Route::post('/admin/orders/update/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update']);
+    Route::put('/admin/orders/update/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update'])->name("admin.orders.update");
 
     //Review
     // Route::get('admin/review/index', [App\Http\Controllers\Admin\ReviewController::class, 'index']);
