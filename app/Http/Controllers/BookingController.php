@@ -51,6 +51,9 @@ public function index($slug)
 public function checkout(Request $request)
 {
     try {
+        if (!auth()->check()) {
+            return redirect()->route('weblogin')->with('error', 'Please log in to proceed with checkout.');
+        }
         // Validate incoming request
         $validatedData = $request->validate([
             'slug' => 'required|string|exists:products,slug',
