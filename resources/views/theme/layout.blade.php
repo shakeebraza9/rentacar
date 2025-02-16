@@ -38,6 +38,10 @@ $attractions= MenuHelper::getsubAttractions(45);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+
 
     <style>
         .label-fleet-deals {
@@ -52,6 +56,9 @@ $attractions= MenuHelper::getsubAttractions(45);
         .bg-grey {
             background: #bfc9c2;
         }
+            .logo.mb-4.mx-5.mx-md-0 {
+                width: 100px;
+            }
         </style>
 
 
@@ -327,6 +334,48 @@ $attractions= MenuHelper::getsubAttractions(45);
             }
         });
     </script>
+
+    @if(Session::get('success'))
+    <script>
+    $.toast({
+            heading: "{{Session::get('success')}}",
+            // text: "{{Session::get('success')}}",
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'info',
+            hideAfter: 3500,
+            stack: 6,
+        });
+    </script>
+    @endif
+
+    @if(Session::get('error'))
+    <script>
+      $.toast({
+            heading: "{{Session::get('error')}}",
+            // text: "{{Session::get('success')}}",
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'error',
+            hideAfter: 3500,
+            stack: 6,
+        });
+    </script>
+    @endif
+
+    @if(Session::get('warning'))
+    <script>
+      $.toast({
+            heading: "{{Session::get('warning')}}",
+            // text: "{{Session::get('success')}}",
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 3500,
+            stack: 6,
+        });
+    </script>
+    @endif
 
     @yield(section: 'js')
 
