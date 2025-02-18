@@ -221,11 +221,21 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::get('admin/categories/subcategories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'showSubcategories']);
     Route::post('/admin/subcategory', [App\Http\Controllers\Admin\CategoryController::class, 'storesubcat'])->name('storesubcate');
     Route::get('admin/categories/subcategories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'showSubcategories']);
+    Route::get('admin/categories/subcategoriesedit/{id}/edit',
+    [App\Http\Controllers\Admin\CategoryController::class, 'editSubcategories']
+)->name('editSubcategories');
+Route::put('admin/categories/subcategories/update/{id}',
+    [App\Http\Controllers\Admin\CategoryController::class, 'updateSubcategory']
+)->name('updatesubcate');
+
+
     Route::get('/admin/subcategory/{id}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('admin.subcategory.edit');
 
-// Destroy Route
-Route::delete('/admin/subcategory/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.subcategory.destroy');
-    Route::get('/admin/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create']);
+    Route::delete('admin/subcategory/destroy/{id}',
+    [App\Http\Controllers\Admin\CategoryController::class, 'destroySubcategory']
+)->name('admin.subcategory.destroy');
+
+Route::get('/admin/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create']);
     Route::post('/admin/categories/store', [App\Http\Controllers\Admin\CategoryController::class, 'store']);
     Route::get('/admin/categories/sort', [App\Http\Controllers\Admin\CategoryController::class, 'sort']);
     Route::get('/admin/categories/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit']);

@@ -17,26 +17,10 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Ui\Presets\React;
-
+use Illuminate\Contracts\Encryption\DecryptException;
 class CategoryController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
 
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function index(Request $request)
     {
 
@@ -80,7 +64,7 @@ class CategoryController extends Controller
 
                 $action = '<div class="btn-group" role="group" aria-label="Category Actions">';
 
-                $action .= '<a class="btn btn-info me-2" href="'.URL::to('admin/categories/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                // $action .= '<a class="btn btn-info me-2" href="'.URL::to('admin/categories/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
                 $action .= '<a class="btn btn-primary me-2" href="'.URL::to('admin/categories/subcategories/'.Crypt::encryptString($value->id)).'">Add Subcategories</a>';
                 // $action .= '<a class="btn btn-danger" href="'.URL::to('admin/categories/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
@@ -406,8 +390,67 @@ class CategoryController extends Controller
 
 
 
+    public function editSubcategories($id)
+    {
+        try {
+            $ids = Crypt::decryptString($id); // Decrypt the ID safely
+            $subcategory = Subcategory::findOrFail($ids);
+            $categories = Category::all();
+
+            return view('admin.categories.subedit', compact('subcategory', 'categories'));
+        } catch (DecryptException $e) {
+            return back()->with('error', 'Invalid or expired link.');
+        }
+    }
 
 
 
+    public function updateSubcategory(Request $request, $id)
+    {
+        try {
+            $ids = Crypt::decryptString($id);
+            $subcategory = Subcategory::findOrFail($ids);
 
+            // Form validation
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:subcategories,slug,' . $id,
+                'meta_title' => 'nullable|string|max:255',
+                'meta_description' => 'nullable|string',
+                'meta_keywords' => 'nullable|string',
+                'details' => 'nullable|string',
+            ]);
+
+            // Update subcategory fields
+            $subcategory->title = $request->title;
+            $subcategory->slug = $request->slug;
+            $subcategory->meta_title = $request->meta_title;
+            $subcategory->meta_description = $request->meta_description;
+            $subcategory->meta_keywords = $request->meta_keywords;
+            $subcategory->details = $request->details;
+
+            // Save to database
+            $subcategory->save();
+
+            return redirect()->back()->with('success', 'Subcategory updated successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    public function destroySubcategory($id)
+    {
+ 
+            // ID ko decrypt karo
+            $decryptedId = Crypt::decryptString($id);
+
+            // Subcategory find karo
+            $subcategory = Subcategory::findOrFail($decryptedId);
+
+            // Delete the record
+            $subcategory->delete();
+
+            return redirect()->back()->with('success', 'Subcategory deleted successfully!');
+      
+    }
 }

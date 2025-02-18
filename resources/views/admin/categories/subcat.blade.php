@@ -34,19 +34,19 @@
                     <input type="text" name="slug" id="slug" class="form-control" required placeholder="Enter Slug" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 16px; width: 100%; transition: border-color 0.3s ease;">
                 </div>
 
-                
-           
+
+
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label for="title" style="font-weight: 500; color: #333;">Subcategory Image</label>
                     <input type="number" name="image" id="image" class="form-control" required placeholder="Enter Subcategory Title" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 16px; width: 100%; transition: border-color 0.3s ease;">
                 </div>
-           
+
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label for="meta_title" style="font-weight: 500; color: #333;">Meta Title</label>
                     <input type="text" name="meta_title" id="meta_title" class="form-control" required placeholder="Enter Meta Title" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 16px; width: 100%; transition: border-color 0.3s ease;">
                 </div>
 
-           
+
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label for="meta_description" style="font-weight: 500; color: #333;">Meta Description</label>
                     <textarea name="meta_description" id="meta_description" class="form-control" required placeholder="Enter Meta Description" rows="4" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 16px; width: 100%; transition: border-color 0.3s ease;"></textarea>
@@ -71,28 +71,32 @@
         <!-- Show Subcategory Section -->
         <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 1200px; margin: 0 auto;">
             <h4 style="font-family: 'Arial', sans-serif; color: #4A90E2; margin-bottom: 30px; font-weight: 600; font-size: 24px;">All Subcategories</h4>
-        
+
             <!-- Loop through all subcategories -->
             @foreach($subcategories as $subcategory)
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px; width: 48%;">
                     <div style="flex: 1; padding-right: 20px;">
                         <h5 style="font-weight: 500; color: #333; font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Subcategory Title: {{ $subcategory->title }}</h5>
                         <p style="font-weight: 400; color: #555; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Slug: {{ $subcategory->slug }}</p>
-                       
+
                     </div>
-        
+
                     <!-- Image -->
                     <div style="flex: 1; max-width: 200px; margin-bottom: 20px;">
                         <img src="{{ asset('storage/'.$subcategory->image) }}" alt="Subcategory Image" style="max-width: 100%; height: auto; border-radius: 5px;">
                     </div>
-        
+
                     <!-- Edit and Delete buttons -->
                     <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 20px;">
                         <!-- Edit Button -->
-                        <a href="{{ route('admin.subcategory.edit', $subcategory->id) }}" style="padding: 10px 20px; background-color: #4A90E2; color: white; border-radius: 5px; text-decoration: none; font-weight: 600;">Edit</a>
-        
+                        <a href="{{ route('editSubcategories', Crypt::encryptString($subcategory->id)) }}"
+                            style="padding: 10px 20px; background-color: #4A90E2; color: white; border-radius: 5px; text-decoration: none; font-weight: 600;">
+                            Edit
+                         </a>
+
+
                         <!-- Delete Button -->
-                        <form action="{{ route('admin.subcategory.destroy', $subcategory->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subcategory?')" style="display: inline-block;">
+                        <form action="{{ route('admin.subcategory.destroy', Crypt::encryptString($subcategory->id)) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subcategory?')" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" style="padding: 10px 20px; background-color: #E94E77; color: white; border-radius: 5px; border: none; font-weight: 600;">Delete</button>
@@ -101,8 +105,8 @@
                 </div>
             @endforeach
         </div>
-        
-        
+
+
     </div>
 </div>
 @endsection
@@ -116,7 +120,7 @@
             var Text = $(this).val();
             Text = Text.toLowerCase();
             Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-            $("#slug").val(Text);        
+            $("#slug").val(Text);
         });
 </script>
 
