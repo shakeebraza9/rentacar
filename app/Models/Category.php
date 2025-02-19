@@ -112,8 +112,20 @@ class Category extends Model
         return $html;
 
     }
-
-
+    public function helpEntries()
+    {
+        return $this->hasMany(Help::class, 'category_id');
+    }
+    public static function countHelpEntries()
+    {
+        return self::withCount('helpEntries')->get()->map(function ($category) {
+            return [
+                'category_id' => $category->id,
+                'category_name' => $category->title,
+                'help_entries_count' => $category->help_entries_count
+            ];
+        });
+    }
 
    
 }

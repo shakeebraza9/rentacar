@@ -27,6 +27,6 @@ if (!function_exists('addBrEveryThreeWords')) {
         $formattedText = array_map(function ($chunk) {
             return implode(' ', $chunk) . '<br>';
         }, $chunkedWords);
-        return implode("\n", $formattedText);
+        return implode("", $formattedText);
     }
 }

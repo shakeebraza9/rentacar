@@ -106,7 +106,7 @@ $attractions= MenuHelper::getsubAttractions(45);
                         <a href="{{ route('blog.index') }}" class="nav-link border-right px-md-4 py-md-0 my-md-2">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a href="https://MRR HOLIDAYS.tawk.help/" target="_blank"
+                        <a href="{{ route('help.index') }}" target="_blank"
                             class="nav-link border-right px-md-4 py-md-0 my-md-2">Help</a>
                     </li>
                     <li class="nav-item dropdown mx-3">
@@ -305,30 +305,7 @@ $attractions= MenuHelper::getsubAttractions(45);
         
     </footer>
     <!-- Modal -->
-    <div class="modal fade modal-coming-soon" id="coming-soon" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close bg-white rounded-circle text-dark" data-bs-dismiss="modal"
-                        aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="body text-center p-4 p-md-5 mx-md-8 mb-4 mb-md-5 rounded">
-                        <p>WE’RE COMING SOON!</p>
-                        <hr class="bg-white">
-                        <div class="h5">
-                            We’re coming soon! We’re working hard to give you the best experience.
-                            <br>
-                            For any enquiries, please contact us at +0133188088.
-                        </div>
-                    </div>
-                    <img src="img/logo/logo.png" class="logo" style="height: 50px" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
+  
     <script>
         $(document).ready(function () {
             var num_promo = '1';

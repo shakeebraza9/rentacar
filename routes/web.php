@@ -26,6 +26,8 @@ Route::get('/category/{id}', [App\Http\Controllers\HomeController::class, 'categ
 Route::get('/pages/{slug}', [App\Http\Controllers\HomeController::class, 'pageContent'])->name('pages.show');
 Route::get('/reviews', [App\Http\Controllers\HomeController::class, 'reviews'])->name('reviews.index');
 
+Route::get('/help', [App\Http\Controllers\HelpController::class, 'help'])->name('help.index');
+
 
 // attractions
 Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
