@@ -195,12 +195,12 @@ class PageController extends Controller
         }
         $model->title  = $request->title;
         $model->slug  = $request->slug;
-        $model->shortdetails =   $request->shortdetails;
-        $model->longdetails = $request->longtdetails;
+        // $model->shortdetails =   $request->shortdetails;
+        $model->content = $request->content;
 
         $model->meta_title = $request->meta_title;
         $model->meta_description = $request->meta_description;
-        $model->meta_keywords = $request->meta_keywords;
+        // $model->meta_keywords = $request->meta_keywords;
 
         $model->save();
 

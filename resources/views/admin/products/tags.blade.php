@@ -29,7 +29,7 @@
         <div class="tags-default">
             <label for="sub_category">Select Brand</label>
             <select name="sub_category" id="sub_category" class="form-control">
-                <option value="">Select a Sub Category</option>
+                <option value="">Select a Brand</option>
 
 
                 @foreach($Subcategory as $sub)

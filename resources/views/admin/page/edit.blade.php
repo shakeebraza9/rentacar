@@ -53,18 +53,18 @@
                         @endif 
                     </div>
 
-                    <div class="form-group">
+                    {{--  <div class="form-group">
                         <label class="form-label">Short Details</label>
                          <textarea placeholder="Short Details" name="shortdetails" class="form-control" >{{$model->shortdetails}}</textarea>
                           @if($errors->has('details'))
                           <p class="invalid-feedback" >{{ $errors->first('details') }}</p>
                           @endif 
-                    </div>
+                    </div>  --}}
 
 
                     <div class="form-group">
                         <label class="form-label">Long Details</label> 
-                        <textarea id="long_description" class="form-control" name="longtdetails">{{$model->longdetails}}</textarea>
+                        <textarea id="long_description" class="form-control" name="content">{{$model->content}}</textarea>
                     </div>
 
                       <div class="form-group">
@@ -84,7 +84,7 @@
                         @endif
                     </div>
             
-                    <div class="form-group">
+                    {{--  <div class="form-group">
                         <label class="form-label">Meta Keywords</label>
                         <input type="text" placeholder="Meta Keywords" 
                         value="{{$model->meta_keywords}}" name="meta_keywords" 
@@ -92,7 +92,7 @@
                         @if($errors->has('meta_keywords'))
                          <p class="invalid-feedback" >{{ $errors->first('meta_keywords') }}</p>
                         @endif
-                    </div>
+                    </div>  --}}
 
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
