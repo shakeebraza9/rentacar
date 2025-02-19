@@ -10,6 +10,7 @@
                 <option value="compact" {{ $product->type == 'compact' ? 'selected' : '' }}>Compact</option>
                 <option value="mpv" {{ $product->type == 'mpv' ? 'selected' : '' }}>MPV</option>
                 <option value="sedan" {{ $product->type == 'sedan' ? 'selected' : '' }}>Sedan</option>
+                <option value="SUV " {{ $product->type == 'SUV' ? 'selected' : '' }}>SUV</option>
                 <option value="luxury_compact" {{ $product->type == 'luxury_compact' ? 'selected' : '' }}>Luxury Compact</option>
                 <option value="luxury_mpv" {{ $product->type == 'luxury_mpv' ? 'selected' : '' }}>Luxury MPV</option>
                 <option value="Luxury_SUV" {{ $product->type == 'Luxury_SUV' ? 'selected' : '' }}>Luxury SUV</option>
