@@ -1,6 +1,6 @@
 <section class="card">
     <header class="card-header bg-info">
-        <h4 class="mb-0 text-white">Select Type</h4>
+        <h4 class="mb-0 text-white">Car Type</h4>
     </header>
     <div class="card-body">
         <div class="tags-default">
@@ -23,11 +23,11 @@
 </section>
 <section class="card">
     <header class="card-header bg-info">
-        <h4 class="mb-0 text-white">Select Sub-Category</h4>
+        <h4 class="mb-0 text-white">Car Brand</h4>
     </header>
     <div class="card-body">
         <div class="tags-default">
-            <label for="sub_category">Select Sub-Category</label>
+            <label for="sub_category">Select Brand</label>
             <select name="sub_category" id="sub_category" class="form-control">
                 <option value="">Select a Sub Category</option>
 
@@ -48,11 +48,11 @@
 
 <section class="card">
     <header class="card-header bg-info">
-        <h4 class="mb-0 text-white">Information discount</h4>
+        <h4 class="mb-0 text-white">Information Dicount</h4>
     </header>
     <div class="card-body">
         <div class="tags-default">
-    <label for="rms_text">RMS Text</label>
+    <label for="rms_text">Offer Text</label>
     <input type="text" id="rms_text" name="rms_text" class="form-control" placeholder="Enter RMS Text" value="{{ $product->discount_text ?? '' }}">
 </div>
 <div class="form-group">
