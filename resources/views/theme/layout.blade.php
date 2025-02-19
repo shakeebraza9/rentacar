@@ -261,12 +261,27 @@ $attractions= MenuHelper::getsubAttractions(45);
                 <div class="col-md-auto mt-5 mt-md-0">
                     <h6 class="text-uppercase mb-3">Address</h6>
                     <div>
-                        {!! nl2br(getset('address')) !!}
+                        {!! nl2br(addBrEveryThreeWords(getset('address'))) !!}
+
                         {!! nl2br(getset('address2')) !!}<br>
-                        {!! nl2br(getset('phone_number')) !!}<br>
                         {!! nl2br(getset('email_address')) !!}<br>
                       
                     </div>
+                </div>
+
+                <div class="col-md-auto mt-5 mt-md-0">
+                    <h6 class="mb-3 text-uppercase">Social Media</h6>
+                    <ul class="list-footer-socmed">
+                        <li>
+                            <a href="{!! nl2br(getset('facebook_link')) !!}" target="_blank"><i class="fab fa-facebook"></i></a>                    </li>
+                      
+                        <li>
+                            <a href="{!! nl2br(getset('instagram_link')) !!}" target="_blank"><i class="fab fa-instagram"></i></a>                    </li>
+                        <li>
+                            <a href="{!! nl2br(getset('whatsaap_link')) !!}" target="_blank"><i class="fab fa-whatsapp"></i></a>                    </li>
+                    </ul>
+                    <h6 class="mt-5 text-uppercase">Hotline</h6>
+                    <span><i class="fa fa-phone"></i><a href="tel:{!! nl2br(getset('phone_number')) !!}"> {!! nl2br(getset('phone_number')) !!}</a></span>
                 </div>
 
             </div>
@@ -286,6 +301,8 @@ $attractions= MenuHelper::getsubAttractions(45);
                 </div>
             </div>
         </div>
+
+        
     </footer>
     <!-- Modal -->
     <div class="modal fade modal-coming-soon" id="coming-soon" tabindex="-1" aria-labelledby="exampleModalLabel"

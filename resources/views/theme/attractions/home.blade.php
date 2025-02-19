@@ -136,43 +136,37 @@
 
                                     <div class="tab-pane fade show active" id="experience" role="tabpanel"
                                         aria-labelledby="experience-tab">
-                                        <form method="get" accept-charset="utf-8"
-                                            action="https://www.langkawibook.my/attractions/all">
+                                        <form method="get" accept-charset="utf-8" id="attractionForm">
                                             <div class="row gx-1">
                                                 <div class="col-md">
                                                     <div class="row gx-0 input-group-2-col">
                                                         <div class="col-md mb-2 mb-md-0">
                                                             <div class="input-group select2-floating position-relative">
-                                                                <span
-                                                                    class="icon position-absolute top-50 start-0 translate-middle-y"><i
-                                                                    style="font-size: 20px;
-                                                                    margin-left: 35px;" class="fa fa-map-marker-alt text-primary"></i></span>
-                                                                        <select class="form-control" name="activity" id="activity" required>
-                                                                            <option disabled selected value="">Select an Activity</option>
-                                                                            <optgroup label="Activity">
-                                                                                <option value="all">All Attractions ({{ $attractions->count() }})</option>
-                                                                            </optgroup>
-                                                                            <optgroup label="Attractions">
-                                                                                @foreach ($attractions as $attraction)
-                                                                                    <option value="{{ $attraction->id }}">{{ $attraction->title }}</option>
-                                                                                @endforeach
-                                                                            </optgroup>
-                                                                        </select>
-
+                                                                <span class="icon position-absolute top-50 start-0 translate-middle-y">
+                                                                    <i style="font-size: 20px; margin-left: 35px;" class="fa fa-map-marker-alt text-primary"></i>
+                                                                </span>
+                                                                <select class="form-control" name="activity" id="activity" required>
+                                                                    <option disabled selected value="">Select an Activity</option>
+                                                                    <optgroup label="Activity">
+                                                                        <option value="all">All Attractions ({{ $attractions->count() }})</option>
+                                                                    </optgroup>
+                                                                    <optgroup label="Attractions">
+                                                                        @foreach ($attractions as $attraction)
+                                                                            <option value="{{ $attraction->slug }}">{{ $attraction->title }}</option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                </select>
                                                                 <label>Search activities</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-auto mt-2 mt-md-0">
-                                                    <button id="search-attraction"
-                                                        class="btn btn-primary h-100 w-100 px-3">Search</button>
+                                                    <button type="submit" id="search-attraction" class="btn btn-primary h-100 w-100 px-3">Search</button>
                                                 </div>
-                                                <script>
-                                                    $('#activity').select2();
-                                                </script>
                                             </div>
                                         </form>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -520,4 +514,22 @@
     </main>
 @endsection
 @section('js')
+<script>
+    $(document).ready(function () {
+        $('#activity').select2();
+
+        $('#attractionForm').on('submit', function (e) {
+            e.preventDefault();
+            var selectedActivity = $('#activity').val();
+           
+            if (selectedActivity) {
+                if (selectedActivity === 'all') {
+                    window.location.href = "{{ route('attractions.detail', 'all') }}";
+                } else {
+                    window.location.href = "{{ url('/attractions/detail') }}" + selectedActivity;
+                }
+            }
+        });
+    });
+</script>
 @endsection

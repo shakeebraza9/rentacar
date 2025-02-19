@@ -65,7 +65,7 @@ $attractions= MenuHelper::getsubAttractions(45);
                     <li class="nav-item border-bottom pb-3 mb-2 d-md-none">
                         <h6 class="text-primary">CONTACT</h6>
                         <div>
-                            <a href="tel:+60128084008">+60 12-8084008</a>
+                            <a href="tel:+60128084008">{!! nl2br(getset('phone_number')) !!}/a>
                         </div>
                         <div>
                             enquiry@MRR HOLIDAYS.my
@@ -155,110 +155,127 @@ $attractions= MenuHelper::getsubAttractions(45);
    @yield('content')
 
 
-<footer class="footer-main pt-5 mb-5 mb-md-0 text-center text-md-start">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-md-auto mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Company</h6>
-                    <ul class="list-unstyled">
-                        @foreach ($companyMenuItems as $item)
+   <footer class="footer-main pt-5 mb-5 mb-md-0 text-center text-md-start">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-md-auto mt-md-0">
+                <h6 class="mb-3 text-uppercase">Company</h6>
+                <ul class="list-unstyled">
+                    @foreach ($companyMenuItems as $item)
 
-                        <li>
-                            @if ($item->target == 1)
+                    <li>
+                        @if ($item->target == 1)
 
-                                <a href="{{ route('pages.show', ['slug' => $item->link]) }}">{{ $item->title }}</a>
-                            @elseif ($item->target == 2)
+                            <a href="{{ route('pages.show', ['slug' => $item->link]) }}">{{ $item->title }}</a>
+                        @elseif ($item->target == 2)
 
-                                <a href="{{ route($item->link) }}">{{ $item->title }}</a>
-                            @else
+                            <a href="{{ route($item->link) }}">{{ $item->title }}</a>
+                        @else
 
-                                <a href="{{ $item->link }}">{{ $item->title }}</a>
-                            @endif
-                        </li>
+                            <a href="{{ $item->link }}">{{ $item->title }}</a>
+                        @endif
+                    </li>
 
-                    @endforeach
+                @endforeach
 
 
+            </ul>
+        </div>
+        <div class="col-md-auto mt-5 mt-md-0">
+            <h6 class="mb-3 text-uppercase">Services</h6>
+            <ul class="list-unstyled">
+                @foreach($enabledCategories as $category)
+                <li>
+                    <a href="{{ url($category->slug) }}">
+                        {{ $category->title }}
+                    </a>
+                </li>
+            @endforeach
+
+                </ul>
+                <h6 class="mb-3 text-uppercase mt-5">Legal</h6>
+                <ul class="list-unstyled">
+
+                    @foreach ($legalMenuItems as $item)
+                    <li>
+                        {{--  <a href="{{ $item->link }}">{{ $item->title }}</a>  --}}
+                        @if ($item->target == 1)
+
+                            <a href="{{ route('pages.show', ['slug' => $item->link]) }}">{{ $item->title }}</a>
+                        @elseif ($item->target == 2)
+
+                            <a href="{{ route($item->link) }}">{{ $item->title }}</a>
+                        @else
+
+                            <a href="{{ $item->link }}">{{ $item->title }}</a>
+                        @endif
+                    </li>
+                @endforeach
+                    {{--  <li><a href="https://MRR HOLIDAYS.tawk.help/" target="_blank">Help Center</a></li>  --}}
                 </ul>
             </div>
             <div class="col-md-auto mt-5 mt-md-0">
-                <h6 class="mb-3 text-uppercase">Services</h6>
+                <h6 class="mb-3 text-uppercase">Top Attractions</h6>
                 <ul class="list-unstyled">
-                    @foreach($enabledCategories as $category)
-                    <li>
-                        <a href="{{ url($category->slug) }}">
-                            {{ $category->title }}
-                        </a>
-                    </li>
-                @endforeach
-
-                    </ul>
-                    <h6 class="mb-3 text-uppercase mt-5">Legal</h6>
-                    <ul class="list-unstyled">
-
-                        @foreach ($legalMenuItems as $item)
+                    @foreach($attractions as $attraction)
                         <li>
-                            {{--  <a href="{{ $item->link }}">{{ $item->title }}</a>  --}}
-                            @if ($item->target == 1)
-
-                                <a href="{{ route('pages.show', ['slug' => $item->link]) }}">{{ $item->title }}</a>
-                            @elseif ($item->target == 2)
-
-                                <a href="{{ route($item->link) }}">{{ $item->title }}</a>
-                            @else
-
-                                <a href="{{ $item->link }}">{{ $item->title }}</a>
-                            @endif
+                            <a href="{{ url('attractions/' . $attraction->slug . '.html') }}">
+                                {{ $attraction->title }}
+                                @if($attraction->created_at >= now()->subDays(10))
+                                    <span class="fw-bold new-word" style="color: ">NEW</span>
+                                @endif
+                            </a>
                         </li>
                     @endforeach
-                        {{--  <li><a href="https://MRR HOLIDAYS.tawk.help/" target="_blank">Help Center</a></li>  --}}
-                    </ul>
-                </div>
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="mb-3 text-uppercase">Top Attractions</h6>
-                    <ul class="list-unstyled">
-                        @foreach($attractions as $attraction)
-                            <li>
-                                <a href="{{ url('attractions/' . $attraction->slug . '.html') }}">
-                                    {{ $attraction->title }}
-                                    @if($attraction->created_at >= now()->subDays(10))
-                                        <span class="fw-bold new-word" style="color: ">NEW</span>
-                                    @endif
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+                </ul>
+            </div>
 
-                <div class="col-md-auto mt-5 mt-md-0">
-                    <h6 class="text-uppercase mb-3">Address</h6>
-                    <div>
-                        {!! nl2br(getset('address')) !!}
-                        {!! nl2br(getset('address2')) !!}<br>
-                        {!! nl2br(getset('phone_number')) !!}<br>
-                        {!! nl2br(getset('email_address')) !!}<br>
-                      
+            <div class="col-md-auto mt-5 mt-md-0">
+                <h6 class="text-uppercase mb-3">Address</h6>
+                <div>
+                    {!! nl2br(addBrEveryThreeWords(getset('address'))) !!}
+
+                    {!! nl2br(getset('address2')) !!}<br>
+                    {!! nl2br(getset('email_address')) !!}<br>
+                  
+                </div>
+            </div>
+
+            <div class="col-md-auto mt-5 mt-md-0">
+                <h6 class="mb-3 text-uppercase">Social Media</h6>
+                <ul class="list-footer-socmed">
+                    <li>
+                        <a href="{!! nl2br(getset('facebook_link')) !!}" target="_blank"><i class="fab fa-facebook"></i></a>                    </li>
+                  
+                    <li>
+                        <a href="{!! nl2br(getset('instagram_link')) !!}" target="_blank"><i class="fab fa-instagram"></i></a>                    </li>
+                    <li>
+                        <a href="{!! nl2br(getset('whatsaap_link')) !!}" target="_blank"><i class="fab fa-whatsapp"></i></a>                    </li>
+                </ul>
+                <h6 class="mt-5 text-uppercase">Hotline</h6>
+                <span><i class="fa fa-phone"></i><a href="tel:{!! nl2br(getset('phone_number')) !!}"> {!! nl2br(getset('phone_number')) !!}</a></span>
+            </div>
+
+        </div>
+    </div>
+    <div class="bg-white text-dark p-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-12 ">
+                    <div class="ft-cpt-img d-flex align-items-center justify-content-center">
+                        <img src="{{ asset(getset('logo')) }}" class="img-fluid logo text-center" alt="">
                     </div>
+
+                    <div class="mt-2 text-muted text-center">
+                        {!! nl2br(getset('footer_credits')) !!}<br> </div>
                 </div>
 
             </div>
         </div>
-        <div class="bg-white text-dark p-4 mt-5">
-            <div class="container">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-md-12 ">
-                        <div class="ft-cpt-img d-flex align-items-center justify-content-center">
-                            <img src="{{ asset(getset('logo')) }}" class="img-fluid logo text-center" alt="">
-                        </div>
+    </div>
 
-                        <div class="mt-2 text-muted text-center">
-                            {!! nl2br(getset('footer_credits')) !!}<br> </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </footer>
+    
+</footer>
     <!-- Modal -->
     <div class="modal fade modal-coming-soon" id="coming-soon" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
