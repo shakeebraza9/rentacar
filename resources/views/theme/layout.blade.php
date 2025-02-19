@@ -262,8 +262,10 @@ $attractions= MenuHelper::getsubAttractions(45);
                     <h6 class="text-uppercase mb-3">Address</h6>
                     <div>
                         {!! nl2br(getset('address')) !!}
-                        LB Travel Tech Sdn Bhd<br>
-                       123456789<br>
+                        {!! nl2br(getset('address2')) !!}<br>
+                        {!! nl2br(getset('phone_number')) !!}<br>
+                        {!! nl2br(getset('email_address')) !!}<br>
+                      
                     </div>
                 </div>
 
@@ -278,7 +280,7 @@ $attractions= MenuHelper::getsubAttractions(45);
                         </div>
 
                         <div class="mt-2 text-muted text-center">
-                            &copy; Copyright 2025  MRR HOLIDAYS. All rights reserved. </div>
+                            {!! nl2br(getset('footer_credits')) !!}<br> </div>
                     </div>
 
                 </div>
