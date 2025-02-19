@@ -2015,19 +2015,20 @@ Launch demo modal
                 <!-- Tab Navigation -->
                 <ul class="nav nav-tabs" id="vehicleTabs" role="tablist">
                     @foreach($vehicleTypes as $type => $vehicles)
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link @if ($loop->first) active @endif"
-                                    id="tab-{{ Str::slug($type) }}"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#content-{{ Str::slug($type) }}"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="content-{{ Str::slug($type) }}"
-                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                {{ ucfirst($type) }}
-                            </button>
-                        </li>
-                    @endforeach
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @if ($loop->first) active @endif"
+                                id="tab-{{ Str::slug(str_replace('_', ' ', $type)) }}"
+                                data-bs-toggle="tab"
+                                data-bs-target="#content-{{ Str::slug(str_replace('_', ' ', $type)) }}"
+                                type="button"
+                                role="tab"
+                                aria-controls="content-{{ Str::slug(str_replace('_', ' ', $type)) }}"
+                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                            {{ Str::title(str_replace('_', ' ', $type)) }}
+                        </button>
+                    </li>
+                @endforeach
+                
                 </ul>
             </div>
         </section>
