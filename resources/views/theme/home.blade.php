@@ -2304,21 +2304,7 @@ Launch demo modal
         <section class="bg-light py-5 text-center">
             <div class="container">
                 <img src="img/logo/logo.png" class="img-fluid mx-auto mb-4" style="height:100px" alt="">
-                <p class="h5 mb-3">
-                    MRR HOLIDAYS is your premier online destination for budget-friendly car rental solutions in
-                    Langkawi, Kedah. Our platform offers seamless access to Langkawi car rental services along with
-                    convenient hotel bookings, exciting tour activities, and tickets to renowned attractions accross
-                    the island, including <a href="#"
-                        target="_blank">Langkawi Skycab Cable Car</a>,
-                    <a href="#" target="_blank">Island Hopping Tour</a>,
-                    and <a href="#" target="_blank">Mangrove Tour</a>.
-                </p>
-                <p class="h5">
-                    Experience hassle-free travel with our diverse range of vehicles, including Sedans, SUVs, MPVs
-                    and Compact cars, all at competitive pricing. At MRR HOLIDAYS, we prioritize your convenience.
-                    Opt for our airport pickup service for a seamless transition from your flight to the road.
-                    Alternatively, choose from our various drop-off locations scattered conveniently accross
-                    Langkawi, ensuring a smooth start to your exploration of this enchanting island. </p>
+                {!! nl2br(getset('footer_text')) !!}
             </div>
         </section>
         <script>
