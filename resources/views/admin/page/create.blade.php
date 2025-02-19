@@ -78,19 +78,19 @@
                         @endif 
                     </div>
 
-                    <div class="form-group">
+                    {{--  <div class="form-group">
                         <label class="form-label">Short Details</label>
                          <textarea placeholder="Short Details" name="shortdetails" class="form-control" >{{old('details')}}</textarea>
                           @if($errors->has('details'))
                           <p class="invalid-feedback" >{{ $errors->first('details') }}</p>
                           @endif 
-                    </div>
+                    </div>  --}}
 
                    
 
                     <div class="form-group">
                         <label class="form-label">Long Details</label> 
-                    <textarea id="long_description" class="form-control" name="longtdetails">{{old('Long details')}}</textarea>
+                    <textarea id="long_description" class="form-control" name="content">{{old('Long details')}}</textarea>
                     
                     </div>
                           
@@ -104,7 +104,7 @@
                          <p class="invalid-feedback" >{{ $errors->first('meta_title') }}</p>
                         @endif
                     </div>
-            
+{{--              
                     <div class="form-group">
                         <label class="form-label">Meta Description</label>
                         <input type="text" placeholder="Meta Description" 
@@ -112,8 +112,8 @@
                         @if($errors->has('meta_description'))
                          <p class="invalid-feedback" >{{ $errors->first('meta_description') }}</p>
                         @endif
-                    </div>
-            
+                    </div>  --}}
+{{--              
                     <div class="form-group">
                         <label class="form-label">Meta Keywords</label>
                         <input type="text" placeholder="Meta Keywords" 
@@ -122,7 +122,7 @@
                         @if($errors->has('meta_keywords'))
                          <p class="invalid-feedback" >{{ $errors->first('meta_keywords') }}</p>
                         @endif
-                    </div>
+                    </div>  --}}
                     
 
                     <div class="form-group row">

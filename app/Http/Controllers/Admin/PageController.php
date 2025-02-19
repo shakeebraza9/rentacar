@@ -73,7 +73,7 @@ class PageController extends Controller
                 array_push($data,[
                     $value->id,
                     $value->title,
-                    $value->shortdetails ,
+                    $value->slug ,
                     // $value->is_enable ? 'Approved' : 'Pending',
                     $action,
                  ]
@@ -131,11 +131,11 @@ class PageController extends Controller
         Page::create([
             'title' => $request->title,
             "slug" => $request->slug,
-            "shortdetails" => $request->shortdetails,
-            "longdetails" => $request->longtdetails,
+            // "shortdetails" => $request->shortdetails,
+            "content" => $request->content,
             "meta_title" => $request->meta_title,
-            "meta_description" => $request->meta_description,
-            "meta_keywords" => $request->meta_keywords,
+            // "meta_description" => $request->meta_description,
+            // "meta_keywords" => $request->meta_keywords,
         ]);
 
         return redirect('/admin/page/index')->with('success','Record Created Success'); 
