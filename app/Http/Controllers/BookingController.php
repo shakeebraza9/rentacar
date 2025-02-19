@@ -24,6 +24,7 @@ class BookingController extends Controller
     $product = Product::where('slug', $slug)->firstOrFail();
 
 
+
     $isBooked = Order::where('pro_id', $product->id)
         ->where(function ($query) use ($today, $from) {
             $query->whereDate('from_date', '<=', $from)
@@ -38,6 +39,68 @@ class BookingController extends Controller
 
     return view('theme.booking', compact('product', 'today', 'from', 'isBooked', 'similarProducts'));
 }
+public function show2($data)
+{
+
+    $decodedData = json_decode(urldecode($data), true);
+
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return abort(400, "Invalid booking data");
+    }
+
+
+    $pickupLocation = $decodedData['pickup_location'] ?? null;
+    $returnLocation = $decodedData['return_location'] ?? null;
+    $pickupDate = $decodedData['pickup_date'] ?? null;
+    $returnDate = $decodedData['return_date'] ?? null;
+
+
+    $pickupDate = $pickupDate ? \Carbon\Carbon::parse($pickupDate) : null;
+    $returnDate = $returnDate ? \Carbon\Carbon::parse($returnDate) : null;
+
+    $productsQuery = Product::leftJoin('orders', 'products.id', '=', 'orders.pro_id')
+        ->select(
+            'products.*', 
+            'orders.id as order_id', 
+            'orders.from_date', 
+            'orders.to_date'
+        );
+     
+        if ($pickupLocation) {
+            $productsQuery->whereRaw("LOWER(products.pickup_location) LIKE ?", ['%' . strtolower($pickupLocation) . '%']);
+        }
+        if ($returnLocation) {
+            $productsQuery->where('products.dropoff_location', $returnLocation);
+        }
+     
+
+    if ($pickupDate && $returnDate) {
+        $productsQuery->where(function ($query) use ($pickupDate, $returnDate) {
+            $query->whereNull('orders.id') 
+                  ->orWhere(function ($query) use ($pickupDate, $returnDate) {
+                      $query->whereDate('orders.to_date', '<', $pickupDate)
+                            ->orWhereDate('orders.from_date', '>', $returnDate);
+                  });
+        });
+    }
+    $numberOfRecords = $productsQuery->count();
+ 
+    $allProducts = $productsQuery->take(4)->get();
+
+
+    $availableProducts = $allProducts->take(1);
+    $similarProducts = $allProducts->slice(1, 3); 
+    $product = $availableProducts->first();
+
+   
+    $isBooked = $productsQuery->whereNotNull('orders.id')->exists();
+
+    return view('theme.bookingnew', compact('isBooked', 'product', 'availableProducts', 'similarProducts','numberOfRecords'));
+}
+
+
+
 
 public function index($slug)
 {

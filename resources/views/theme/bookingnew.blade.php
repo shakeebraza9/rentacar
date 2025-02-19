@@ -23,6 +23,7 @@
 
 <div class="booking-main-container my-7">
     <div class="container my-4">
+        @if($numberOfRecords > 0)
       <div class="row ">
         <div class="col-md-4">
           <div class="card ">
@@ -142,14 +143,19 @@
   </div>
         </div>
       </div>
+      @else
+      <div class="no-car-found text-center p-5 mt-4" style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 10px;">
+          <h3 class="text-danger">No cars found</h3>
+          <p class="text-muted">Currently, there are no similar cars available for booking.</p>
+      </div>
+  @endif
     </div>
 
   </div>
 
   @endsection
   @section('js')
-<script>
-
+  <script>
     document.getElementById("bookingForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Form ka default submit behavior rokna
         let pickupLocation = document.getElementById("input_pickup").value;
@@ -227,5 +233,6 @@
                 }
             });
         });
+
 </script>
   @endsection

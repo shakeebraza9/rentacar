@@ -39,6 +39,8 @@ Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::cla
 
 
 Route::get('/booking/{slug}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking');
+Route::get('/bookingfilter/{data}', [App\Http\Controllers\BookingController::class, 'show2'])->name('bookingfilter');
+
 Route::get('/customer/orders/{slug}', [App\Http\Controllers\BookingController::class, 'index'])
     ->name('customers.orders');
 

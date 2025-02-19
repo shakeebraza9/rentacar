@@ -301,6 +301,35 @@ $attractions= MenuHelper::getsubAttractions(45);
                 document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
             }
         });
+
+        $('.slider-review').slick({
+            centerMode: true,
+            infinite: true,
+            slidesToShow: 3,
+            autoplay: false,
+            autoplaySpeed: 5000,
+            arrows: false,
+            dots: true,
+            adaptiveHeight: true,
+            responsive: [{
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        arrows: false,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false,
+                    }
+                }
+            ]
+        });
+
     </script>
     @if(Session::get('success'))
     <script>
