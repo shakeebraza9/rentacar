@@ -245,11 +245,14 @@ $attractions= MenuHelper::getsubAttractions(45);
                 <div class="col-md-auto mt-5 mt-md-0">
                     <h6 class="mb-3 text-uppercase">Top Attractions</h6>
                     <ul class="list-unstyled">
-                        @foreach($attractions as $attraction)
+                        @php
+                        $attractionsByFunction=getLatestAttractions();
+                        @endphp
+                        @foreach($attractionsByFunction as $attraction)
                             <li>
-                                <a href="{{ url('attractions/' . $attraction->slug . '.html') }}">
+                                <a href="{{ url('attractions/detail/' . $attraction->slug ) }}">
                                     {{ $attraction->title }}
-                                    @if($attraction->created_at >= now()->subDays(10))
+                                    @if($attraction->created_at >= now()->subDays(20))
                                         <span class="fw-bold new-word" style="color: ">NEW</span>
                                     @endif
                                 </a>
@@ -262,8 +265,9 @@ $attractions= MenuHelper::getsubAttractions(45);
                     <h6 class="text-uppercase mb-3">Address</h6>
                     <div>
                         {!! nl2br(addBrEveryThreeWords(getset('address'))) !!}
+                        {!! nl2br(addBrEveryThreeWords(getset('address2'))) !!}
 
-                        {!! nl2br(getset('address2')) !!}<br>
+                     <br>
                         {!! nl2br(getset('email_address')) !!}<br>
                       
                     </div>

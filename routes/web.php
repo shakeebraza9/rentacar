@@ -31,7 +31,7 @@ Route::get('/help', [App\Http\Controllers\HelpController::class, 'help'])->name(
 
 // attractions
 Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
-Route::get('/attractions/detail{slug}', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');
+Route::get('/attractions/detail/{slug}', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');
 Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::class, 'attractionslist'])->name('attractions.list');
 
 

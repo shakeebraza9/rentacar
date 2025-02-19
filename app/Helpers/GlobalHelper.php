@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\DB;
 
 if (!function_exists('getset')) {
     function getset($key)
@@ -28,5 +28,16 @@ if (!function_exists('addBrEveryThreeWords')) {
             return implode(' ', $chunk) . '<br>';
         }, $chunkedWords);
         return implode("", $formattedText);
+    }
+}
+
+if (!function_exists('getLatestAttractions')) {
+    function getLatestAttractions($limit = 8)
+    {
+        return DB::table('attractions')
+            ->select('slug', 'title', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
     }
 }

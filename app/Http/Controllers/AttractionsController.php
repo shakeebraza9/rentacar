@@ -52,6 +52,7 @@ class AttractionsController extends Controller
     {
         // Find the attraction by slug
         $attraction = Attraction::where('slug', $slug)->first();
+     
 
         if (!$attraction) {
             return abort(404, 'Attraction not found');

@@ -526,7 +526,7 @@
                 if (selectedActivity === 'all') {
                     window.location.href = "{{ route('attractions.detail', 'all') }}";
                 } else {
-                    window.location.href = "{{ url('/attractions/detail') }}" + selectedActivity;
+                    window.location.href = "{{ url('/attractions/detail/') }}" + selectedActivity;
                 }
             }
         });
