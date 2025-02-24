@@ -1,6 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+
+
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -111,13 +117,45 @@ public function index($slug)
     return view('theme.order', compact('booking','slug'));
 }
 
+
+
+
 public function checkout(Request $request)
 {
-    try {
-        if (!auth()->check()) {
-            return redirect()->route('weblogin')->with('error', 'Please log in to proceed with checkout.');
+
+        if (auth()->check() == false) {
+            $request->validate([
+                'email' => 'required|email|max:255',
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                $randomPassword = "mrholidays123";
+                $user = User::create([
+                    'name' => $request->name ?? 'New User',
+                    'email' => $request->email,
+                    'created_by' => 1,
+                    'password' => Hash::make($randomPassword),
+                ]);
+
+
+                Mail::send('emails.new_account', [
+                    'email' => $request->email,
+                    'password' => $randomPassword,
+                ], function ($message) use ($request) {
+                    $message->to($request->email)
+                    ->subject('Your New Account Details');
+                });
+            }
+
+            Auth::login($user);
+
         }
-        // Validate incoming request
+
+
+        $userId = auth()->check() ? auth()->id() : ($user->id ?? null);
+
         $validatedData = $request->validate([
             'slug' => 'required|string|exists:products,slug',
             'name' => 'required|string|max:255',
@@ -130,15 +168,11 @@ public function checkout(Request $request)
             'to_date' => 'nullable|date|after_or_equal:from_date',
         ]);
 
-        // Fetch product using slug
         $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
 
-        // Handle rental duration dates
         $fromDate = $validatedData['from_date'] ?? now()->format('Y-m-d H:i:s');
-        $toDate = $validatedData['to_date'] ?? \Carbon\Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
+        $toDate = $validatedData['to_date'] ?? Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
 
-
-        // Fetch settings
         $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
             ->pluck('value', 'field');
 
@@ -150,19 +184,17 @@ public function checkout(Request $request)
         $discount = (float) ($settings['discount'] ?? 0);
         $productPrice = (float) ($product->selling_price ?? 0);
 
-        // Calculate total price
         $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $addons + $productPrice;
-        $total = max(0, $totalBeforeDiscount - $discount); // Ensure total doesn't go negative
+        $total = max(0, $totalBeforeDiscount - $discount);
 
-        // Create the order
         $order = Order::create([
             'pro_id' => $product->id,
-            'userid' => auth()->id(),
+            'userid' => $userId,
             'buyer_name' => $validatedData['name'],
             'buyer_email' => $validatedData['email'],
             'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
-            'passport' =>  $request->user_passport,
-            'license' =>  $request->user_license,
+            'passport' => $request->user_passport,
+            'license' => $request->user_license,
             'buyer_country_of_origin' => $validatedData['country'],
             'buyer_sec_name' => $request->invoice_name ?? null,
             'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,
@@ -183,20 +215,10 @@ public function checkout(Request $request)
         return redirect()->route('checkout', [
             'order_id' => Crypt::encryptString($order->id),
         ])->with('success', 'Order placed successfully!');
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // Handle validation errors
-        return response()->json([
-            'error' => 'Validation Error',
-            'details' => $e->errors(),
-        ], 422);
-    } catch (\Exception $e) {
-        // Handle general errors
-        return response()->json([
-            'error' => 'An error occurred while processing your order.',
-            'message' => $e->getMessage(),
-        ], 500);
-    }
+
 }
+
+
 
 
 

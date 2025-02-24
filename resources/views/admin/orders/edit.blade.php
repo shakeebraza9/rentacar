@@ -329,6 +329,10 @@ use Carbon\Carbon;
                 <th style="padding: 10px; border: 1px solid #ddd;">Client To Date</th>
                 <th style="padding: 10px; border: 1px solid #ddd;">Client From Date</th>
                 <th style="padding: 10px; border: 1px solid #ddd;">Elapsed Time (Client)</th>
+                @if ($data->extra_amount > 0)
+
+                <th style="padding: 10px; border: 1px solid #ddd;">Extra Emount</th>
+                @endif
                 <th style="padding: 10px; border: 1px solid #ddd;">Action</th>
             </tr>
         </thead>
@@ -347,9 +351,13 @@ use Carbon\Carbon;
                 <td style="padding: 10px; border: 1px solid #ddd; color: #333;">{{ $to_date->format('Y-m-d H:i:s') }}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; color: #333;">{{ $from_date->format('Y-m-d H:i:s') }}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; color: green;">{{ $figelapsedTime }} hours</td>
+
+                @if ($data->extra_amount > 0)
+                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; color: rgb(249, 10, 10);">{{ $data->extra_amount }}</td>
+                @endif
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     @if($totalElapsedHours - $totalClientElapsedHours >= 1)
-                    <button style="padding: 8px 12px; background-color: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
+                    <button class="sendMailBtn" data-id="{{ $data->id }}" style="padding: 8px 12px; background-color: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
                         Add Extra Payment
                     </button>
                 @else
@@ -469,5 +477,26 @@ use Carbon\Carbon;
             }
         });
 
+
+
+        $(document).ready(function() {
+            $('.sendMailBtn').click(function() {
+                let orderId = $(this).data('id');
+
+                $.ajax({
+                    url: '/admin/send-extra-payment-email/' + orderId,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function() {
+                        alert('Failed to send email.');
+                    }
+                });
+            });
+        });
     </script>
 @endsection

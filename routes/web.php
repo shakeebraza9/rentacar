@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\PaymentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,8 @@ use App\Http\Controllers\PaymentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 
 Route::get('/',function(){
 
@@ -188,6 +191,9 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::put('/admin/orders/update/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update'])->name("admin.orders.update");
     Route::post('/admin/orders/update-pickup-deliver/{id}', [App\Http\Controllers\Admin\OrderController::class, 'updatePickupDeliver'])->name('admin.orders.updatePickupDeliver');
     Route::get('/admin/orders/get-total-time/{id}', [App\Http\Controllers\Admin\OrderController::class, 'getTotalTime'])->name('admin.orders.getTotalTime');
+    Route::post('/admin/send-extra-payment-email/{id}', [App\Http\Controllers\Admin\OrderController::class, 'sendExtraPaymentEmail'])->name('send.extra.payment.email');
+
+
 
     //Review
     // Route::get('admin/review/index', [App\Http\Controllers\Admin\ReviewController::class, 'index']);
