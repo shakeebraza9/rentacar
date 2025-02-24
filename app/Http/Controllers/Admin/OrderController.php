@@ -241,51 +241,53 @@ public function getTotalTime($id)
     }
 
     public function sendExtraPaymentEmail($id)
-    {
-        // Order find karein
-        $order = Order::find($id);
+{
+    $order = Order::find($id);
 
-        if (!$order) {
-            return response()->json(['success' => false, 'message' => 'Order not found!'], 404);
-        }
-
-        // Dates ko Carbon object mein convert karein
-        $fromDate = Carbon::parse($order->from_date);
-        $toDate = Carbon::parse($order->to_date);
-        $pickupDate = $order->pickup_car_date ? Carbon::parse($order->pickup_car_date) : null;
-        $deliverDate = $order->deliver_car_date ? Carbon::parse($order->deliver_car_date) : null;
-
-        // Day aur Hours ka Difference nikalein
-        $bookingDurationHours = $fromDate->diffInHours($toDate);
-        $pickupDelayHours = $pickupDate ? $fromDate->diffInHours($pickupDate) : 0;
-        $deliverDelayHours = $deliverDate ? $toDate->diffInHours($deliverDate) : 0;
-
-        // Delay jitna bhi ho, uska penalty calculate karein
-        $totalAmount = (float) $order->amount;
-        $totalPenalty = 0;
-
-        $totalDelayHours = $pickupDelayHours + $deliverDelayHours;
-
-        if ($totalDelayHours > 0) {
-            // 1 hour = 10% penalty
-            $penaltyPercentage = min($totalDelayHours * 10, 100); // Max penalty 100%
-            $totalPenalty = ($totalAmount * $penaltyPercentage) / 100;
-        }
-
-        // Email send karein
-        $email = $order->buyer_email; // Buyer ka email lein
-
-        // Mail::raw("Dear {$order->buyer_name},\n\nYour rental return was delayed by {$totalDelayHours} hours. A penalty of {$penaltyPercentage}% has been applied.\nTotal Penalty Amount: $totalPenalty\n\nThank you!", function ($message) use ($email) {
-        //     $message->to($email)
-        //         ->subject('Extra Payment Notification');
-        // });
-
-        // Extra amount update karein
-        $order->extra_amount = $totalPenalty;
-        $order->save();
-
-        return response()->json(['success' => true, 'message' => 'Email sent successfully!', 'penalty' => $totalPenalty]);
+    if (!$order) {
+        return response()->json(['success' => false, 'message' => 'Order not found!'], 404);
     }
+
+    $fromDate    = Carbon::parse($order->from_date);
+    $toDate      = Carbon::parse($order->to_date);
+    $pickupDate  = $order->pickup_car_date ? Carbon::parse($order->pickup_car_date) : $fromDate;
+    $deliverDate = $order->deliver_car_date ? Carbon::parse($order->deliver_car_date) : null;
+
+    if (!$deliverDate) {
+        return response()->json(['success' => false, 'message' => 'Delivery date not provided!'], 400);
+    }
+    $bookedHours = $fromDate->diffInHours($toDate);
+    $actualHours = $pickupDate->diffInHours($deliverDate);
+    $delayHours = $actualHours - $bookedHours;
+
+    $totalAmount = (float) $order->amount;
+    $totalPenalty = 0;
+    $penaltyPercentage = 0;
+
+    if ($delayHours > 0) {
+        $penaltyPercentage = 10;
+        if ($delayHours > 1) {
+            $penaltyPercentage += ($delayHours - 1) * 5;
+        }
+        $penaltyPercentage = min($penaltyPercentage, 100);
+        $totalPenalty = ($totalAmount * $penaltyPercentage) / 100;
+    }
+
+
+    $email = $order->buyer_email;
+    Mail::raw("Dear {$order->buyer_name},\n\nYour rental return was delayed by {$delayHours} hour(s). A penalty of {$penaltyPercentage}% has been applied.\nTotal Penalty Amount: $totalPenalty\n\nThank you!", function ($message) use ($email) {
+        $message->to($email)
+                ->subject('Extra Payment Notification');
+    });
+
+    // Update the order with the penalty amount.
+    $order->extra_amount = $totalPenalty;
+    $order->extra_amount_status = 1;
+    $order->save();
+
+    return response()->json(['success' => true, 'message' => 'Email sent successfully!', 'penalty' => $totalPenalty]);
+}
+
 
 
 

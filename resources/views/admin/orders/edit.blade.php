@@ -357,10 +357,18 @@ use Carbon\Carbon;
                 @endif
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     @if($totalElapsedHours - $totalClientElapsedHours >= 1)
+                    @if($data->extra_amount_status == 0)
                     <button class="sendMailBtn" data-id="{{ $data->id }}" style="padding: 8px 12px; background-color: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
                         Add Extra Payment
                     </button>
+                    @elseif($data->extra_amount_status == 1)
+                    <span style="color: green; font-weight: bold;">Waiting for payment</span>
+                    @elseif($data->extra_amount_status == 2)
+                    <span style="color: green; font-weight: bold;">Payment Recived</span>
+
+                    @endif
                 @else
+
                     <span style="color: green; font-weight: bold;">No Extra Charge</span>
                 @endif
                 </td>
