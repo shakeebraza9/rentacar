@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Ui\Presets\React;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -141,46 +142,88 @@ class OrderController extends Controller
      * @return void
      */
     public function update(Request $request, $id)
-    {
-        $id = Crypt::decryptString($id);
+{
 
-        // Find the order
-        $order = Order::find($id);
+    $id = Crypt::decryptString($id);
 
-        if (!$order) {
-            return redirect()->back()->with('error', 'Order not found.');
-        }
+    $order = Order::find($id);
 
-        // Update only the fields provided in the request
-        $order->update($request->only([
-            'buyer_name',
-            'buyer_email',
-            'passport',
-            'license',
-            'buyer_phone_number',
-            'buyer_country_of_origin',
-            'buyer_sec_name',
-            'buyer_sec_phone_number',
-            'driver_name',
-            'driver_license_number',
-            'from_date',
-            'to_date',
-            'status',
-            'payment_status',
-            'amount',
-            'flight_no'
-        ]));
-
-        return back()->with('warning', 'Order updated successfully.');
+    if (!$order) {
+        return redirect()->back()->with('error', 'Order not found.');
     }
 
 
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+
+    $status = $request->input('status') === 'approve' ? 'approved' : $request->input('status');
+
+    $order->update(array_merge($request->only([
+        'buyer_name',
+        'buyer_email',
+        'passport',
+        'license',
+        'buyer_phone_number',
+        'buyer_country_of_origin',
+        'buyer_sec_name',
+        'buyer_sec_phone_number',
+        'driver_name',
+        'driver_license_number',
+        'from_date',
+        'to_date',
+        'payment_status',
+        'amount',
+        'flight_no'
+    ]), ['status' => $status]));
+
+    return back()->with('warning', 'Order updated successfully.');
+}
+
+
+public function updatePickupDeliver(Request $request, $id)
+{
+    $id = Crypt::decryptString($id);
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['error' => 'Order not found.'], 404);
+    }
+
+    $field = $request->input('field');
+    $value = $request->input('value');
+
+    if (!in_array($field, ['pickup_car_date', 'deliver_car_date'])) {
+        return response()->json(['error' => 'Invalid field.'], 400);
+    }
+
+    $order->$field = Carbon::now(); // Save Current Date & Time
+    $order->save();
+
+    return response()->json(['success' => true]);
+}
+
+
+
+public function getTotalTime($id)
+{
+    $id = Crypt::decryptString($id);
+    $order = Order::find($id);
+
+    if (!$order || !$order->pickup_car_date || !$order->deliver_car_date) {
+        return response()->json(['total_time' => 'Not Available']);
+    }
+
+    $pickupDate = Carbon::parse($order->pickup_car_date);
+    $deliverDate = Carbon::parse($order->deliver_car_date);
+
+    $diffInDays = $pickupDate->diffInDays($deliverDate);
+    $diffInHours = $pickupDate->diffInHours($deliverDate) % 24;
+
+    return response()->json(['total_time' => "$diffInDays days, $diffInHours hours"]);
+}
+
+
+
     public function delete($id)
     {
         $product = Product::find(Crypt::decryptString($id));

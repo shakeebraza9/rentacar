@@ -36,6 +36,8 @@ class Order extends Model
         'from_date',
         'to_date',
         'status',
+        'pickup_car_date',
+        'deliver_car_date',
         'payment_status',
         'amount'
     ];

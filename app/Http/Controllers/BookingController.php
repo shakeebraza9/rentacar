@@ -61,23 +61,23 @@ public function show2($data)
 
     $productsQuery = Product::leftJoin('orders', 'products.id', '=', 'orders.pro_id')
         ->select(
-            'products.*', 
-            'orders.id as order_id', 
-            'orders.from_date', 
+            'products.*',
+            'orders.id as order_id',
+            'orders.from_date',
             'orders.to_date'
         );
-     
+
         if ($pickupLocation) {
             $productsQuery->whereRaw("LOWER(products.pickup_location) LIKE ?", ['%' . strtolower($pickupLocation) . '%']);
         }
         if ($returnLocation) {
             $productsQuery->where('products.dropoff_location', $returnLocation);
         }
-     
+
 
     if ($pickupDate && $returnDate) {
         $productsQuery->where(function ($query) use ($pickupDate, $returnDate) {
-            $query->whereNull('orders.id') 
+            $query->whereNull('orders.id')
                   ->orWhere(function ($query) use ($pickupDate, $returnDate) {
                       $query->whereDate('orders.to_date', '<', $pickupDate)
                             ->orWhereDate('orders.from_date', '>', $returnDate);
@@ -85,15 +85,15 @@ public function show2($data)
         });
     }
     $numberOfRecords = $productsQuery->count();
- 
+
     $allProducts = $productsQuery->take(4)->get();
 
 
     $availableProducts = $allProducts->take(1);
-    $similarProducts = $allProducts->slice(1, 3); 
+    $similarProducts = $allProducts->slice(1, 3);
     $product = $availableProducts->first();
 
-   
+
     $isBooked = $productsQuery->whereNotNull('orders.id')->exists();
 
     return view('theme.bookingnew', compact('isBooked', 'product', 'availableProducts', 'similarProducts','numberOfRecords'));
@@ -134,8 +134,9 @@ public function checkout(Request $request)
         $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
 
         // Handle rental duration dates
-        $fromDate = $validatedData['from_date'] ?? now()->toDateString();
-        $toDate = $validatedData['to_date'] ?? \Carbon\Carbon::parse($fromDate)->addDay()->toDateString();
+        $fromDate = $validatedData['from_date'] ?? now()->format('Y-m-d H:i:s');
+        $toDate = $validatedData['to_date'] ?? \Carbon\Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
+
 
         // Fetch settings
         $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])

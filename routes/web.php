@@ -186,6 +186,8 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::get('/admin/orders/index', [App\Http\Controllers\Admin\OrderController::class, 'index']);
     Route::get('/admin/orders/edit/{id}', [App\Http\Controllers\Admin\OrderController::class, 'edit']);
     Route::put('/admin/orders/update/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update'])->name("admin.orders.update");
+    Route::post('/admin/orders/update-pickup-deliver/{id}', [App\Http\Controllers\Admin\OrderController::class, 'updatePickupDeliver'])->name('admin.orders.updatePickupDeliver');
+    Route::get('/admin/orders/get-total-time/{id}', [App\Http\Controllers\Admin\OrderController::class, 'getTotalTime'])->name('admin.orders.getTotalTime');
 
     //Review
     // Route::get('admin/review/index', [App\Http\Controllers\Admin\ReviewController::class, 'index']);
