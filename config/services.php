@@ -30,14 +30,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'paypal' => [
-    'client_id' => env('PAYPAL_CLIENT_ID'),
-    'client_secret'    => env('PAYPAL_SECRET'),
-    'settingss'  => [
-        'mode'                  => env('PAYPAL_MODE', 'live'),
-        'http.ConnectionTimeOut'=> 30,
-        'log.LogEnabled'        => true,
-        'log.FileName'          => storage_path('logs/paypal.log'),
-        'log.LogLevel'          => 'ERROR'
+        'client_id' => env('PAYPAL_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_SECRET'),
+        'settings' => [
+            'mode' => env('PAYPAL_MODE', 'live'),
+            'http.ConnectionTimeOut' => 30,
+            'log.LogEnabled' => true,
+            'log.FileName' => storage_path('logs/paypal.log'),
+            'log.LogLevel' => 'ERROR'
         ],
     ],
 

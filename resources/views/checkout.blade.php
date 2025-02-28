@@ -106,7 +106,7 @@
                         {{-- Amount Display --}}
                         <div class="mb-3">
                             <label class="form-label">Total Amount</label>
-                            <input type="text" class="form-control" value="${{ number_format($order->amount, 2) }}" readonly>
+                            <input type="text" class="form-control" value="{{ number_format($order->amount, 2) }}" readonly>
                         </div>
 
                         {{-- Payment Method Toggle Switcher --}}

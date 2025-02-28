@@ -39,6 +39,7 @@ class PaymentController extends Controller
     $paymentMethod = $request->input('payment_method');
 
     if ($paymentMethod === 'paypal') {
+
         try {
             $provider = new PayPalClient;
             $provider->setApiCredentials(config('services.paypal'));
