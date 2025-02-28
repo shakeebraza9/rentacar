@@ -95,6 +95,8 @@
                             <table class="table">
                                 <tbody>
                                     @php
+                                    use Carbon\Carbon;
+
                                     $rental = $global_d['rental'] ?? 0;
                                     $extra_hour = $global_d['extra_hour'] ?? 0;
                                     $pickup_fee = $global_d['pickup_fee'] ?? 0;
@@ -102,12 +104,24 @@
                                     $addons = $global_d['add-ons'] ?? 0;
                                     $discountPercent = $global_d['discount'] ?? 0;
                                     $productprice = $booking->selling_price ?? 0;
+
                                     $discountAmount = ($productprice * $discountPercent) / 100;
-                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice;
-                                    $total = $totalBeforeDiscount - $discountAmount;
 
+                                    $from = Carbon::parse($from ?? now());
+                                    $today = Carbon::parse($today ?? now());
 
+                                    $totalHours = $today->diffInHours($from);
+                                    $extraHours = max(0, $totalHours - 24);
+                                    $extraHourCharge = 0;
+                                    for ($i = 1; $i <= $extraHours; $i++) {
+                                        $extraHourCharge += ($productprice * ($i * 10)) / 100;
+                                    }
+
+                                    // Calculate final total
+                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge;
+                                    $total = max(0, $totalBeforeDiscount - $discountAmount);
                                 @endphp
+
 
                                 <tr>
                                     <td>Rental</td>
@@ -115,7 +129,7 @@
                                 </tr>
                                 <tr>
                                     <td>Extra Hour ({{ $booking->extra_hours ?? 0 }})</td>
-                                    <td class="text-end" style="color:#690C0B;">{{ number_format($extra_hour, 2) }} %</td>
+                                    <td class="text-end" style="color:#690C0B;">{{ number_format($extraHourCharge, 2) }} </td>
                                 </tr>
                                 <tr>
                                     <td>Pickup Fee</td>
@@ -259,6 +273,7 @@
                             <button type="button" class="btn btn-primary" onclick="showStep(2)">Next</button>
                         </div>
                         <input type="hidden" name="selected_addons" id="selected-addons">
+                        <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
 
                         <div id="step2" class="stepfrom d-none">
                             <input type="hidden" name="slug" value="{{ $slug }}">
@@ -689,24 +704,7 @@
 
                                                 <table class="table">
                                                     <tbody>
-                                                        @php
-                                                        $rental = $global_d['rental'] ?? 0;
-                                                        $extra_hour = $global_d['extra_hour'] ?? 0;
-                                                        $pickup_fee = $global_d['pickup_fee'] ?? 0;
-                                                        $return_fee = $global_d['return_fee'] ?? 0;
-                                                        $addons = $global_d['add-ons'] ?? 0;
-                                                        $discount = $global_d['discount'] ?? 0;
-                                                        $productprice = $booking->selling_price ?? 0;
 
-                                                        // Total Before Discount
-                                                        $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $addons + $productprice;
-
-                                                        // Calculate Discount Percentage
-                                                        $discountPercentage = $totalBeforeDiscount > 0 ? ($discount / $totalBeforeDiscount) * 100 : 0;
-
-                                                        // Final Total After Discount
-                                                        $total = $totalBeforeDiscount - $discount;
-                                                        @endphp
 
                                                         <tr>
                                                             <td>Rental</td>
@@ -729,12 +727,14 @@
                                                             <td class="text-end">{{ number_format($addons, 2) }}</td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Discount ({{ number_format($discountPercentage, 2) }}%)</td>
-                                                            <td class="fw-bold">-{{ number_format($discount, 2) }}</td>
+                                                            <td>Discount ({{ number_format($discountPercent, 2) }}%)</td>
+                                                            <td class="fw-bold">-{{ number_format($discountAmount, 2) }}</td>
                                                         </tr>
                                                         <tr class="text-end fw-bold">
                                                             <td>Total Amount</td>
-                                                            <td class="text-primary">{{ number_format($total, 2) }}</td>
+                                                            <td class="text-primary">
+                                                                RM <span id="total-amount2" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -876,9 +876,14 @@ showStep(1);
             document.getElementById("addon-price").textContent = addonsTotal.toFixed(2);
 
             let totalAmountElement = document.getElementById("total-amount");
+            let totalAmountElement2 = document.getElementById("total-amount2");
             if (totalAmountElement) {
                 let baseTotal = parseFloat(totalAmountElement.dataset.baseTotal) || 0;
                 totalAmountElement.textContent = (baseTotal + addonsTotal).toFixed(2);
+            }
+            if (totalAmountElement2) {
+                let baseTotal = parseFloat(totalAmountElement2.dataset.baseTotal) || 0;
+                totalAmountElement2.textContent = (baseTotal + addonsTotal).toFixed(2);
             }
 
             document.getElementById("selected-addons").value = JSON.stringify(selectedAddons);

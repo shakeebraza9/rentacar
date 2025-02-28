@@ -130,16 +130,25 @@ public function show2($data)
 
 
 
-public function index($slug,Request $request)
+public function index($slug, Request $request)
 {
-
     $booking = Product::where('slug', $slug)->firstOrFail();
-    $today = $request->query('today', Carbon::now()->setTime(6, 0, 0));
-    $from = $request->query('from', Carbon::now()->addDay()->setTime(6, 0, 0));
-    $today = Carbon::parse($today)->setTime(6, 0, 0);
-    $from = Carbon::parse($from)->setTime(6, 0, 0);
+    $today = $request->query('today');
+    $from = $request->query('from');
 
-    return view('theme.order', compact('booking','slug','today','from'));
+    if ($today) {
+        $today = Carbon::parse($today)->setTimeFromTimeString($today);
+    } else {
+        $today = Carbon::now()->setTime(6, 0, 0);
+    }
+
+    if ($from) {
+        $from = Carbon::parse($from)->setTimeFromTimeString($from);
+    } else {
+        $from = Carbon::now()->addDay()->setTime(6, 0, 0);
+    }
+
+    return view('theme.order', compact('booking', 'slug', 'today', 'from'));
 }
 
 
@@ -147,6 +156,7 @@ public function index($slug,Request $request)
 
 public function checkout(Request $request)
 {
+
     if (!auth()->check()) {
         $request->validate([
             'email' => 'required|email|max:255',
@@ -198,7 +208,7 @@ public function checkout(Request $request)
         ->pluck('value', 'field');
 
     $rental = (float) ($settings['rental'] ?? 0);
-    $extra_hour = (float) ($settings['extra_hour'] ?? 0);
+    $extra_hour = (float) ($request->extracharge ?? 0);
     $pickup_fee = (float) ($settings['pickup_fee'] ?? 0);
     $return_fee = (float) ($settings['return_fee'] ?? 0);
     $addons = (float) ($settings['add-ons'] ?? 0);
@@ -209,7 +219,7 @@ public function checkout(Request $request)
 
     $discountAmount = ($productPrice * $discountPercent) / 100;
 
-    $totalBeforeDiscount = $rental  + $pickup_fee + $return_fee + $productPrice + $addonsTotal;
+    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal;
     $total = max(0, $totalBeforeDiscount - $discountAmount);
 
     $order = Order::create([
