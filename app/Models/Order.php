@@ -33,6 +33,7 @@ class Order extends Model
         'driver_mobile_number',
         'flight_no',
         'note',
+        'selected_addons',
         'from_date',
         'to_date',
         'status',

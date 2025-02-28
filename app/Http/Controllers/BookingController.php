@@ -147,100 +147,100 @@ public function index($slug,Request $request)
 
 public function checkout(Request $request)
 {
+    if (!auth()->check()) {
+        $request->validate([
+            'email' => 'required|email|max:255',
+        ]);
 
-        if (auth()->check() == false) {
-            $request->validate([
-                'email' => 'required|email|max:255',
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            $randomPassword = "mrholidays123";
+            $user = User::create([
+                'name' => $request->name ?? 'New User',
+                'email' => $request->email,
+                'created_by' => 1,
+                'password' => Hash::make($randomPassword),
             ]);
 
-            $user = User::where('email', $request->email)->first();
-
-            if (!$user) {
-                $randomPassword = "mrholidays123";
-                $user = User::create([
-                    'name' => $request->name ?? 'New User',
-                    'email' => $request->email,
-                    'created_by' => 1,
-                    'password' => Hash::make($randomPassword),
-                ]);
-
-
-                Mail::send('emails.new_account', [
-                    'email' => $request->email,
-                    'password' => $randomPassword,
-                ], function ($message) use ($request) {
-                    $message->to($request->email)
-                    ->subject('Your New Account Details');
-                });
-            }
-
-            Auth::login($user);
-
+            Mail::send('emails.new_account', [
+                'email' => $request->email,
+                'password' => $randomPassword,
+            ], function ($message) use ($request) {
+                $message->to($request->email)->subject('Your New Account Details');
+            });
         }
 
+        Auth::login($user);
+    }
 
-        $userId = auth()->check() ? auth()->id() : ($user->id ?? null);
+    $userId = auth()->id();
 
-        $validatedData = $request->validate([
-            'slug' => 'required|string|exists:products,slug',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'country_code' => 'required|string|max:10',
-            'country' => 'required|string|max:100',
-            'user_passport' => 'nullable|string|max:100',
-            'user_license' => 'nullable|string|max:100',
-            'from_date' => 'nullable|date|after_or_equal:today',
-            'to_date' => 'nullable|date|after_or_equal:from_date',
-        ]);
+    $validatedData = $request->validate([
+        'slug' => 'required|string|exists:products,slug',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'country_code' => 'required|string|max:10',
+        'country' => 'required|string|max:100',
+        'user_passport' => 'nullable|string|max:100',
+        'user_license' => 'nullable|string|max:100',
+        'from' => 'nullable|date|after_or_equal:today',
+        'today' => 'nullable|date|after_or_equal:from_date',
+    ]);
 
-        $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
+    $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
 
-        $fromDate = $validatedData['from_date'] ?? now()->format('Y-m-d H:i:s');
-        $toDate = $validatedData['to_date'] ?? Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
+    $fromDate = $validatedData['from'] ?? now()->format('Y-m-d H:i:s');
+    $toDate = $validatedData['today'] ?? Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
 
-        $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
-            ->pluck('value', 'field');
 
-        $rental = (float) ($settings['rental'] ?? 0);
-        $extra_hour = (float) ($settings['extra_hour'] ?? 0);
-        $pickup_fee = (float) ($settings['pickup_fee'] ?? 0);
-        $return_fee = (float) ($settings['return_fee'] ?? 0);
-        $addons = (float) ($settings['add-ons'] ?? 0);
-        $discount = (float) ($settings['discount'] ?? 0);
-        $productPrice = (float) ($product->selling_price ?? 0);
+    $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
+        ->pluck('value', 'field');
 
-        $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $addons + $productPrice;
-        $total = max(0, $totalBeforeDiscount - $discount);
+    $rental = (float) ($settings['rental'] ?? 0);
+    $extra_hour = (float) ($settings['extra_hour'] ?? 0);
+    $pickup_fee = (float) ($settings['pickup_fee'] ?? 0);
+    $return_fee = (float) ($settings['return_fee'] ?? 0);
+    $addons = (float) ($settings['add-ons'] ?? 0);
+    $discountPercent = (float) ($settings['discount'] ?? 0);
+    $productPrice = (float) ($product->selling_price ?? 0);
+    $selectedAddons = json_decode($request->selected_addons, true) ?? [];
+    $addonsTotal = array_sum(array_column($selectedAddons, 'total'));
 
-        $order = Order::create([
-            'pro_id' => $product->id,
-            'userid' => $userId,
-            'buyer_name' => $validatedData['name'],
-            'buyer_email' => $validatedData['email'],
-            'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
-            'passport' => $request->user_passport,
-            'license' => $request->user_license,
-            'buyer_country_of_origin' => $validatedData['country'],
-            'buyer_sec_name' => $request->invoice_name ?? null,
-            'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,
-            'buyer_sec_invoice_address' => $request->invoice_address ?? null,
-            'driver_name' => $request->driver_name ?? null,
-            'driver_id_passport_number' => $request->driver_ic_number ?? null,
-            'driver_license_number' => $request->driver_license_number ?? null,
-            'driver_age' => $request->driver_age ?? null,
-            'driver_mobile_number' => $request->driver_mobile_number ?? null,
-            'note' => $request->note ?? null,
-            'from_date' => $fromDate,
-            'to_date' => $toDate,
-            'status' => $request->status ?? 'pending',
-            'payment_status' => $request->payment_status ?? 0,
-            'amount' => $total,
-        ]);
+    $discountAmount = ($productPrice * $discountPercent) / 100;
 
-        return redirect()->route('checkout', [
-            'order_id' => Crypt::encryptString($order->id),
-        ])->with('success', 'Order placed successfully!');
+    $totalBeforeDiscount = $rental  + $pickup_fee + $return_fee + $productPrice + $addonsTotal;
+    $total = max(0, $totalBeforeDiscount - $discountAmount);
 
+    $order = Order::create([
+        'pro_id' => $product->id,
+        'userid' => $userId,
+        'buyer_name' => $validatedData['name'],
+        'buyer_email' => $validatedData['email'],
+        'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
+        'passport' => $request->user_passport,
+        'license' => $request->user_license,
+        'buyer_country_of_origin' => $validatedData['country'],
+        'buyer_sec_name' => $request->invoice_name ?? null,
+        'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,
+        'buyer_sec_invoice_address' => $request->invoice_address ?? null,
+        'driver_name' => $request->driver_name ?? null,
+        'driver_id_passport_number' => $request->driver_ic_number ?? null,
+        'driver_license_number' => $request->driver_license_number ?? null,
+        'driver_age' => $request->driver_age ?? null,
+        'driver_mobile_number' => $request->driver_mobile_number ?? null,
+        'note' => $request->note ?? null,
+        'from_date' => $fromDate,
+        'to_date' => $toDate,
+        'status' => $request->status ?? 'pending',
+        'payment_status' => $request->payment_status ?? 0,
+        'amount' => $total,
+        'selected_addons' => json_encode($selectedAddons),
+    ]);
+
+    return redirect()->route('checkout', [
+        'order_id' => Crypt::encryptString($order->id),
+    ])->with('success', 'Order placed successfully!');
 }
 
 

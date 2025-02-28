@@ -100,17 +100,13 @@
                                     $pickup_fee = $global_d['pickup_fee'] ?? 0;
                                     $return_fee = $global_d['return_fee'] ?? 0;
                                     $addons = $global_d['add-ons'] ?? 0;
-                                    $discount = $global_d['discount'] ?? 0;
+                                    $discountPercent = $global_d['discount'] ?? 0;
                                     $productprice = $booking->selling_price ?? 0;
+                                    $discountAmount = ($productprice * $discountPercent) / 100;
+                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice;
+                                    $total = $totalBeforeDiscount - $discountAmount;
 
-                                    // Total Before Discount
-                                    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $addons + $productprice;
 
-                                    // Calculate Discount Percentage
-                                    $discountPercentage = $totalBeforeDiscount > 0 ? ($discount / $totalBeforeDiscount) * 100 : 0;
-
-                                    // Final Total After Discount
-                                    $total = $totalBeforeDiscount - $discount;
                                 @endphp
 
                                 <tr>
@@ -119,7 +115,7 @@
                                 </tr>
                                 <tr>
                                     <td>Extra Hour ({{ $booking->extra_hours ?? 0 }})</td>
-                                    <td class="text-end">{{ number_format($extra_hour, 2) }}</td>
+                                    <td class="text-end" style="color:#690C0B;">{{ number_format($extra_hour, 2) }} %</td>
                                 </tr>
                                 <tr>
                                     <td>Pickup Fee</td>
@@ -131,16 +127,23 @@
                                 </tr>
                                 <tr>
                                     <td>Add-ons</td>
-                                    <td class="text-end">{{ number_format($addons, 2) }}</td>
+                                    <td class="text-end"><span id="addon-price">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Without Discount,Extra Hour (0),Add-ons</td>
+                                    <td class="text-end">{{ number_format($totalBeforeDiscount, 2) }} </td>
                                 </tr>
                                 <tr class="text-end">
-                                    <td>Discount ({{ number_format($discountPercentage, 2) }}%)</td>
-                                    <td class="fw-bold">-{{ number_format($discount, 2) }}</td>
+                                    <td>Discount ({{ number_format($discountPercent, 2) }}%)</td>
+                                    <td class="fw-bold">-{{ number_format($discountAmount, 2) }}</td>
                                 </tr>
                                 <tr class="text-end fw-bold">
                                     <td>Total Amount</td>
-                                    <td class="text-primary">{{ number_format($total, 2) }}</td>
+                                    <td class="text-primary">
+                                        RM <span id="total-amount" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
+                                    </td>
                                 </tr>
+
 
 
                                 </tbody>
@@ -255,6 +258,7 @@
                             </table>
                             <button type="button" class="btn btn-primary" onclick="showStep(2)">Next</button>
                         </div>
+                        <input type="hidden" name="selected_addons" id="selected-addons">
 
                         <div id="step2" class="stepfrom d-none">
                             <input type="hidden" name="slug" value="{{ $slug }}">
@@ -782,44 +786,37 @@
     const step2 = document.getElementById('step2');
     const inputs = step2.querySelectorAll('input[required], select[required], textarea[required]');
     let isValid = true;
-
-    // Loop through all required fields in Step 2
     inputs.forEach(input => {
         if (!input.value.trim()) {
-            input.classList.add('is-invalid'); // Add error styling
+            input.classList.add('is-invalid');
             isValid = false;
         } else {
-            input.classList.remove('is-invalid'); // Remove error styling
+            input.classList.remove('is-invalid');
         }
     });
 
-    return isValid; // Return true if all fields are valid, otherwise false
+    return isValid;
 }
 
 function showStep(step) {
-    // If the user is moving from Step 2 to Step 3, validate Step 2
+
     if (step === 3) {
         const isStep2Valid = validateStep2();
         if (!isStep2Valid) {
-            alert('Please fill out all required fields in Step 2.'); // Show error message
-            return; // Stop from going to Step 3
+            alert('Please fill out all required fields in Step 2.');
+            return;
         }
     }
 
-    // Hide all steps
     document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
-
-    // Show the current step
     document.getElementById('step' + step).classList.remove('d-none');
 
-    // Update wizard indicators (if you have them)
     document.querySelectorAll('.wizard-indicator li').forEach(stepLi => {
         stepLi.classList.remove('active');
     });
     document.getElementById('step' + step).classList.add('active');
 }
 
-// Show the first step initially
 showStep(1);
 
 
@@ -830,16 +827,16 @@ showStep(1);
 
         checkbox.addEventListener("change", function () {
             if (this.checked) {
-                section.classList.remove("d-none"); // Show section
-                section.querySelectorAll("input, textarea, select").forEach(el => el.removeAttribute("disabled")); // Enable inputs
+                section.classList.remove("d-none");
+                section.querySelectorAll("input, textarea, select").forEach(el => el.removeAttribute("disabled"));
             } else {
-                section.classList.add("d-none"); // Hide section
-                section.querySelectorAll("input, textarea, select").forEach(el => el.setAttribute("disabled", "true")); // Disable inputs
+                section.classList.add("d-none");
+                section.querySelectorAll("input, textarea, select").forEach(el => el.setAttribute("disabled", "true"));
             }
         });
     }
 
-    // Attach event listeners
+
     toggleSection("invoice", "invoice-area");
     toggleSection("other-driver", "area_driver");
 
@@ -852,9 +849,50 @@ showStep(1);
             return;
         }
 
-        // Agar Step 2 valid hai to Step 3 show karna hai ya form submit karwana hai
         document.getElementById('checkoutForm').submit();
     }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function updateAddonTotal() {
+            let addonsTotal = 0;
+            let selectedAddons = [];
+            document.querySelectorAll(".input_price_selector").forEach(select => {
+                let price = parseFloat(select.dataset.price) || 0;
+                let quantity = parseInt(select.value) || 0;
+                let addonName = select.closest("tr").querySelector("td b").textContent.trim();
+
+                if (quantity > 0) {
+                    addonsTotal += price * quantity;
+                    selectedAddons.push({
+                        name: addonName,
+                        quantity: quantity,
+                        price: price,
+                        total: (price * quantity).toFixed(2)
+                    });
+                }
+            });
+
+            document.getElementById("addon-price").textContent = addonsTotal.toFixed(2);
+
+            let totalAmountElement = document.getElementById("total-amount");
+            if (totalAmountElement) {
+                let baseTotal = parseFloat(totalAmountElement.dataset.baseTotal) || 0;
+                totalAmountElement.textContent = (baseTotal + addonsTotal).toFixed(2);
+            }
+
+            document.getElementById("selected-addons").value = JSON.stringify(selectedAddons);
+        }
+
+
+        document.querySelectorAll(".input_price_selector").forEach(select => {
+            select.addEventListener("change", updateAddonTotal);
+        });
+
+
+        updateAddonTotal();
+    });
+
 
 </script>
 @endsection
