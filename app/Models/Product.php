@@ -121,7 +121,10 @@ class Product extends Model
         return Category::where('id',$this->category_id)->first();
 
     }
-
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'pro_id');
+    }
 
 
 

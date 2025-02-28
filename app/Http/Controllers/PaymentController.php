@@ -106,7 +106,7 @@ class PaymentController extends Controller
             return redirect()->away("https://toyyibpay.com/{$billCode}");
         }
 
-        return back()->with('error', 'Error processing Toyyibpay payment.');
+        return back()->with('error', 'fill all the feild valid your mobile number also.');
     }
 
     return back()->with('error', 'Please select a valid payment method.');

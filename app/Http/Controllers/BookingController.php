@@ -19,32 +19,39 @@ use Illuminate\Support\Facades\Crypt;
 
 class BookingController extends Controller
 {
-    public function show($slug, Request $request)
-{
-    $today = $request->query('today');
-    $from = $request->query('from');
 
-    $today = \Carbon\Carbon::parse($today);
-    $from = \Carbon\Carbon::parse($from);
+        public function show($slug, Request $request)
+        {
+            $today = $request->query('today');
+            $from = $request->query('from');
 
-    $product = Product::where('slug', $slug)->firstOrFail();
+            $today = \Carbon\Carbon::parse($today);
+            $from = \Carbon\Carbon::parse($from);
+
+            $product = Product::where('slug', $slug)->firstOrFail();
+
+            // Check if the product is already booked in the selected range
+            $isBooked = Order::where('pro_id', $product->id)
+                ->where(function ($query) use ($today, $from) {
+                    $query->whereDate('from_date', '<=', $from)
+                          ->whereDate('to_date', '>=', $today);
+                })
+                ->exists();
+
+            // Fetch similar products that are NOT booked within the date range
+            $similarProducts = Product::where('subcategory_id', $product->subcategory_id)
+                ->where('id', '!=', $product->id)
+                ->whereDoesntHave('orders', function ($query) use ($today, $from) {
+                    $query->whereDate('from_date', '<=', $from)
+                          ->whereDate('to_date', '>=', $today);
+                })
+                ->take(3)
+                ->get();
+
+            return view('theme.booking', compact('product', 'today', 'from', 'isBooked', 'similarProducts'));
+        }
 
 
-
-    $isBooked = Order::where('pro_id', $product->id)
-        ->where(function ($query) use ($today, $from) {
-            $query->whereDate('from_date', '<=', $from)
-                  ->whereDate('to_date', '>=', $today);
-        })
-        ->exists();
-
-    $similarProducts = Product::where('subcategory_id', $product->subcategory_id)
-        ->where('id', '!=', $product->id)
-        ->take(3)
-        ->get();
-
-    return view('theme.booking', compact('product', 'today', 'from', 'isBooked', 'similarProducts'));
-}
 public function show2($data)
 {
 
@@ -60,6 +67,21 @@ public function show2($data)
     $returnLocation = $decodedData['return_location'] ?? null;
     $pickupDate = $decodedData['pickup_date'] ?? null;
     $returnDate = $decodedData['return_date'] ?? null;
+    $pickup_time = $decodedData['pickup_time'] ?? null;
+    $return_time = $decodedData['return_time'] ?? null;
+
+        $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default: Current Date & Time
+        $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default: Next Day Same Time
+
+        if (!empty($pickupDate) && !empty($pickup_time)) {
+            $pickupDateTime = Carbon::parse("$pickupDate $pickup_time")->format('Y-m-d H:i:s');
+        }
+
+        if (!empty($returnDate) && !empty($return_time)) {
+            $returnDateTime = Carbon::parse("$returnDate $return_time")->format('Y-m-d H:i:s');
+        }
+
+        // dd($pickupDateTime, $returnDateTime);
 
 
     $pickupDate = $pickupDate ? \Carbon\Carbon::parse($pickupDate) : null;
@@ -102,19 +124,22 @@ public function show2($data)
 
     $isBooked = $productsQuery->whereNotNull('orders.id')->exists();
 
-    return view('theme.bookingnew', compact('isBooked', 'product', 'availableProducts', 'similarProducts','numberOfRecords'));
+    return view('theme.bookingnew', compact('isBooked', 'product', 'availableProducts', 'similarProducts','numberOfRecords','pickupDateTime','returnDateTime'));
 }
 
 
 
 
-public function index($slug)
+public function index($slug,Request $request)
 {
-    // Fetch booking data using the slug (adjust query based on your database structure)
-    $booking = Product::where('slug', $slug)->firstOrFail();
 
-    // Pass the booking data to the view
-    return view('theme.order', compact('booking','slug'));
+    $booking = Product::where('slug', $slug)->firstOrFail();
+    $today = $request->query('today', Carbon::now()->setTime(6, 0, 0));
+    $from = $request->query('from', Carbon::now()->addDay()->setTime(6, 0, 0));
+    $today = Carbon::parse($today)->setTime(6, 0, 0);
+    $from = Carbon::parse($from)->setTime(6, 0, 0);
+
+    return view('theme.order', compact('booking','slug','today','from'));
 }
 
 

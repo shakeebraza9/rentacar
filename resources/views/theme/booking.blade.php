@@ -60,7 +60,7 @@
                                 @if($isBooked)
                                     <button class="btn btn-secondary" disabled>Already Booked</button>
                                 @else
-                                <a href="{{ route('customers.orders', ['slug' => $product->slug]) }}" class="btn btn-primary">Book Now</a>
+                                <a href="{{ route('customers.orders', ['slug' => $product->slug, 'today' => request('today'), 'from' => request('from')]) }}" class="btn btn-primary">Book Now</a>
 
 
                                 @endif
@@ -125,7 +125,7 @@
 
                                         $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
                                         ?>
-                                        <a href="<?= route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) ?>"
+                                        <a href="<?= route('customers.orders', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) ?>"
                                             class="btn btn-primary">
                                             Book Now
                                         </a>
@@ -150,25 +150,50 @@
   @section('js')
 <script>
 
+    function convertTime(elementId) {
+        let timeStr = document.getElementById(elementId).value.trim();
+        let regex = /(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)/i;
+        let parts = timeStr.match(regex);
+
+        if (!parts) {
+            console.error("Time format is invalid:", timeStr);
+            return timeStr;
+        }
+
+        let hours = parseInt(parts[1], 10);
+        let minutes = parseInt(parts[2], 10);
+        let seconds = parts[3] ? parseInt(parts[3], 10) : 0;
+        let period = parts[4].toUpperCase();
+        if (period === 'PM' && hours < 12) {
+            hours += 12;
+        }
+        if (period === 'AM' && hours === 12) {
+            hours = 0;
+        }
+        let hStr = hours.toString().padStart(2, '0');
+        let mStr = minutes.toString().padStart(2, '0');
+        let sStr = seconds.toString().padStart(2, '0');
+
+        return `${hStr}:${mStr}:${sStr}`;
+    }
     document.getElementById("bookingForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Form ka default submit behavior rokna
         let pickupLocation = document.getElementById("input_pickup").value;
         let returnLocation = document.getElementById("input_return").value;
         let pickupDate = document.getElementById("pickup_date").value;
-        let pickupTime = document.getElementById("start-time").value;
         let returnDate = document.getElementById("return_date").value;
-        let returnTime = document.getElementById("end-time").value;
+
 
         let formData = {
             pickup_location: pickupLocation,
             return_location: returnLocation,
             pickup_date: pickupDate,
-            pickup_time: pickupTime,
+            pickup_time: convertTime("start-time"),
             return_date: returnDate,
-            return_time: returnTime
+            return_time: convertTime("end-time")
         };
 
-        let encodedData = encodeURIComponent(JSON.stringify(formData));
+     let encodedData = encodeURIComponent(JSON.stringify(formData));
         let redirectUrl = "{{ url('/bookingfilter') }}/" + encodedData;
         window.location.href = redirectUrl;
     });
@@ -208,9 +233,9 @@
                     locationmaindiv.style.setProperty("display", "flex", "important");
                     locationmaindiv.style.setProperty("justifyContent", "space-between", "important");
                     locationmaindiv.style.setProperty("width", "40%", "important");
-                    
-                   
-                    
+
+
+
                 } else {
                     returnCol.classList.add("d-none");
 
@@ -220,7 +245,7 @@
             returnCol.style.removeProperty("width");
 
             input_pickup.style.removeProperty("width");
-            
+
             locationmaindiv.style.removeProperty("display");
             locationmaindiv.style.removeProperty("justify-content");
             locationmaindiv.style.removeProperty("width");

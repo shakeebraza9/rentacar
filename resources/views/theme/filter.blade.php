@@ -14,7 +14,7 @@
                     </select>
                 </div>
             </div>
-    
+
             <!-- Return Location (Initially Hidden) -->
             <div id="return_col" class="d-none flex-grow-1">
                 <div class="input-group select2-floating position-relative">
@@ -37,18 +37,18 @@
         <div class="row gx-1 gy-2 gy-md-0 input-group-2-col">
             <div class="col-6 col-md pe-md-0">
                 <div class="form-floating input-group">
-                    
+
                     <input type="text" name="start_date"
-                        class="form-control pe-0" 
+                        class="form-control pe-0"
                         id="pickup_date">
-             
+
                 </div>
             </div>
             <div class="col-6 col-md ps-md-0">
                 <div class="form-floating input-group">
-                    
-                    <!-- <input type="text" name="start_time" class="form-control pe-0"  value="10:00 AM" id="pickup_time"> -->
-                    <select name="start_time" class="form-control pe-0"
+
+
+                    <select id="start-time" name="start_time" class="form-control pe-0"
                         id="start-time">
                         <option value="6:00 AM">6:00 AM</option>
                         <option value="6:15 AM">6:15 AM</option>
@@ -120,23 +120,23 @@
                         <option value="10:45 PM">10:45 PM</option>
                         <option value="11:00 PM">11:00 PM</option>
                     </select>
-                  
+
                 </div>
             </div>
             <div class="col-6 col-md pe-md-0">
                 <div class="form-floating input-group">
-                    
+
                     <input type="text" name="end_date"
                         class="form-control pe-0"
                         id="return_date">
-                  
+
                 </div>
             </div>
             <div class="col-6 col-md ps-md-0">
                 <div class="form-floating input-group">
-                   
-                    <!-- <input type="text" name="end_time" class="form-control pe-0"  value="10:00 AM" id="return_time"> -->
-                    <select name="end_time" class="form-control pe-0"
+
+
+                    <select id="end-time" name="end_time" class="form-control pe-0"
                         id="end-time">
                         <option value="6:00 AM">6:00 AM</option>
                         <option value="6:15 AM">6:15 AM</option>
@@ -208,7 +208,7 @@
                         <option value="10:45 PM">10:45 PM</option>
                         <option value="11:00 PM">11:00 PM</option>
                     </select>
-               
+
                 </div>
             </div>
         </div>

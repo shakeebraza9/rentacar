@@ -76,7 +76,7 @@
                                 <div class="col-md-5">
                                     <h5 class="text-primary">Rental Location</h5>
                                     {{ $booking->pickup_location }}
-                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->pickup_time)) }}</div>
+                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($today)) }}</div>
                                 </div>
                                 <div class="col-md-2 my-auto">
                                     <i class="fas fa-arrow-right"></i>
@@ -84,7 +84,7 @@
                                 <div class="col-md-5">
                                     <h5 class="text-primary">Drop-off Location</h5>
                                     {{ $booking->dropoff_location }}
-                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->dropoff_time)) }}</div>
+                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($from)) }}</div>
                                 </div>
                             </div>
 
@@ -266,6 +266,8 @@
                                         <label for="name" class="form-label">Name</label>
                                         <input class="form-control" type="text" name="name" required
                                             placeholder="Full Name as ID / Passport" id="name">
+                                        <input type="hidden" name="today" value="{{ $today }}">
+                                        <input type="hidden" name="from" value="{{ $from }}">
                                         <div class="invalid-feedback">Please provide a valid name.</div>
                                     </div>
 
