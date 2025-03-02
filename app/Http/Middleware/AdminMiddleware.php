@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class WebMiddleware
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,11 +17,11 @@ class WebMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // Your middleware logic goes here
-        if ($request->user() && $request->user()->role_id == 0) {
-            return $next($request);
+        // Check if the user is authenticated and has role_id = 1 (Admin)
+        if (!Auth::check() || Auth::user()->role_id != 1) {
+            return redirect()->route('weblogin')->with('error', 'Access Denied: Admins Only.');
         }
 
-        return redirect('/login')->with('error', 'You are not authorized to access this page.');
+        return $next($request);
     }
 }

@@ -1,43 +1,25 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Variation extends Model
 {
+    use HasFactory;
+
     protected $table = 'variations';
 
-    /**
-     * The attributes that are mass assignable.
-     * @var array<int, string>
-     */
     protected $fillable = [
-        "id",
-        "product_id",
-        "sku",
+        "ticket_id",
         "quantity",
         "price",
-        "image",
-        "created_at",
-        "updated_at"
+        "type",
     ];
 
-
-     // Relationship to itself for parent-child relationship
-     public function attributes()
-     {
-         return $this->hasMany(VariationAttribute::class, 'variation_id');
-     }
-
-     public function product()
-     {
-         return $this->belongsTo(Product::class, 'product_id');
-     }
-
-  
-
-     
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_id');
+    }
 }

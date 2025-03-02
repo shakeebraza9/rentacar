@@ -49,79 +49,86 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8">
-            <div class="card checkout-card">
-                <div class="checkout-card-header text-center">
-                    <h4>Checkout</h4>
+            <div class="card checkout-card shadow-lg border-0 rounded-3">
+                <div class="checkout-card-header text-center bg-primary text-white py-3 rounded-top">
+                    <h4 class="mb-0">Secure Checkout</h4>
                 </div>
                 <div class="card-body p-4">
 
                     @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
+                        <div class="alert alert-danger text-center">
+                            <i class="bi bi-exclamation-triangle-fill"></i> {{ session('error') }}
                         </div>
                     @endif
 
                     <form action="{{ route('process.payment') }}" method="POST">
                         @csrf
 
-                        {{-- Order ID (Hidden) --}}
+                        <!-- Order ID (Hidden) -->
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
 
-                        {{-- Amount (Hidden) --}}
+                        <!-- Amount (Hidden) -->
                         <input type="hidden" name="amount" value="{{ $order->amount }}">
 
-                        {{-- Name Field --}}
+                        <!-- Name Field -->
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label fw-semibold">Full Name</label>
                             <input type="text"
                                    name="name"
                                    id="name"
-                                   class="form-control"
+                                   class="form-control border border-secondary"
                                    value="{{ $order->buyer_name }}"
                                    required>
                         </div>
 
-                        {{-- Email Field --}}
+                        <!-- Email Field -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label fw-semibold">Email Address</label>
                             <input type="email"
                                    name="email"
                                    id="email"
-                                   class="form-control"
+                                   class="form-control border border-secondary"
                                    value="{{ $order->buyer_email }}"
                                    required>
                         </div>
 
-                        {{-- Phone Number Field --}}
+                        <!-- Phone Number Field -->
                         <div class="mb-3">
-                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <label for="phone_number" class="form-label fw-semibold">Phone Number</label>
                             <input type="text"
                                    name="phone_number"
                                    id="phone_number"
-                                   class="form-control"
+                                   class="form-control border border-secondary"
                                    value="{{ $order->buyer_phone_number }}"
                                    required>
                         </div>
 
-                        {{-- Amount Display --}}
-                        <div class="mb-3">
-                            <label class="form-label">Total Amount</label>
-                            <input type="text" class="form-control" value="{{ number_format($order->amount, 2) }}" readonly>
-                        </div>
-
-                        {{-- Payment Method Toggle Switcher --}}
-                        <div class="mb-4">
-                            <label class="form-label d-block">Select Payment Method</label>
-                            <div class="btn-group d-flex" role="group">
-                                <input type="radio" class="btn-check" name="payment_method" id="paypal" value="paypal" checked required>
-                                <label class="btn btn-outline-primary flex-fill" for="paypal">PayPal</label>
-
-                                <input type="radio" class="btn-check" name="payment_method" id="toyyibpay" value="toyyibpay" required>
-                                <label class="btn btn-outline-primary flex-fill" for="toyyibpay">Toyyibpay</label>
+                        <!-- Amount Display (Styled, Non-Editable) -->
+                        <div class="mb-4 text-center">
+                            <p class="mb-0 fw-bold text-muted">Total Amount</p>
+                            <div class="fs-4 fw-bold text-success">
+                                RM {{ number_format($order->amount, 2) }}
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-lg w-100 text-white">
+                        <!-- Payment Method Toggle Switcher -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold d-block">Select Payment Method</label>
+                            <div class="btn-group d-flex" role="group">
+                                <input type="radio" class="btn-check" name="payment_method" id="paypal" value="paypal" checked required>
+                                <label class="btn btn-outline-primary flex-fill py-2" for="paypal">
+                                    <i class="bi bi-paypal"></i> PayPal
+                                </label>
+
+                                <input type="radio" class="btn-check" name="payment_method" id="toyyibpay" value="toyyibpay" required>
+                                <label class="btn btn-outline-primary flex-fill py-2" for="toyyibpay">
+                                    <i class="bi bi-credit-card"></i> Toyyibpay
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pay Now Button -->
+                        <button type="submit" class="btn btn-lg w-100 btn-primary shadow-sm">
                             <i class="bi bi-lock-fill me-2"></i> Pay Now
                         </button>
                     </form>
@@ -131,4 +138,5 @@
         </div>
     </div>
 </div>
+
 @endsection

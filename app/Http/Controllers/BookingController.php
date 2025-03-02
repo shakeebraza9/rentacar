@@ -157,6 +157,7 @@ public function index($slug, Request $request)
 public function checkout(Request $request)
 {
 
+
     if (!auth()->check()) {
         $request->validate([
             'email' => 'required|email|max:255',
@@ -170,6 +171,7 @@ public function checkout(Request $request)
                 'name' => $request->name ?? 'New User',
                 'email' => $request->email,
                 'created_by' => 1,
+                'role_id' => 0,
                 'password' => Hash::make($randomPassword),
             ]);
 

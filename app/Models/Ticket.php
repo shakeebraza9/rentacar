@@ -18,13 +18,21 @@ class Ticket extends Model
         'discount_price',
         'selling_price',
         'ticket_quantity',
+        'add_ons',
         'status',
     ];
 
-    public $timestamps = true;
+    protected $casts = [
+        'add_ons' => 'array', // Automatically decode JSON when retrieved
+    ];
 
     public function attraction()
     {
         return $this->belongsTo(Attraction::class, 'attraction_id');
+    }
+
+    public function variations()
+    {
+        return $this->hasMany(Variation::class, 'ticket_id');
     }
 }

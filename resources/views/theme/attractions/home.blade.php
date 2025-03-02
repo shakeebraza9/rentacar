@@ -166,7 +166,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -521,12 +521,13 @@
         $('#attractionForm').on('submit', function (e) {
             e.preventDefault();
             var selectedActivity = $('#activity').val();
-           
+
             if (selectedActivity) {
                 if (selectedActivity === 'all') {
                     window.location.href = "{{ route('attractions.detail', 'all') }}";
                 } else {
-                    window.location.href = "{{ url('/attractions/detail/') }}" + selectedActivity;
+
+                    window.location.href = "{{ url('/attractions/detail/') }}" + "/" + selectedActivity;
                 }
             }
         });

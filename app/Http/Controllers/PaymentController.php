@@ -41,7 +41,7 @@ class PaymentController extends Controller
     if ($paymentMethod === 'paypal') {
 
         try {
-            $provider = new PayPalClient;
+            $provider = new \Srmklive\PayPal\Services\PayPal;
             $provider->setApiCredentials(config('services.paypal'));
             $paypalToken = $provider->getAccessToken();
 

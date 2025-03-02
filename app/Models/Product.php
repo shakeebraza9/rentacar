@@ -41,11 +41,7 @@ class Product extends Model
     ];
 
 
-    // Relationship to itself for parent-child relationship
-    public function variations()
-    {
-        return $this->hasMany(Variation::class, 'product_id');
-    }
+
 
      // Relationship to itself for parent-child relationship
      public function collection()

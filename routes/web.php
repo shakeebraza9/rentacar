@@ -38,6 +38,10 @@ Route::get('/attractions/detail/{slug}', [App\Http\Controllers\AttractionsContro
 Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::class, 'attractionslist'])->name('attractions.list');
 
 
+// ticket
+Route::get('/check-ticket-availability/{id}/{quantity}', [App\Http\Controllers\TicketController::class, 'checkAvailability']);
+Route::get('/book-ticket/{id}', [App\Http\Controllers\TicketController::class, 'bookTicket'])->name('book.ticket');
+
 
 
 
@@ -69,18 +73,18 @@ Route::get('/cart/get_cart_details', [App\Http\Controllers\CartController::class
 Route::get('/cart/cart_clear', [App\Http\Controllers\CartController::class, 'cart_clear']);
 Route::get('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'cart_remove']);
 
-//Checkout
-Route::get('/order-tracking', [App\Http\Controllers\CheckoutController::class, 'order_tracking']);
 
+Route::get('/order-tracking', [App\Http\Controllers\CheckoutController::class, 'order_tracking']);
+Route::get('/checkout/{order_id}', [PaymentController::class, 'checkout'])->name('checkout');
 
 Route::get('/order-confirmaton/{id}', [App\Http\Controllers\CheckoutController::class, 'order_confirmaton']);
 Route::post('/checkout/submit', [App\Http\Controllers\CheckoutController::class, 'checkout_submit']);
 Route::get('/get_invoice/{id}', [App\Http\Controllers\CheckoutController::class, 'get_invoice']);
 
-// testing
+
 Route::get('/test', [App\Http\Controllers\HomeController::class, 'test']);
 
-// Website login
+
 Route::get('/login', [App\Http\Controllers\WebAuthController::class, 'login'])->name('weblogin');
 Route::get('/register', [App\Http\Controllers\WebAuthController::class, 'register'])->name('register');
 Route::get('/forgotpassword', [App\Http\Controllers\WebAuthController::class, 'forgotPassword'])->name('forgotpassword');
@@ -88,20 +92,21 @@ Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'c
 Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin'])->name('webpostlogin');
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
 
-// dashboard login Group
-Route::middleware(['webLoginChk'])->group(function () {
-  Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
-  Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
-  Route::get('/profile', [App\Http\Controllers\CustomerController::class, 'profile'])->name('customer.profile');
-  Route::get('/customer/users/chnagepassword', [App\Http\Controllers\CustomerController::class, 'chnagepassword'])->name('chngpassword');
-  Route::post('/customer/users/changepassword', [App\Http\Controllers\CustomerController::class, 'changePassword'])->name('customer.changePassword');
-  Route::get('/customer/users/updateprofile', [App\Http\Controllers\CustomerController::class, 'updateprofile'])->name('updateprofile');
-  Route::post('/customer/users/updateprofile', [App\Http\Controllers\CustomerController::class, 'updateprofilepost'])->name('profile.update');
-  Route::get('/customer/users/userbankaccount', [App\Http\Controllers\CustomerController::class, 'userbankaccount'])->name('userbankaccount');
-  Route::post('/customer/users/updatebankdetails', [App\Http\Controllers\CustomerController::class, 'updateBankDetails'])->name('updateBankDetails');
 
-  Route::get('/carts', [App\Http\Controllers\CustomerController::class, 'carts'])->name('customer.carts');
+    Route::middleware(['webLoginChk'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
+    Route::get('/profile', [App\Http\Controllers\CustomerController::class, 'profile'])->name('customer.profile');
+    Route::get('/customer/users/chnagepassword', [App\Http\Controllers\CustomerController::class, 'chnagepassword'])->name('chngpassword');
+    Route::post('/customer/users/changepassword', [App\Http\Controllers\CustomerController::class, 'changePassword'])->name('customer.changePassword');
+    Route::get('/customer/users/updateprofile', [App\Http\Controllers\CustomerController::class, 'updateprofile'])->name('updateprofile');
+    Route::post('/customer/users/updateprofile', [App\Http\Controllers\CustomerController::class, 'updateprofilepost'])->name('profile.update');
+    Route::get('/customer/users/userbankaccount', [App\Http\Controllers\CustomerController::class, 'userbankaccount'])->name('userbankaccount');
+    Route::post('/customer/users/updatebankdetails', [App\Http\Controllers\CustomerController::class, 'updateBankDetails'])->name('updateBankDetails');
+
+    Route::get('/carts', [App\Http\Controllers\CustomerController::class, 'carts'])->name('customer.carts');
     Route::get('/history', [App\Http\Controllers\CustomerController::class, 'history'])->name('customer.history');
+    Route::get('/orderdetails/{id}', [App\Http\Controllers\CustomerController::class, 'details'])->name('order.details');
     Route::get('/referral', [App\Http\Controllers\CustomerController::class, 'referral'])->name('customer.referral');
     Route::get('/cases', [App\Http\Controllers\CustomerController::class, 'cases'])->name('customer.cases');
 });
@@ -111,7 +116,7 @@ Route::middleware(['webLoginChk'])->group(function () {
 Route::get('/admin/login', [App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login');
 Route::post('/admin/login_submit', [App\Http\Controllers\Admin\AuthController::class, 'login_submit']);
 
-Route::middleware(['web', 'auth'])->group(function () {
+Route::middleware(['web', 'auth', 'admin'])->group(function () {
 
 Route::get('/admin/update_file_url', [App\Http\Controllers\Admin\DashboardController::class, 'update_file_url']);
 Route::get('/admin/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout']);
@@ -268,7 +273,7 @@ Route::get('/admin/categories/create', [App\Http\Controllers\Admin\CategoryContr
 
 
     // payments
-    Route::get('/checkout/{order_id}', [PaymentController::class, 'checkout'])->name('checkout');
+
 
     Route::post('/process-payment', [PaymentController::class, 'processPayment'])->name('process.payment');
     Route::get('/payment/success{order_id}', [PaymentController::class, 'success'])->name('payment.success');

@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\AccountDetail;
-;
+use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class CustomerController extends Controller
 {
@@ -136,11 +137,44 @@ class CustomerController extends Controller
         return view('theme.carts');
     }
 
-    public function history()
+    public function history(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('weblogin')->with('error', 'Please log in to view your order history.');
+        }
 
-        return view('theme.history');
+        $sortable = ['id', 'from_date', 'to_date', 'payment_status'];
+
+        $sort = in_array($request->query('sort'), $sortable) ? $request->query('sort') : 'created_at';
+        $direction = $request->query('direction') === 'asc' ? 'asc' : 'desc';
+
+
+        $query = Order::where('userid', Auth::id());
+        if ($request->has('payment_status') && $request->payment_status !== '') {
+            $query->where('payment_status', $request->payment_status);
+        }
+        $orders = $query->orderBy($sort, $direction)->get();
+
+        return view('theme.history', compact('orders', 'sort', 'direction', 'request'));
     }
+    public function details(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('weblogin')->with('error', 'Please log in to view your order history.');
+        }
+
+        try {
+            $order_id = Crypt::decryptString($id);
+            $order = Order::with('product')->where('id', $order_id)->firstOrFail();
+        } catch (\Exception $e) {
+            return redirect()->route('history')->with('error', 'Invalid order ID.');
+        }
+
+        return view('theme.order-details', compact('order'));
+    }
+
+
+
 
     public function referral()
     {

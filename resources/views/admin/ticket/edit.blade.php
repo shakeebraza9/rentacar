@@ -61,54 +61,144 @@
 <div class="row">
     <div class="col-md-12">
         <section class="card">
-            <header class="card-header bg-info">
-                <h4 class="mb-0 text-white">Edit Ticket</h4>
-            </header>
+
             <div class="card-body">
-                <form method="POST" action="{{ route('ticket.update', Crypt::encryptString($ticket->id)) }}">
+                <form method="post" action="{{ route('ticket.update', Crypt::encryptString($ticket->id)) }}">
                     @csrf
-                    <div class="form-group row">
-                        <label for="title" class="col-md-2 col-form-label">Title</label>
-                        <div class="col-md-10">
-                            <input type="text" id="title" name="title" class="form-control" value="{{ $ticket->title }}" required>
+                    @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="card">
+                            <header class="card-header bg-info">
+                                <h4 class="mb-0 text-white">Edit Ticket Details</h4>
+                            </header>
+                            <div class="card-body">
+                                <!-- Select Attraction -->
+                                <div class="form-group row">
+                                    <label for="attraction" class="col-md-2 col-form-label">Select Attraction</label>
+                                    <div class="col-md-10">
+                                        <select id="attraction" name="attraction_id" class="form-control">
+                                            @foreach($attractions as $attraction)
+                                                <option value="{{ $attraction->id }}" {{ old('attraction_id', $ticket->attraction_id) == $attraction->id ? 'selected' : '' }}>
+                                                    {{ $attraction->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Title -->
+                                <div class="form-group row">
+                                    <label for="title" class="col-md-2 col-form-label">Title</label>
+                                    <div class="col-md-10">
+                                        <input type="text" id="title" name="title" class="form-control" placeholder="Enter Title" value="{{ old('title', $ticket->title) }}">
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="form-group row">
+                                    <label for="description" class="col-md-2 col-form-label">Description</label>
+                                    <div class="col-md-10">
+                                        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter Description">{{ old('description', $ticket->description) }}</textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Prices -->
+                                <div class="form-group row">
+                                    <label for="discount_price" class="col-md-2 col-form-label">Discount Price</label>
+                                    <div class="col-md-4">
+                                        <input type="number" id="discount_price" name="discount_price" class="form-control" placeholder="Enter Discount Price" value="{{ old('discount_price', $ticket->discount_price) }}">
+                                    </div>
+                                    <label for="selling_price" class="col-md-2 col-form-label">Selling Price</label>
+                                    <div class="col-md-4">
+                                        <input type="number" id="selling_price" name="selling_price" class="form-control" placeholder="Enter Selling Price" value="{{ old('selling_price', $ticket->selling_price) }}">
+                                    </div>
+                                </div>
+
+                                <!-- Ticket Quantity -->
+                                <div class="form-group row">
+                                    <label for="ticket_quantity" class="col-md-2 col-form-label">Ticket Quantity</label>
+                                    <div class="col-md-10">
+                                        <input type="number" id="ticket_quantity" name="ticket_quantity" class="form-control" placeholder="Enter Ticket Quantity" value="{{ old('ticket_quantity', $ticket->ticket_quantity) }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                    <!-- Variations Section -->
+                    <div class="card shadow-lg border-0 rounded-3 mt-4">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h5 class="mb-0">Variations</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Children Quantity</label>
+                                    <input type="number" name="child_quantity" class="form-control" value="{{ old('child_quantity', $ticket->variations->where('type', 'child')->first()->quantity ?? 1) }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Children Price</label>
+                                    <input type="text" name="child_price" class="form-control" value="{{ old('child_price', $ticket->variations->where('type', 'child')->first()->price ?? 0) }}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Adult Quantity</label>
+                                    <input type="number" name="adult_quantity" class="form-control" value="{{ old('adult_quantity', $ticket->variations->where('type', 'adult')->first()->quantity ?? 1) }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Adult Price</label>
+                                    <input type="text" name="adult_price" class="form-control" value="{{ old('adult_price', $ticket->variations->where('type', 'adult')->first()->price ?? 0) }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="description" class="col-md-2 col-form-label">Description</label>
-                        <div class="col-md-10">
-                            <textarea id="description" name="description" class="form-control" rows="4">{{ $ticket->description }}</textarea>
+
+                    <!-- Add-ons Section -->
+                    <div class="card shadow-lg border-0 rounded-3 mt-4">
+                        <div class="card-header bg-info text-white text-center">
+                            <h5 class="mb-0">Add-ons</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="addons-container">
+                                @foreach(json_decode($ticket->add_ons, true) ?? [] as $addon)
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <input type="text" name="addon_name[]" class="form-control" value="{{ $addon['name'] }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" name="addon_description[]" class="form-control" value="{{ $addon['description'] }}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" name="addon_price[]" class="form-control" value="{{ $addon['price'] }}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" name="addon_quantity[]" class="form-control" value="{{ $addon['quantity'] }}">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="discount_price" class="col-md-2 col-form-label">Discount Price</label>
-                        <div class="col-md-4">
-                            <input type="text" id="discount_price" name="discount_price" class="form-control" value="{{ $ticket->discount_price }}">
-                        </div>
-                        <label for="selling_price" class="col-md-2 col-form-label">Selling Price</label>
-                        <div class="col-md-4">
-                            <input type="text" id="selling_price" name="selling_price" class="form-control" value="{{ $ticket->selling_price }}" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="ticket_quantity" class="col-md-2 col-form-label">Ticket Quantity</label>
-                        <div class="col-md-4">
-                            <input type="number" id="ticket_quantity" name="ticket_quantity" class="form-control" value="{{ $ticket->ticket_quantity }}" required>
-                        </div>
-                        <label for="status" class="col-md-2 col-form-label">Status</label>
-                        <div class="col-md-4">
-                            <select id="status" name="status" class="form-control">
-                                <option value="active" {{ $ticket->status === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ $ticket->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row text-center">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-success">Update Ticket</button>
-                            <a href="{{ route('ticket.index') }}" class="btn btn-secondary">Cancel</a>
-                        </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-success">Update Ticket</button>
                     </div>
                 </form>
+
             </div>
         </section>
     </div>

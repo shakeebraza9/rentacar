@@ -33,12 +33,12 @@ class AttractionsController extends Controller
         $attractions  = Attraction::where('status',1)->get();
         $reviews = ProductReview::join('users', 'product_reviews.user_id', '=', 'users.id')
         ->join('products', 'product_reviews.product_id', '=', 'products.id')
-        ->join('filemanager', 'products.image', '=', 'filemanager.id') // Join with filemanager
+        ->join('filemanager', 'products.image', '=', 'filemanager.id')
         ->select('product_reviews.*',
                  'users.name as user_name',
                  'users.email as user_email',
                  'products.title as product_name',
-                 'filemanager.path as image_path') // Select image path from filemanager
+                 'filemanager.path as image_path')
         ->where('product_reviews.active', 1)
         ->get();
 
@@ -52,7 +52,7 @@ class AttractionsController extends Controller
     {
         // Find the attraction by slug
         $attraction = Attraction::where('slug', $slug)->first();
-     
+
 
         if (!$attraction) {
             return abort(404, 'Attraction not found');

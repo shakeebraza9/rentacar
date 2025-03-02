@@ -42,7 +42,8 @@ $attractions= MenuHelper::getsubAttractions(45);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 
 @yield('css')
 </head>
@@ -241,7 +242,7 @@ $attractions= MenuHelper::getsubAttractions(45);
 
                  <br>
                     {!! nl2br(getset('email_address')) !!}<br>
-                  
+
                 </div>
             </div>
 
@@ -250,7 +251,7 @@ $attractions= MenuHelper::getsubAttractions(45);
                 <ul class="list-footer-socmed">
                     <li>
                         <a href="{!! nl2br(getset('facebook_link')) !!}" target="_blank"><i class="fab fa-facebook"></i></a>                    </li>
-                  
+
                     <li>
                         <a href="{!! nl2br(getset('instagram_link')) !!}" target="_blank"><i class="fab fa-instagram"></i></a>                    </li>
                     <li>
@@ -278,7 +279,7 @@ $attractions= MenuHelper::getsubAttractions(45);
         </div>
     </div>
 
-    
+
 </footer>
 
 
