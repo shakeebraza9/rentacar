@@ -1,5 +1,5 @@
 <section class="card">
-    <header class="card-header bg-info">
+    <header class="card-header" style="background-color: #6b0909">
         <h4 class="mb-0 text-white">Car Type</h4>
     </header>
     <div class="card-body">
@@ -16,13 +16,13 @@
                 <option value="Luxury_SUV" {{ $product->type == 'Luxury_SUV' ? 'selected' : '' }}>Luxury SUV</option>
                 <option value="Luxury_Sedan" {{ $product->type == 'Luxury_Sedan' ? 'selected' : '' }}>Luxury Sedan</option>
                 <option value="Other" {{ $product->type == 'Other' ? 'selected' : '' }}>Other</option>
-              
+
             </select>
         </div>
     </div>
 </section>
 <section class="card">
-    <header class="card-header bg-info">
+    <header class="card-header " style="background-color: #6b0909">
         <h4 class="mb-0 text-white">Car Brand</h4>
     </header>
     <div class="card-body">
@@ -47,7 +47,7 @@
 
 
 <section class="card">
-    <header class="card-header bg-info">
+    <header class="card-header" style="background-color: #6b0909">
         <h4 class="mb-0 text-white">Information Dicount</h4>
     </header>
     <div class="card-body">

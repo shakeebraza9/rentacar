@@ -51,7 +51,7 @@
                         <section class="card">
                             <header class="card-header d-flex justify-content-between align-items-center" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white">All Attractions List</h4>
-                                <a href="{{ route('attractions.create') }}" class="btn btn-dark">Create New</a>
+                                <a href="{{ route('attractions.create') }}" class="btn bg-info">Create New</a>
                             </header>
 
                         <div class="card-body">

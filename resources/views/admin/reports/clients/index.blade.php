@@ -7,7 +7,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/dataTable
 href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css')}}">
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -18,11 +18,11 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
-    
+
 
     .dataTables_filter{
         display: none!important;
@@ -114,7 +114,7 @@ button.btn_pdf {
 }
 
 button.btn_pdf:hover {
-    background-color: darkred; 
+    background-color: darkred;
 }
 
 button.btn_exe {
@@ -122,7 +122,7 @@ button.btn_exe {
 }
 
 button.btn_exe:hover {
-    background-color: darkgreen; 
+    background-color: darkgreen;
 }
 </style>
 @endsection
@@ -130,7 +130,7 @@ button.btn_exe:hover {
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL CUSTOMERS LIST 
+            <h4 class="text-themecolor">ALL CUSTOMERS LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -148,10 +148,10 @@ button.btn_exe:hover {
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white" >All Customer Filters</h4>
                             </header>
-                        <div class="card-body">    
+                        <div class="card-body">
                           <div class="table-responsive m-t-40">
                           <div class="container">
     <form id="orderForm">
@@ -169,7 +169,7 @@ button.btn_exe:hover {
                 <input type="tel" class="phone" id="phone" name="phone" ><br>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col">
                 <label for="address">Address:</label><br>
@@ -184,7 +184,7 @@ button.btn_exe:hover {
                 <input type="number" class="totalAmount" id="totalAmount" name="totalAmount" ><br><br>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col">
                 <label for="paymentMethod">Payment Method:</label><br>
@@ -201,7 +201,7 @@ button.btn_exe:hover {
                     <option value="1">Completed</option>
                 </select><br>
             </div>
-            
+
             <div class="col">
                 <label for="paymentStatus">Payment Status:</label><br>
                 <select id="paymentStatus" class="paymentStatus" name="paymentStatus" >
@@ -221,7 +221,7 @@ button.btn_exe:hover {
                 <input type="date" class="endDate" id="endDate" name="endDate" ><br>
             </div>
         </div>
-        
+
         <div class="sidebar">
             <button type="button" class="search_result" id="searchorders">Search</button>
             <button class="btn_pdf">Export PDF</button>
@@ -229,7 +229,7 @@ button.btn_exe:hover {
         </div>
     </form>
 </div>
-                           
+
                     </div>
                     </div>
                 </div>
@@ -240,19 +240,19 @@ button.btn_exe:hover {
                             <header class="card-header bg-info">
                                 <h4 class="mb-0 text-white" >All Customer List</h4>
                             </header>
-                        <div class="card-body">    
+                        <div class="card-body">
                           <div class="table-responsive m-t-40">
                           <div class="container">
       <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
-                                       
+
                                         <tr class="" >
-                                            <th>Order id</th> 
-                                            <th>Order Date</th>   
+                                            <th>Order id</th>
+                                            <th>Order Date</th>
                                             <th>Customer name</th>
                                             <th>Email</th>
-                                            <th>Phone </th>    
-                                            <th>Address</th>   
+                                            <th>Phone </th>
+                                            <th>Address</th>
                                             <th>Order status</th>
                                             <th>Payment method</th>
                                             <th>Payment status</th>
@@ -272,24 +272,24 @@ button.btn_exe:hover {
 
 @endsection
  @section('js')
-        
+
        <script src="{{asset('public/admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
-      
-    
+
+
 
        <script>
         $(function () {
-            
+
             var application_table = $('.mydatatable').DataTable({
             processing: true,
-            "searching": true,  
+            "searching": true,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
             // scrollY: '500px',
-            autoWidth: false, 
+            autoWidth: false,
             dom: 'lfrtip',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
@@ -308,34 +308,34 @@ button.btn_exe:hover {
                     d.paymentStatus = $('.paymentStatus').val();
                     d.startDate = $('.startDate').val();
                     d.endDate = $('.endDate').val();
-                   
-                    
 
-                   
+
+
+
                 }
             },
-            initComplete: function () {  
+            initComplete: function () {
                 $('.js-switch').each(function () {
                    new Switchery($(this)[0], $(this).data());
-                 });               
+                 });
             }
         });
-        $('.search_result').click(function(){          
+        $('.search_result').click(function(){
             application_table.draw();
             // alert("hello");
         });
         // $('input[type=search]').unbind();
-        $("#searchButton").click(e =>{ 
+        $("#searchButton").click(e =>{
             application_table.search($('input[type=search]').val());
             application_table.draw();
         });
 
-        $("#example23 thead .row-checkbox").change(function (e) { 
+        $("#example23 thead .row-checkbox").change(function (e) {
             var isChecked = $(this).prop('checked');
             $('#example23 tbody .row-checkbox').prop('checked', isChecked);
         });
 
       });
-      
+
     </script>
 @endsection

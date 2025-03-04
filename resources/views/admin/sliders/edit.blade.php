@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Edit Slider</h4>
             </header>
             <div class="card-body">

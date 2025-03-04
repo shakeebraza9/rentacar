@@ -3,7 +3,7 @@
 
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -14,11 +14,11 @@
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
-    
+
 
     .dataTables_filter{
         display: none!important;
@@ -49,77 +49,77 @@
         <div class="row">
             <div class="col-md-12 col-lg-9">
                 <div class="card">
-                    <div class="card-header bg-info">
+                    <div class="card-header" style="background-color: #6b0909">
                         <h5 class="m-b-0 text-white">Customer Details</h5>
                     </div>
                     <div class="card-body">
 
-                    
-              
+
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Customer Name</label>
-                                <input type="text" value="{{$data->customer_name}}" name="customer_name" class="form-control" 
+                                <input type="text" value="{{$data->customer_name}}" name="customer_name" class="form-control"
                                 placeholder="Customer Name">
                                 @if($errors->has('customer_name'))
                                 <p class="invalid-feedback" >{{ $errors->first('customer_name') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Customer Phone</label>
-                                <input type="text" value="{{$data->customer_phone}}" name="customer_phone" class="form-control" 
+                                <input type="text" value="{{$data->customer_phone}}" name="customer_phone" class="form-control"
                                 placeholder="Customer Phone">
                                 @if($errors->has('customer_name'))
                                 <p class="invalid-feedback" >{{ $errors->first('customer_name') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Customer Email</label>
-                                <input type="text" value="{{$data->customer_email}}" name="customer_email" class="form-control" 
+                                <input type="text" value="{{$data->customer_email}}" name="customer_email" class="form-control"
                                 placeholder="Customer Email">
                                 @if($errors->has('customer_email'))
                                 <p class="invalid-feedback" >{{ $errors->first('customer_email') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Country</label>
-                                <input type="text" value="{{$data->country}}" name="country" class="form-control" 
+                                <input type="text" value="{{$data->country}}" name="country" class="form-control"
                                 placeholder="Country">
                                 @if($errors->has('country'))
                                 <p class="invalid-feedback" >{{ $errors->first('country') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">City</label>
-                                <input type="text" value="{{$data->city}}" name="city" class="form-control" 
+                                <input type="text" value="{{$data->city}}" name="city" class="form-control"
                                 placeholder="City">
                                 @if($errors->has('city'))
                                 <p class="invalid-feedback" >{{ $errors->first('city') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Street Address</label>
-                                <input type="text" value="{{$data->address}}" name="address" class="form-control" 
+                                <input type="text" value="{{$data->address}}" name="address" class="form-control"
                                 placeholder="Address">
                                 @if($errors->has('address'))
                                 <p class="invalid-feedback" >{{ $errors->first('address') }}</p>
-                                @endif 
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -153,13 +153,13 @@
                                     </td>
                                     <td >PKR {{$item->price}}</td>
                                     <td>{{$item->quantity}}</td>
-                                    <td width="150" align="center" class="font-500">PKR {{$item->total}}</td>                            
+                                    <td width="150" align="center" class="font-500">PKR {{$item->total}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
                                     <th colspan="4" class="text-end" >Grand Total</th>
                                     <td width="150" align="center" class="font-500">
-                                        PKR {{$data->grandtotal}}</td>                            
+                                        PKR {{$data->grandtotal}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -176,16 +176,16 @@
                     <h5 class="m-b-0 text-white">Status</h5>
                 </div>
                 <div class="card-body">
-                    
+
                     <div class="form-group">
                         <label class="form-label" >Tracking Id</label>
-                        <input type="text" value="{{$data->tracking_id}}" 
-                            name="tracking_id" 
-                            class="form-control" 
+                        <input type="text" value="{{$data->tracking_id}}"
+                            name="tracking_id"
+                            class="form-control"
                             placeholder="Tracking Id">
                             @if($errors->has('tracking_id'))
                             <p class="invalid-feedback" >{{ $errors->first('tracking_id') }}</p>
-                            @endif 
+                            @endif
                     </div>
 
                     <div class="form-group">
@@ -197,7 +197,7 @@
                             </select>
                             @if($errors->has('order_status'))
                             <p class="invalid-feedback" >{{ $errors->first('order_status') }}</p>
-                            @endif 
+                            @endif
                     </div>
 
                     <div class="form-group">
@@ -207,7 +207,7 @@
                             </select>
                             @if($errors->has('payment_method'))
                             <p class="invalid-feedback" >{{ $errors->first('payment_method') }}</p>
-                            @endif 
+                            @endif
                     </div>
 
                     <div class="form-group">
@@ -218,8 +218,8 @@
                             </select>
                             @if($errors->has('payment_method'))
                             <p class="invalid-feedback" >{{ $errors->first('payment_method') }}</p>
-                            @endif 
-                    </div>                
+                            @endif
+                    </div>
                 </div>
             </div>
 
@@ -241,7 +241,7 @@
                     Download</a>
                 </div>
             </div>
-            
+
          </div>
       </div>
 
@@ -256,11 +256,11 @@
  </div>
 @endsection
  @section('js')
-        
+
 
        <script>
         $(function () {
-     
+
 
          });
     </script>

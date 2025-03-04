@@ -6,9 +6,9 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/dataTable
 <link rel="stylesheet" type="text/css"
 href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css')}}">
 <link href="{{asset('public/admin/assets/node_modules/switchery/dist/switchery.min.css')}}" rel="stylesheet" type="text/css" />
- 
+
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -18,7 +18,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
     }
 
     @media (max-width: 767px){
-        .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {       
+        .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
             overflow: scroll!important;
         }
     }
@@ -29,7 +29,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL CATEGORIES LIST 
+            <h4 class="text-themecolor">ALL CATEGORIES LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -46,10 +46,10 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white" >All Categories List</h4>
                             </header>
-                        <div class="card-body">    
+                        <div class="card-body">
                           <div class="table-responsive m-t-40">
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
@@ -76,27 +76,27 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
 @endsection
  @section('js')
- 
-      
+
+
        <!-- This is data table -->
        <script src="{{asset('public/admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/switchery/dist/switchery.min.js')}}"></script>
-    
+
 
        <script>
         $(function () {
 
-        
+
             var application_table = $('.mydatatable').DataTable({
             processing: true,
-            "searching": true,  
+            "searching": true,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
             // scrollY: '500px',
-            autoWidth: false, 
+            autoWidth: false,
             dom: 'lfrtip',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
@@ -107,28 +107,28 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                     console
                 }
             },
-            initComplete: function () {  
+            initComplete: function () {
                 // $('.js-switch').each(function () {
                 //    new Switchery($(this)[0], $(this).data());
-                //  });               
+                //  });
             }
         });
 
         application_table.on( 'draw', function () {
             $('.js-switch').each(function () {
                new Switchery($(this)[0], $(this).data());
-            }); 
+            });
         } );
 
-        
+
 
         // $('input[type=search]').unbind();
-        $("#searchButton").click(e =>{ 
+        $("#searchButton").click(e =>{
             application_table.search($('input[type=search]').val());
             application_table.draw();
         });
 
-    
+
 
         $(".mydatatable").delegate(".is_enable", "change", function(){
             var isChecked = $(this).prop('checked');
@@ -142,10 +142,10 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 },
                 dataType: "json",
                 success: function (response) {
-                    
+
                 },
                 errror:function (response) {
-                    
+
                 },
             });
             console.log(isChecked);
@@ -164,17 +164,17 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 },
                 dataType: "json",
                 success: function (response) {
-                    
+
                 },
                 errror:function (response) {
-                    
+
                 },
             });
             console.log(isChecked);
         });
 
 
-      
+
       });
     </script>
 @endsection

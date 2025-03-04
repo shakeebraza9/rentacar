@@ -78,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white">Edit Ticket Details</h4>
                             </header>
                             <div class="card-body">
@@ -168,7 +168,7 @@
 
                     <!-- Add-ons Section -->
                     <div class="card shadow-lg border-0 rounded-3 mt-4">
-                        <div class="card-header bg-info text-white text-center">
+                        <div class="card-header text-white text-center" style="background-color: #6b0909">
                             <h5 class="mb-0">Add-ons</h5>
                         </div>
                         <div class="card-body">

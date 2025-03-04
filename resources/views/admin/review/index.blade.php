@@ -46,7 +46,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white" >All Categories List</h4>
                             </header>
                         <div class="card-body">

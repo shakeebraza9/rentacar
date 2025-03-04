@@ -1,5 +1,5 @@
 <section class="card">
-    <header class="card-header bg-info">
+    <header class="card-header" style="background-color: #6b0909">
         <h4 class="mb-0 text-white">Select Category</h4>
     </header>
     <div class="card-body">
@@ -9,23 +9,23 @@
                 <option value="">Select a Category</option>
                 @foreach($categories as $category)
                     <?php $subcats = $category->children; ?>
-                    <option 
-                        data-slug="{{ $category->slug }}" 
-                        @if($product->category_id == $category->id) selected @endif 
+                    <option
+                        data-slug="{{ $category->slug }}"
+                        @if($product->category_id == $category->id) selected @endif
                         value="{{ $category->id }}">
                         {{ $category->title }}
                     </option>
                     @foreach($subcats as $child)
-                        <option 
-                            data-slug="{{ $child->slug }}" 
-                            @if($product->category_id == $child->id) selected @endif 
+                        <option
+                            data-slug="{{ $child->slug }}"
+                            @if($product->category_id == $child->id) selected @endif
                             value="{{ $child->id }}">
                             ---- {{ $child->title }}
                         </option>
                         @foreach($child->children as $subchild)
-                            <option 
-                                data-slug="{{ $subchild->slug }}" 
-                                @if($product->category_id == $subchild->id) selected @endif 
+                            <option
+                                data-slug="{{ $subchild->slug }}"
+                                @if($product->category_id == $subchild->id) selected @endif
                                 value="{{ $subchild->id }}">
                                 --------- {{ $subchild->title }}
                             </option>
@@ -37,32 +37,32 @@
                 <p class="invalid-feedback">{{ $errors->first('category_id') }}</p>
             @endif
         </div>
-     
+
         <div id="additional-fields" style="{{ $product->category_id == 44 ? 'display: block;' : 'display: none;' }}">
             <!-- Passenger Category Input -->
             <div id="passenger-fields">
                 <label for="passenger_number">Passenger Number</label>
                 <input type="number" name="passenger_number" id="passenger_number"
-                       value="{{ optional($product_details->firstWhere('key_title', 'passenger_number'))->value ?? '' }}" 
+                       value="{{ optional($product_details->firstWhere('key_title', 'passenger_number'))->value ?? '' }}"
                        class="form-control">
             </div>
-        
+
             <!-- Baggage Category Input -->
             <div id="baggage-fields">
                 <label for="baggage_number">Baggage Number</label>
                 <input type="number" name="baggage_number" id="baggage_number"
-                       value="{{ optional($product_details->firstWhere('key_title', 'baggage_number'))->value ?? '' }}" 
+                       value="{{ optional($product_details->firstWhere('key_title', 'baggage_number'))->value ?? '' }}"
                        class="form-control">
             </div>
-        
+
             <!-- Door Category Input -->
             <div id="door-fields">
                 <label for="door_number">Door Number</label>
                 <input type="number" name="door_number" id="door_number"
-                       value="{{ optional($product_details->firstWhere('key_title', 'door_number'))->value ?? '' }}" 
+                       value="{{ optional($product_details->firstWhere('key_title', 'door_number'))->value ?? '' }}"
                        class="form-control">
             </div>
-        
+
             <!-- Aircond Category Input -->
             <div id="aircond-fields">
                 <label for="aircond">Air Conditioning</label>
@@ -71,15 +71,15 @@
                     <option value="no" {{ optional($product_details->firstWhere('key_title', 'aircond'))->value == 'no' ? 'selected' : '' }}>No</option>
                 </select>
             </div>
-        
+
             <!-- Transmission Category Input -->
             <div id="transmission-fields">
                 <label for="transmission">Transmission</label>
                 <input type="text" name="transmission" id="transmission"
-                       value="{{ optional($product_details->firstWhere('key_title', 'transmission'))->value ?? '' }}" 
+                       value="{{ optional($product_details->firstWhere('key_title', 'transmission'))->value ?? '' }}"
                        class="form-control">
             </div>
-        
+
             <!-- Oil Type Category Input -->
             <div id="oil-type-fields">
                 <label for="oil_type">Oil Type</label>
@@ -90,8 +90,8 @@
                 </select>
             </div>
         </div>
-        
-        
+
+
 
         </section>
 
