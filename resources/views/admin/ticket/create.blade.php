@@ -104,47 +104,78 @@
                 </div>
             </div>
 
-            <!-- Variations Section -->
+
             <div class="card shadow-lg border-0 rounded-3 mt-4">
                 <div class="card-header bg-primary text-white text-center">
                     <h5 class="mb-0">Variations</h5>
                 </div>
                 <div class="card-body">
+                    <!-- Children Section -->
                     <div class="row mb-3">
                         <!-- Children Quantity -->
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-floating">
                                 <input type="number" id="child-quantity" name="child_quantity" class="form-control" placeholder="1" min="1" value="{{ old('child_quantity', 1) }}">
                                 <label for="child-quantity">Children Quantity</label>
                             </div>
                         </div>
                         <!-- Children Price -->
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-floating">
                                 <input type="text" id="child-price" name="child_price" class="form-control" placeholder="10.00" value="{{ old('child_price', 10.00) }}">
-                                <label for="child-price">Price for Children (RM)</label>
+                                <label for="child-price">Price (RM)</label>
+                            </div>
+                        </div>
+                        <!-- From Date -->
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="date" id="child-from-date" name="child_from_date" class="form-control" value="{{ old('child_from_date') }}">
+                                <label for="child-from-date">From Date</label>
+                            </div>
+                        </div>
+                        <!-- To Date -->
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="date" id="child-to-date" name="child_to_date" class="form-control" value="{{ old('child_to_date') }}">
+                                <label for="child-to-date">To Date</label>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Adults Section -->
                     <div class="row">
-                        <!-- Adults Quantity -->
-                        <div class="col-md-4">
+                        <!-- Adult Quantity -->
+                        <div class="col-md-3">
                             <div class="form-floating">
                                 <input type="number" id="adult-quantity" name="adult_quantity" class="form-control" placeholder="1" min="1" value="{{ old('adult_quantity', 1) }}">
                                 <label for="adult-quantity">Adult Quantity</label>
                             </div>
                         </div>
-                        <!-- Adults Price -->
-                        <div class="col-md-4">
+                        <!-- Adult Price -->
+                        <div class="col-md-3">
                             <div class="form-floating">
                                 <input type="text" id="adult-price" name="adult_price" class="form-control" placeholder="20.00" value="{{ old('adult_price', 20.00) }}">
-                                <label for="adult-price">Price for Adults (RM)</label>
+                                <label for="adult-price">Price (RM)</label>
+                            </div>
+                        </div>
+                        <!-- From Date -->
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="date" id="adult-from-date" name="adult_from_date" class="form-control" value="{{ old('adult_from_date') }}">
+                                <label for="adult-from-date">From Date</label>
+                            </div>
+                        </div>
+                        <!-- To Date -->
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="date" id="adult-to-date" name="adult_to_date" class="form-control" value="{{ old('adult_to_date') }}">
+                                <label for="adult-to-date">To Date</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Add-ons Section -->
             <div class="card shadow-lg border-0 rounded-3 mt-4">
@@ -265,6 +296,10 @@
             }
         });
     });
+
+
+
+
     </script>
 
 

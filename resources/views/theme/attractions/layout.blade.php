@@ -14,11 +14,12 @@ $attractions= MenuHelper::getsubAttractions(45);
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta charset="utf-8">
+        <meta charset="utf-8">
+        @yield('metatags')
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Langkawi Car Rental at Airport & Jetty - MRR HOLIDAYS</title>
     <link rel="stylesheet" href="{{ asset('theme/asset/node_modules/mburger-css/dist/mburger.css') }}">

@@ -6,6 +6,8 @@
 
 @section('metatags')
     <title>{{$global_d['site_title']}}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 @endsection
 
 @section('css')
@@ -221,19 +223,6 @@
                                 </div>
                             </div>
 
-                            <form method="post" accept-charset="utf-8" id="formticket-{{ $ticket->id }}"
-                                action="/attractions/langkawi-skycab-cable-car">
-                                @csrf
-                                <div class="row mt-2 gy-2 gy-md-0">
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <input type="hidden" id="ticketid-{{ $ticket->id }}" name="ticketid"
-                                                class="form-control" value="{{ $ticket->id }}">
-                                        </div>
-                                    </div>
-
-
-                                    {{-- addd --}}
                                     <div class="row mt-2 gy-2 gy-md-0">
 
                                         <div class="col-md-3">
@@ -245,64 +234,36 @@
                                                         <input type="text" class="form-control pe-0" id="visitor-1"
                                                             data-bs-toggle="dropdown" value="1 Adult, 0 Children"
                                                             readonly="true" style="font-size: 13px;">
-
-                                                        <div class="dropdown-menu p-4 border">
-                                                            <div class="row gx-2 align-items-center">
-                                                                <div class="col-5 col-md-12 col-lg-5">
-                                                                    Adult <br>
-                                                                    <span class="small text-muted fw-bold">(RM 40.85)</span>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <button
-                                                                                class="btn btn-decrement btn-light btn-circle btn-minus-adult"
-                                                                                type="button" data-id="1"
-                                                                                data-min-purchase-individual="1"
-                                                                                data-ticket-price="{&quot;default_rate&quot;:&quot;43.00&quot;,&quot;default_rate_child&quot;:&quot;33.00&quot;,&quot;default_rate_senior&quot;:0,&quot;discount_default_rate&quot;:&quot;40.85&quot;,&quot;discount_default_rate_child&quot;:&quot;31.35&quot;,&quot;discount_default_rate_senior&quot;:null}"><strong>−</strong></button>
+                                                            <div class="dropdown-menu p-4 border">
+                                                                <?php foreach ($tickets[0]['variations'] as $variation): ?>
+                                                                    <div class="row gx-2 align-items-center">
+                                                                        <div class="col-5 col-md-12 col-lg-5">
+                                                                            <?= ucfirst($variation['type']) ?> <br>
+                                                                            <span class="small text-muted fw-bold">(RM <?= number_format($variation['price'], 2) ?>)</span>
                                                                         </div>
-                                                                        <input type="text" id="adult-1" name="no_of_adult"
-                                                                            value="1" data-min="1"
-                                                                            class="form-control qty text-center adult mx-2  ?>">
-                                                                        <div class="input-group-append">
-                                                                            <button
-                                                                                class="btn btn-increment btn-light btn-circle btn-plus-adult"
-                                                                                type="button" data-id="1"
-                                                                                data-ticket-price="Array"><strong>+</strong>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr class="dropdown-divider">
-                                                            <div class="row gx-2 align-items-center">
-                                                                <div class="col-5 col-md-12 col-lg-5">
-                                                                    Children <br>
-                                                                    <span class="small text-muted fw-bold">(RM 31.35)</span>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <button
-                                                                                class="btn btn-decrement btn-light btn-circle btn-minus-child"
-                                                                                type="button" data-id="1"
-                                                                                data-min-purchase-individual="1"
-                                                                                data-ticket-price="33.00"><strong>−</strong></button>
-                                                                        </div>
-                                                                        <input type="text" id="child-1" name="no_of_child"
-                                                                            placeholder="0" value="0" data-min="0"
-                                                                            class="form-control text-center child mx-2 qty ?>">
-                                                                        <div class="input-group-append">
-                                                                            <button
-                                                                                class="btn btn-increment btn-light btn-circle btn-plus-child"
-                                                                                type="button" data-id="1"
-                                                                                data-ticket-price="33.00"><strong>+</strong>
-                                                                            </button>
+                                                                        <div class="col">
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <button class="btn btn-decrement btn-light btn-circle btn-minus"
+                                                                                            type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>"
+                                                                                            data-type="<?= $variation['type'] ?>"><strong>−</strong></button>
+                                                                                </div>
+                                                                                <input type="text" id="<?= $variation['type'] ?>-<?= $ticket->id ?><?= $variation['id'] ?>"
+                                                                                       name="no_of_<?= $variation['type'] ?>"
+                                                                                       value="0" data-min="0"
+                                                                                       class="form-control text-center qty mx-2">
+                                                                                       <input type="hidden" data-varid="<?= $variation['id'] ?>">
+                                                                                <div class="input-group-append">
+                                                                                    <button class="btn btn-increment btn-light btn-circle btn-plus"
+                                                                                            type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>"
+                                                                                            data-type="<?= $variation['type'] ?>"><strong>+</strong></button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                    <hr class="dropdown-divider">
+                                                                <?php endforeach; ?>
                                                             </div>
-                                                        </div>
                                                         <label style="padding-left: 35px;">No of Visitors</label>
                                                     </div>
                                                 </div>
@@ -315,9 +276,9 @@
                                                     <div class="form-floating input-group dropdown dropdown-guest-qty">
                                                         <span class="input-group-text"><i
                                                                 class="far fa-calendar-alt text-primary"></i></span>
-                                                        <input type="hidden" class="form-control pe-0 flatpickr flatpickr-input"
+                                                        <input type="hidden" class="form-control pe-0 flatpickr flatpickr-input datapicker-{{ $ticket->id }}"
                                                             data-bs-toggle="dropdown" name="ticket_date" id="flatpickr-1"
-                                                            data-id="1" data-blocked="Array" value="2025-03-04"
+                                                            data-id="{{ $ticket->id }}" data-blocked="Array" value="2025-03-04"
                                                             data-gtm-form-interact-field-id="0"><input class="form-control"
                                                             placeholder="" tabindex="0" type="text" readonly="readonly">
                                                         <label style="padding-left: 35px;">Ticket Date</label>
@@ -326,27 +287,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md">
-                                            <div class="form-floating">
-                                                <input type="hidden" id="ticketid" name="ticketid" class="form-control"
-                                                    value="1">
-                                            </div>
+
                                         </div>
-                                        <!-- <div class="col-md-3">
-                                                <div class="form-floating">
-                                                    <input type="text" id="addon" name="addon" class="form-control" placeholder="" value="None">
-                                                    <label>Add On</label>
-                                                </div>
-                                            </div> -->
+
                                         <div class="col-md-auto text-end py-2">
-                                            <input class=" form-control " type="hidden" name="experience_id" id="experience-id"
-                                                value="1"><span class="help-block text-muted"> </span>
-                                            <div class="invalid-feedback"></div> <input class=" form-control " type="hidden"
-                                                name="partner_id" id="partner-id" value="257"><span
-                                                class="help-block text-muted"> </span>
-                                            <div class="invalid-feedback"></div> <input class=" form-control " type="hidden"
-                                                name="region_id" id="region-id" value="1"><span class="help-block text-muted">
-                                            </span>
-                                            <div class="invalid-feedback"></div>
+
                                             <button type="button" class="btn btn-primary check-availability" data-ticket-id="{{ $ticket->id }}">
                                                 Book Now
                                             </button>
@@ -354,8 +299,6 @@
                                     </div>
 
 
-                                </div>
-                            </form>
                         </div>
                     </div>
                 @endforeach
@@ -619,18 +562,117 @@
 @section('js')
     <script>
 
+$(document).ready(function () {
+
+    $(".btn-plus").click(function (e) {
+        e.stopPropagation();
+
+        var type = $(this).data("type");
+        var id = $(this).data("id");
+        var varictionid = $(this).data("varictionid");
+        var inputField = $("#" + type + "-" + id+varictionid);
+        var dropdownMenu = $(this).closest(".dropdown-menu");
+
+        var currentValue = parseInt(inputField.val()) || 0;
+        inputField.val(currentValue + 1);
+
+        dropdownMenu.css("display", "block");
+    });
+
+    $(".btn-minus").click(function (e) {
+        e.stopPropagation();
+
+        var type = $(this).data("type");
+        var id = $(this).data("id");
+        var inputField = $("#" + type + "-" + id);
+        var dropdownMenu = $(this).closest(".dropdown-menu");
+
+        var currentValue = parseInt(inputField.val()) || 0;
+        if (currentValue > 0) {
+            inputField.val(currentValue - 1);
+        }
+
+        dropdownMenu.css("display", "block");
+    });
+
+
+    $(".dropdown-menu").click(function (e) {
+        e.stopPropagation();
+    });
 
 
 
-        flatpickr("#flatpickr-1", {
-            altInput: true,
-            altFormat: "j M Y",
-            dateFormat: "Y-m-d",
-            defaultDate: ["today"],
-            minDate: "today",
-            disableMobile: "true"
+});
 
-        });
+            flatpickr("#flatpickr-1", {
+                altInput: true,
+                altFormat: "j M Y",
+                dateFormat: "Y-m-d",
+                defaultDate: "today",
+                minDate: "today",
+                disableMobile: "true"
+            });
+
+
+            $(document).ready(function () {
+                $(".check-availability").on("click", function () {
+                    let ticketCard = $(this).closest(".card");
+                    let ticketId = $(this).data("ticket-id");
+
+                    // Find the correct dropdown menu inside the clicked ticket card
+                    let closestDropdown = ticketCard.find(".dropdown-menu");
+
+                    // Find quantity inputs inside this dropdown
+                    let adultInput = closestDropdown.find("input[name='no_of_adult']");
+                    let childInput = closestDropdown.find("input[name='no_of_child']");
+
+                    // Extract values
+                    let adultQuantity = parseInt(adultInput.val()) || 0;
+                    let childQuantity = parseInt(childInput.val()) || 0;
+
+                    // Find the correct date picker input inside the same ticket card
+                    let selectedDate = ticketCard.find(".datapicker-" + ticketId).val();
+
+                    console.log(`Ticket ID: ${ticketId}, Date: ${selectedDate}, Adults: ${adultQuantity}, Children: ${childQuantity}`);
+
+                    $.ajax({
+                        url: "/check-availability",
+                        type: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                        data: {
+                            ticket_id: ticketId,
+                            date: selectedDate,
+                            adult_quantity: adultQuantity,
+                            child_quantity: childQuantity,
+                        },
+                        success: function (response) {
+                            $.toast({
+                                heading: response.status === "success" ? 'Success' : 'Error',
+                                text: response.message,  // Show actual message from the response
+                                position: 'top-right',
+                                loaderBg: '#ff6849',
+                                icon: response.status === "success" ? 'success' : 'error',
+                                hideAfter: 3500,
+                                stack: 6
+                            });
+                        },
+                        error: function (xhr) {
+                            $.toast({
+                                heading: 'Error',
+                                text: 'An unexpected error occurred. Please try again.',
+                                position: 'top-right',
+                                loaderBg: '#ff6849',
+                                icon: 'error',
+                                hideAfter: 3500,
+                                stack: 6
+                            });
+                        },
+                    });
+                });
+            });
+
 
     </script>
 @endsection

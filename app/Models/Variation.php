@@ -16,6 +16,8 @@ class Variation extends Model
         "quantity",
         "price",
         "type",
+        "to_date",
+        "from_date",
     ];
 
     public function ticket()

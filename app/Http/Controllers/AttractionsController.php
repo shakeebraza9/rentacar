@@ -50,7 +50,6 @@ class AttractionsController extends Controller
 
     public function attractionsdetail($slug)
     {
-        // Find the attraction by slug
         $attraction = Attraction::where('slug', $slug)->first();
 
 
@@ -60,17 +59,15 @@ class AttractionsController extends Controller
 
 
         $allAttractions = Attraction::where('status', 1)->get();
-
-        // Fetch tickets for the current attraction
-        $tickets = Ticket::where('attraction_id', $attraction->id)->where('status', 'active')->get();
+        $tickets = Ticket::where('attraction_id', $attraction->id)->where('status', 'active') ->with('variations')->get();
         $reviews = ProductReview::join('users', 'product_reviews.user_id', '=', 'users.id')
         ->join('products', 'product_reviews.product_id', '=', 'products.id')
-        ->join('filemanager', 'products.image', '=', 'filemanager.id') // Join with filemanager
+        ->join('filemanager', 'products.image', '=', 'filemanager.id')
         ->select('product_reviews.*',
                  'users.name as user_name',
                  'users.email as user_email',
                  'products.title as product_name',
-                 'filemanager.path as image_path') // Select image path from filemanager
+                 'filemanager.path as image_path')
         ->where('product_reviews.active', 1)
         ->get();
 
