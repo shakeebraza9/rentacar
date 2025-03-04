@@ -28,7 +28,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Manage Hierarchy & Sorting</h4>
             </header>
             <div class="card-body">
@@ -58,7 +58,7 @@
                     </ol>
                 </div>
 
-                
+
                 <div class="box text-center">
                     <button class="save_btn btn btn-info" type="button" >Save</button>
                 </div>
@@ -71,17 +71,17 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.js"></script>
 <script>
-    
+
     $(function () {
 
         $('.dd').nestable({
             maxDepth:3,
         });
 
-  
-        $(".save_btn").click(function (e) { 
-        
-           
+
+        $(".save_btn").click(function (e) {
+
+
             $.ajax({
                 type: "get",
                 url: "{{URL::to('/admin/menus_items/sort')}}/{{Crypt::encryptString($model->id)}}",
@@ -95,12 +95,12 @@
                 }
             });
 
-            
-         
+
+
 
         });
-  
+
    });
 </script>
-    
+
 @endsection

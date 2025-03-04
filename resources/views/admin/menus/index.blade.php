@@ -9,7 +9,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -20,7 +20,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
@@ -32,7 +32,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL MENUS LIST 
+            <h4 class="text-themecolor">ALL MENUS LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -49,10 +49,10 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white" >All Menu List</h4>
                             </header>
-                        <div class="card-body">    
+                        <div class="card-body">
                           <div class="table-responsive m-t-40">
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
@@ -81,24 +81,24 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
        <script src="{{asset('public/admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/switchery/dist/switchery.min.js')}}"></script>
-    
+
 
        <script>
         $(function () {
 
             $('.js-switch').each(function () {
             new Switchery($(this)[0], $(this).data());
-            });   
+            });
 
             var application_table = $('.mydatatable').DataTable({
             processing: true,
-            "searching": true,  
+            "searching": true,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
             // scrollY: '500px',
-            autoWidth: false, 
+            autoWidth: false,
             dom: 'lfrtip',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
@@ -109,8 +109,8 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
                 }
             },
-            initComplete: function () {  
-                         
+            initComplete: function () {
+
             }
         });
 

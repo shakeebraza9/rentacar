@@ -17,7 +17,7 @@
     min-height: 200px;
    }
 
-   
+
 
    .gallery-box{
 
@@ -53,7 +53,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Create pages</h4>
             </header>
             <div class="card-body">
@@ -62,11 +62,11 @@
 
                     <div class="form-group">
                         <label class="form-label" >Title</label>
-                        <input required type="text" value="{{old('title')}}" name="title" class="form-control title" 
+                        <input required type="text" value="{{old('title')}}" name="title" class="form-control title"
                         placeholder="Title">
                         @if($errors->has('title'))
                          <p class="invalid-feedback" >{{ $errors->first('title') }}</p>
-                        @endif 
+                        @endif
                     </div>
 
                     <div class="form-group">
@@ -75,7 +75,7 @@
                         placeholder="slug">
                         @if($errors->has('slug'))
                          <p class="invalid-feedback" >{{ $errors->first('slug') }}</p>
-                        @endif 
+                        @endif
                     </div>
 
                     {{--  <div class="form-group">
@@ -83,18 +83,18 @@
                          <textarea placeholder="Short Details" name="shortdetails" class="form-control" >{{old('details')}}</textarea>
                           @if($errors->has('details'))
                           <p class="invalid-feedback" >{{ $errors->first('details') }}</p>
-                          @endif 
+                          @endif
                     </div>  --}}
 
-                   
+
 
                     <div class="form-group">
-                        <label class="form-label">Long Details</label> 
+                        <label class="form-label">Long Details</label>
                     <textarea id="long_description" class="form-control" name="content">{{old('Long details')}}</textarea>
-                    
+
                     </div>
-                          
-                
+
+
 
 
                       <div class="form-group">
@@ -104,26 +104,26 @@
                          <p class="invalid-feedback" >{{ $errors->first('meta_title') }}</p>
                         @endif
                     </div>
-{{--              
+{{--
                     <div class="form-group">
                         <label class="form-label">Meta Description</label>
-                        <input type="text" placeholder="Meta Description" 
+                        <input type="text" placeholder="Meta Description"
                         value="{{old('meta_description')}}" name="meta_description" class="form-control" />
                         @if($errors->has('meta_description'))
                          <p class="invalid-feedback" >{{ $errors->first('meta_description') }}</p>
                         @endif
                     </div>  --}}
-{{--              
+{{--
                     <div class="form-group">
                         <label class="form-label">Meta Keywords</label>
-                        <input type="text" placeholder="Meta Keywords" 
-                        value="{{old('meta_keywords')}}" name="meta_keywords" 
+                        <input type="text" placeholder="Meta Keywords"
+                        value="{{old('meta_keywords')}}" name="meta_keywords"
                         class="form-control" />
                         @if($errors->has('meta_keywords'))
                          <p class="invalid-feedback" >{{ $errors->first('meta_keywords') }}</p>
                         @endif
                     </div>  --}}
-                    
+
 
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
@@ -148,15 +148,15 @@
             var Text = $(this).val();
             Text = Text.toLowerCase();
             Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-            $(".slug").val(Text);        
+            $(".slug").val(Text);
         });
-    
-    }); 
+
+    });
 
       ClassicEditor.create(document.querySelector('#long_description')).catch(error => {
                 console.error(error);
       });
-    
+
 </script>
-    
+
 @endsection

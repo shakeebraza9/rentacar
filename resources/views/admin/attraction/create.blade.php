@@ -24,7 +24,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD YOUR Attractions 
+        <h4 class="text-themecolor">ADD YOUR Attractions
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -45,27 +45,27 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="card">
-                        <header class="card-header bg-info">
+                        <header class="card-header" style="background-color: #6b0909">
                             <h4 class="mb-0 text-white" >General Details</h4>
                         </header>
                         <div class="card-body">
 
                                 <div class="form-group">
                                     <label class="form-label" >Title</label>
-                                    <input required type="text" value="{{old('title')}}" name="title" class="form-control title" 
+                                    <input required type="text" value="{{old('title')}}" name="title" class="form-control title"
                                     placeholder="Title">
                                     @if($errors->has('title'))
                                      <p class="invalid-feedback" >{{ $errors->first('title') }}</p>
-                                    @endif 
+                                    @endif
                                 </div>
-            
+
                                 <div class="form-group">
                                     <label class="form-label" >Slug</label>
-                                    <input required type="text" value="{{old('slug')}}" name="slug" class="form-control slug" 
+                                    <input required type="text" value="{{old('slug')}}" name="slug" class="form-control slug"
                                     placeholder="Slug">
                                     @if($errors->has('slug'))
                                      <p class="invalid-feedback" >{{ $errors->first('slug') }}</p>
-                                    @endif 
+                                    @endif
                                 </div>
 
                           </div>
@@ -96,19 +96,19 @@
             var Text = $(this).val();
             Text = Text.toLowerCase();
             Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-            $(".slug").val(Text);        
+            $(".slug").val(Text);
         });
 
         ClassicEditor
             .create(document.querySelector('#long_description')).catch(error => {
                 console.error(error);
             });
-           
+
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
             $('.js-switch').each(function () {
                 new Switchery($(this)[0], $(this).data());
             });
-    });    
+    });
 </script>
-    
+
 @endsection

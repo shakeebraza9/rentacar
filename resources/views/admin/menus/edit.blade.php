@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Edit Menu</h4>
             </header>
             <div class="card-body">
@@ -36,22 +36,22 @@
 
                     <div class="form-group">
                         <label class="form-label" >Title</label>
-                        <input required type="text" value="{{$model->title}}" name="title" 
-                        class="form-control title " 
+                        <input required type="text" value="{{$model->title}}" name="title"
+                        class="form-control title "
                         placeholder="Title">
                         @if($errors->has('title'))
                          <p class="invalid-feedback" >{{ $errors->first('title') }}</p>
-                        @endif 
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" >Slug</label>
-                        <input required type="text" value="{{$model->slug}}" name="slug" 
-                        class="form-control slug" 
+                        <input required type="text" value="{{$model->slug}}" name="slug"
+                        class="form-control slug"
                         placeholder="slug">
                         @if($errors->has('slug'))
                          <p class="invalid-feedback" >{{ $errors->first('slug') }}</p>
-                        @endif 
+                        @endif
                     </div>
 
                       <div class="form-group">
@@ -62,7 +62,7 @@
                         </select>
                         @if($errors->has('is_enable'))
                         <p class="invalid-feedback" >{{ $errors->first('is_enable') }}</p>
-                        @endif 
+                        @endif
                       </div>
 
                     <div class="form-group row">
@@ -86,11 +86,11 @@
             var Text = $(this).val();
             Text = Text.toLowerCase();
             Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-            $(".slug").val(Text);        
+            $(".slug").val(Text);
     });
-    
-      
+
+
 
 </script>
-    
+
 @endsection

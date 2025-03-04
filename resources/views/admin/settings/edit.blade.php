@@ -30,8 +30,8 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
-                <h4 class="mb-0 text-white">{{ ucwords(str_ireplace("_", " ",$kk))}}</h4>
+            <header class="card-header" style="background-color: #6b0909">
+                <h4 class="mb-0 text-white">{{ ucwords(str_ireplace("_", " ",$settings[0]['grouping'] ?? null))}}</h4>
                 </header>
             <div class="card-body">
                 <form method="post"

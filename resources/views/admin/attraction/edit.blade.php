@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-md-9">
                     <section class="card">
-                        <header class="card-header bg-info">
+                        <header class="card-header" style="background-color: #6b0909">
                             <h4 class="mb-0 text-white" >General Details</h4>
                         </header>
                         <div class="card-body">
@@ -147,9 +147,9 @@
                                     @endforeach
                                 </div>
                             </div>
-                    
+
                             <hr>
-                    
+
                             <!-- Add New Gallery Images -->
                             <div class="form-group my-2">
                                 <label class="form-label" for="gallery-selector">Add Images to Gallery:</label>
@@ -164,9 +164,9 @@
                             </div>
                         </div>
                     </section>
-                    
-                    
-               
+
+
+
 
                 </div>
                 <div class="col-md-3">
@@ -176,7 +176,7 @@
                             <h4 class="mb-0 text-white">Image</h4>
                         </header>
                         <div class="card-body">
-                    
+
                             <!-- Thumbnail Selection -->
                             <div class="form-group my-2">
                                 <label class="form-label" for="image-selector">Thumbnail:</label>
@@ -197,14 +197,14 @@
                                     @endif
                                 </div>
                             </div>
-                    
-                    
-                       
-                    
+
+
+
+
                         </div>
                     </section>
-                    
-                  
+
+
                 </div>
             </div>
          <div class="pt-3 form-group row">
@@ -350,7 +350,7 @@
                 return markup;
             },
         });
-    
+
         // Format images for Select2 dropdown
         function formatState(state) {
             if (!state.id) {
@@ -363,7 +363,7 @@
                     </div>`;
         }
     });
-    
+
 
 </script>
 

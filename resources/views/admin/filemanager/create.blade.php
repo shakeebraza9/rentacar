@@ -3,7 +3,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD NEW FILE 
+        <h4 class="text-themecolor">ADD NEW FILE
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Add New File Form</h4>
             </header>
             <div class="card-body">
@@ -28,7 +28,7 @@
                     <div class="my-2 row">
                         <div class="col-md-12">
                              <label class="form-label">Group</label>
-                             <input name="group" class="form-control" 
+                             <input name="group" class="form-control"
                                value="others" placeholder="Group">
                              @if ($errors->has('group'))
                               <small class="text-danger">{{ $errors->first('group')}}</small>

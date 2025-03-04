@@ -32,14 +32,14 @@
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL PRODUCTS LIST
+            <h4 class="text-themecolor">ALL Attractions LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Products</li>
+                    <li class="breadcrumb-item active">Attractions</li>
                 </ol>
             </div>
         </div>
@@ -47,13 +47,13 @@
 
     <!-- page start-->
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" >
                         <section class="card">
-                            <header class="card-header bg-info d-flex justify-content-between align-items-center">
-                                <h4 class="mb-0 text-white">All Products List</h4>
+                            <header class="card-header d-flex justify-content-between align-items-center" style="background-color: #6b0909">
+                                <h4 class="mb-0 text-white">All Attractions List</h4>
                                 <a href="{{ route('attractions.create') }}" class="btn btn-dark">Create New</a>
                             </header>
-                            
+
                         <div class="card-body">
                           <div class="table-responsive m-t-40">
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">

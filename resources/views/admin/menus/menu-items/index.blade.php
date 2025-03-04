@@ -9,7 +9,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -20,7 +20,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
@@ -33,7 +33,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
         padding:10px 5px 0 5px;
         position:relative
     }
-    .tree li::before, 
+    .tree li::before,
     .tree li::after {
         content:'';
         left:-20px;
@@ -112,7 +112,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
     font-size: 16px;
    }
 
-  
+
 
 </style>
 @endsection
@@ -120,7 +120,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Menu "{{$menu->title}}" 
+            <h4 class="text-themecolor">Menu "{{$menu->title}}"
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -137,10 +137,10 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
         <div class="menues-section row">
             <div class="col-sm-5">
                 <section class="card">
-                     <header class="card-header bg-info">
+                     <header class="card-header" style="background-color: #6b0909">
                          <h4 class="mb-0 text-white" >Add New Page</h4>
                      </header>
-                     <div class="card-body">  
+                     <div class="card-body">
                          <form method="post" action="{{URL::to('/admin/menus_items/store')}}">
                              @csrf
                                 <input type="hidden" name="menu_id" value="{{$menu->id}}" />
@@ -152,30 +152,30 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                                             {!! $dropdowns !!}
                                         </select>
                                     </div>
-                
+
                                      <div class="form-group">
                                          <label class="form-label" >Title</label>
-                                         <input required name="title" 
-                                           class="form-control" 
+                                         <input required name="title"
+                                           class="form-control"
                                            placeholder="Title">
                                      </div>
 
                                      <div class="form-group">
                                         <label class="form-label" >Sort</label>
-                                        <input required type="number" name="sort" 
+                                        <input required type="number" name="sort"
                                         class="form-control" placeholder="sort" />
                                     </div>
 
                                      <div class="form-group">
                                         <label class="form-label" >Link</label>
-                                        <input required name="link" 
-                                        class="form-control" placeholder="Link" /> 
+                                        <input required name="link"
+                                        class="form-control" placeholder="Link" />
                                     </div>
 
                                      <div class="form-group">
                                         <label class="form-label">SubTitle</label>
-                                        <input name="subtitle" 
-                                          class="form-control" 
+                                        <input name="subtitle"
+                                          class="form-control"
                                           placeholder="SubTitle">
                                     </div>
 
@@ -186,7 +186,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                                             <option value="_blank">New Tab</option>
                                         </select>
                                     </div>
-                                                         
+
                                     <div class="text-center" >
                                         <button type="submit" class="btn btn-info text-white">Submit</button>
                                     </div>
@@ -199,7 +199,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                             <header class="card-header bg-info">
                                 <h4 class="mb-0 text-white">{{$menu->title}} 's Pages</h4>
                             </header>
-                            <div class="card-body">  
+                            <div class="card-body">
                                 <ul class="menus-box" >
                                     @foreach ($pageItems as $menu_item)
 
@@ -224,17 +224,17 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
                                                             </ul>
                                                         @endforeach
-                                                </ul>   
+                                                </ul>
                                             @endforeach
-                                        
+
                                     @endforeach
                                 </ul>
                             </div>
                           </section>
                     </div>
-            </div> 
+            </div>
 
-      
+
 
  @endsection
  @section('js')
@@ -243,7 +243,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
        <script src="{{asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
        <script src="{{asset('admin/assets/node_modules/switchery/dist/switchery.min.js')}}"></script>
-    
+
 
        <script>
         $(function () {
@@ -251,21 +251,21 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
             $('.js-switch').each(function () {
                 new Switchery($(this)[0], $(this).data());
-            }); 
-          
-          
+            });
+
+
             var application_table = $('.mydatatable').DataTable({
             processing: true,
-            "searching": true,  
+            "searching": true,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
-            autoWidth: false, 
+            autoWidth: false,
             dom: 'lfrtip',
             order: [],
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
-            initComplete: function () {  
+            initComplete: function () {
 
             }
         });
@@ -282,20 +282,20 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 },
                 dataType: "json",
                 success: function (response) {
-                    
+
                 },
                 errror:function (response) {
-                    
+
                 },
             });
-       
+
         });
 
 
-        
 
-    
-     
+
+
+
 
 
       });
