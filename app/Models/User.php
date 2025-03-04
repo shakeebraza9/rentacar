@@ -50,4 +50,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'date_of_birth' => 'date', // Cast 'date_of_birth' as a date
     ];
+
+    public function role()
+{
+    return $this->belongsTo(Role::class, 'role_id');
+}
+
 }

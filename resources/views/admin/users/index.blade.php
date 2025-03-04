@@ -8,7 +8,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
 
 <style>
-    
+
     table td{
         /* border: 1px solid lightgray; */
     }
@@ -19,7 +19,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-           
+
             overflow: scroll!important;
         }
     }
@@ -31,7 +31,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL USERS LIST 
+            <h4 class="text-themecolor">ALL USERS LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -48,38 +48,14 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header bg-info">
+                            <header class="card-header" style="background-color: #6b0909">
                                 <h4 class="mb-0 text-white" >All Users List</h4>
                             </header>
-                        <div class="card-body">    
+                        <div class="card-body">
                           {{-- <div class="table-responsive m-t-40"> --}}
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>
-                                                <input class="username form-control" placeholder="Username"/>
-                                            </th>
-                                            <th>
-                                                <input class="email form-control" placeholder="Email"/>
-                                            </th>
-                                            <th>
-                                                <select class="role_id form-control" >
-                                                    <option value="">Search By Roles</option>
-                                                    @foreach ($roles as $item)
-                                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </th>
-                                            <th colspan="3" 
-                                             title="{{__('action')}}" 
-                                             style = "background:white;">
-                                                <div class="restore_list">
-                                                    <button id="searchButton" type="button" class="btn btn-sm btn-success search_list"><i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </th>
-                                        </tr>
+
                                         <tr class="" >
                                             <th>#</th>
                                             <th>Username</th>
@@ -98,7 +74,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
            </div>
           </section>
          </div>
-       
+
   @endsection
 
  @section('js')
@@ -106,20 +82,20 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
        <!-- This is data table -->
        <script src="{{asset('public/admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('public/admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
-    
+
 
        <script>
         $(function () {
-          
+
             var application_table = $('.mydatatable').DataTable({
             processing: true,
-            "searching": true,  
+            "searching": true,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
             // scrollY: '500px',
-            autoWidth: false, 
+            autoWidth: false,
             dom: 'lfrtip',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
@@ -131,49 +107,98 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                         d.username = $('.mydatatable .username').val();
                         d.email=$('.mydatatable .email').val();
                         d.role_id=$('.mydatatable .role_id').val();
-       
+
                 }
             },
             columns: [
-                { 
-                  orderable: false, 
-                  searchable: false 
+                {
+                  orderable: false,
+                  searchable: false
                 },
-                {  
-                   orderable: true, 
-                   searchable: true  
+                {
+                   orderable: true,
+                   searchable: true
                 },
 
                 {
-                   orderable: true, 
-                   searchable: true  
+                   orderable: true,
+                   searchable: true
                 },
                 {
-                   orderable: true, 
-                   searchable: true  
+                   orderable: true,
+                   searchable: true
                 },
-                { 
-                  orderable: false, 
-                  searchable: false 
+                {
+                  orderable: false,
+                  searchable: false
                 },
-                
+
             ],
-            initComplete: function () {                
+            initComplete: function () {
             }
         });
 
         $('input[type=search]').unbind();
-        $("#searchButton").click(e =>{ 
+        $("#searchButton").click(e =>{
             application_table.search($('input[type=search]').val());
             application_table.draw();
         });
 
-        $("#example23 thead .row-checkbox").change(function (e) { 
+        $("#example23 thead .row-checkbox").change(function (e) {
             var isChecked = $(this).prop('checked');
             $('#example23 tbody .row-checkbox').prop('checked', isChecked);
         });
 
 
       });
+
+
+        $(document).on('change', '.role-selector', function () {
+            let userId = $(this).data('user-id');
+            let newRole = $(this).val();
+
+            $.ajax({
+                url: "{{ route('admin.users.updateRole') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_id: userId,
+                    role_id: newRole
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $.toast({
+                            heading: "Success",
+                            text: response.message,
+                            position: "top-right",
+                            loaderBg: "#28a745",
+                            icon: "success",
+                            hideAfter: 3000
+                        });
+                    } else {
+                        $.toast({
+                            heading: "Error",
+                            text: response.message,
+                            position: "top-right",
+                            loaderBg: "#dc3545",
+                            icon: "error",
+                            hideAfter: 3000
+                        });
+                    }
+                },
+                error: function () {
+                    $.toast({
+                        heading: "Error",
+                        text: "Something went wrong. Try again!",
+                        position: "top-right",
+                        loaderBg: "#dc3545",
+                        icon: "error",
+                        hideAfter: 3000
+                    });
+                }
+            });
+        });
+
+
     </script>
 @endsection

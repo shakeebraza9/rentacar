@@ -28,7 +28,7 @@ class UserController extends Controller
     |
     */
 
- 
+
     /**
      * Create a new controller instance.
      *
@@ -36,101 +36,113 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            // Fetch roles to use in dropdown
+            $roles = Role::all();
 
-        
+            // Query with relationships
+            $query = User::with('role');
 
-     
-        if($request->ajax()){
-
-        
-
-            $query = User::Query();
-
-            //Search
+            // Search functionality
             $search = $request->get('search')['value'];
-            if($search != ""){
-               $query = $query->where(function ($s) use($search) {
-                   $s->where('users.name','like','%'.$search.'%')
-                   ->orwhere('users.email','like','%'.$search.'%');
-               });
+            if ($search != "") {
+                $query = $query->where(function ($s) use ($search) {
+                    $s->where('users.name', 'like', '%' . $search . '%')
+                        ->orWhere('users.email', 'like', '%' . $search . '%');
+                });
             }
 
-            if($request->has('username') && $request->has('username') != ''){
-                $query = $query->where('users.name','like','%'.$request->username.'%');
+            // Additional filters
+            if ($request->has('username') && $request->username != '') {
+                $query = $query->where('users.name', 'like', '%' . $request->username . '%');
             }
 
-            if($request->has('email') && $request->has('email') != ''){
-                $query = $query->where('users.email','like','%'.$request->email.'%');
+            if ($request->has('email') && $request->email != '') {
+                $query = $query->where('users.email', 'like', '%' . $request->email . '%');
             }
 
-            if($request->has('role_id') && $request->has('role_id') != '' && $request->has('role_id') != NULL ){
-                $query = $query->where('users.role_id',$request->role_id);
+            if ($request->has('role_id') && $request->role_id != '' && $request->role_id != null) {
+                $query = $query->where('users.role_id', $request->role_id);
             }
 
-            $count = $query->get();
-
-            if($request->has('order')){
-                if($request->order[0]['column'] == 1){
-                    $query = $query->orderBy('users.name',$request->order[0]['dir']);
+            // Sorting
+            if ($request->has('order')) {
+                if ($request->order[0]['column'] == 1) {
+                    $query = $query->orderBy('users.name', $request->order[0]['dir']);
                 }
 
-                if($request->order[0]['column'] == 2){
-                    $query = $query->orderBy('users.email',$request->order[0]['dir']);
+                if ($request->order[0]['column'] == 2) {
+                    $query = $query->orderBy('users.email', $request->order[0]['dir']);
                 }
-
-             
-
             }
-            
+
+            // Get paginated results
+            $count = $query->count();
             $users = $query->skip($request->start)
-            ->take($request->length)->orderBy('id','desc')
-            ->get();
-            
+                ->take($request->length)
+                ->orderBy('id', 'desc')
+                ->get();
+
+            // Prepare DataTable response
             $data = [];
             foreach ($users as $key => $value) {
+                // Role Dropdown for inline editing
+                $roleOptions = '';
+                foreach ($roles as $role) {
+                    $selected = $value->role_id == $role->id ? 'selected' : '';
+                    $roleOptions .= '<option value="' . $role->id . '" ' . $selected . '>' . $role->name . '</option>';
+                }
 
+                $roleDropdown = '<select class="form-control role-selector" data-user-id="' . Crypt::encryptString($value->id) . '">' . $roleOptions . '</select>';
+
+                // Action buttons
                 $action = '<div class="btn-group">';
-
-                $action .= '<a class="btn btn-info" href="'.URL::to('admin/users/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
-                $action .= '<a class="btn btn-danger" href="'.URL::to('admin/users/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
-
+                $action .= '<a class="btn btn-info" href="' . URL::to('admin/users/edit/' . Crypt::encryptString($value->id)) . '">Edit</a>';
+                $action .= '<a class="btn btn-danger delete-user" data-id="' . Crypt::encryptString($value->id) . '">Delete</a>';
                 $action .= '</div>';
 
-                array_push($data,[
-                    $key,
+                array_push($data, [
+                    $key + 1,
                     $value->name,
                     $value->email,
-                    $value->role_id,
+                    $roleDropdown, // Role Dropdown
                     $action,
-                 ]
-                );
-                
+                ]);
             }
-
 
             return response()->json([
                 "draw" => $request->draw,
-                "recordsTotal" => count($count),
-                "recordsFiltered" => count($count),
-                'data'=> $data,
+                "recordsTotal" => $count,
+                "recordsFiltered" => $count,
+                'data' => $data,
             ]);
         }
-        
 
+        // Fetch roles for filters
         $roles = Role::all();
-        
-        
-        return view('admin.users.index',compact('roles'));
+
+        return view('admin.users.index', compact('roles'));
     }
 
-    
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'role_id' => 'required|exists:roles,id'
+        ]);
 
+        try {
+            $userId = Crypt::decryptString($request->user_id);
+            $user = User::findOrFail($userId);
+            $user->role_id = $request->role_id;
+            $user->save();
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+            return response()->json(['success' => true, 'message' => 'User role updated successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to update role!']);
+        }
+    }
+
     public function create()
     {
         return view('admin.users.create');
@@ -144,7 +156,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email|max:255',
@@ -175,9 +187,9 @@ class UserController extends Controller
             'created_by' => Auth::user()->id,
             'permissions' => $permissions,
         ]);
-        
-        
-        return redirect('/login')->with('success','Record Created Success'); 
+
+
+        return redirect('/login')->with('success','Record Created Success');
     }
 
      /**
@@ -188,7 +200,7 @@ class UserController extends Controller
     public function edit(Request $request,$id)
     {
         $user = User::find(Crypt::decryptString($id));
-        if($user == false){  
+        if($user == false){
             return back()->with('error','Record Not Found');
          }
 
@@ -221,7 +233,7 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
-        if($user == false){  
+        if($user == false){
            return back()->with('error','Record Not Found');
         }
 
@@ -253,17 +265,17 @@ class UserController extends Controller
      */
     public function delete($id)
     {
-        
+
         $user = User::find(Crypt::decryptString($id));
         if($user == false){
             return back()->with('warning','Record Not Found');
         }else{
             $user->delete();
-            return redirect('/admin/users/index')->with('success','Record Deleted Success'); 
+            return redirect('/admin/users/index')->with('success','Record Deleted Success');
         }
 
     }
 
 
-    
+
 }

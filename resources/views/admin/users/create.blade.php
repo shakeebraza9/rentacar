@@ -10,7 +10,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD YOUR USER 
+        <h4 class="text-themecolor">ADD YOUR USER
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
-            <header class="card-header bg-info">
+            <header class="card-header" style="background-color: #6b0909">
                 <h4 class="mb-0 text-white" >Create User And Assign The Permission</h4>
             </header>
             <div class="card-body">
@@ -35,19 +35,19 @@
                     @csrf
                     <div class="form-group">
                         <label class="form-label" >User Name</label>
-                        <input type="text" value="{{old('name')}}" name="name" class="form-control" 
+                        <input type="text" value="{{old('name')}}" name="name" class="form-control"
                         placeholder="User Name">
                         @if($errors->has('name'))
                          <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
-                        @endif 
+                        @endif
                     </div>
-                    
+
                     <div class="form-group">
                       <label class="form-label" >Email Address</label>
-                      <input type="email" value="{{old('email')}}" name="email" class="form-control" placeholder="Email Address"> 
+                      <input type="email" value="{{old('email')}}" name="email" class="form-control" placeholder="Email Address">
                       @if($errors->has('email'))
                       <p class="invalid-feedback" >{{ $errors->first('email') }}</p>
-                     @endif 
+                     @endif
                    </div>
 
                     <div class="form-group">
@@ -57,9 +57,9 @@
 
                         @if($errors->has('password'))
                           <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
-                         @endif 
+                         @endif
                     </div>
-                   
+
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>
@@ -74,5 +74,5 @@
 @endsection
 
 @section('js')
-    
+
 @endsection
