@@ -91,11 +91,11 @@ Route::get('/forgotpassword', [App\Http\Controllers\WebAuthController::class, 'f
 Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'createAccount'])->name('createAccount');
 Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin'])->name('webpostlogin');
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
+Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
 
 
     Route::middleware(['webLoginChk'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
     Route::get('/profile', [App\Http\Controllers\CustomerController::class, 'profile'])->name('customer.profile');
     Route::get('/customer/users/chnagepassword', [App\Http\Controllers\CustomerController::class, 'chnagepassword'])->name('chngpassword');
     Route::post('/customer/users/changepassword', [App\Http\Controllers\CustomerController::class, 'changePassword'])->name('customer.changePassword');

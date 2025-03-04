@@ -157,7 +157,7 @@ class WebAuthController extends Controller
     public function weblogout()
     {
         Auth::logout();
-        return redirect('/login');
+        return redirect(route('weblogin'));
     }
 
  /**
