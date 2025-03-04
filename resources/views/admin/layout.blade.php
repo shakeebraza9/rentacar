@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('admin/assets/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(getset('admin_favicon')) }}">
     <title>{{$global_d['site_title']}}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -21,6 +21,8 @@
     <link href="{{asset('admin/assets/css/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
         .menu-button:hover{
@@ -54,29 +56,26 @@
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <header class="topbar">
+        <header class="topbar" style="background-color: #6b0909;">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
 
                 <!-- ============================================================== -->
                 <!-- Logo -->
                 <!-- ============================================================== -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{URL::to('/admin/dashboard')}}">
-                        <!-- Logo icon --><b>
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="{{asset('admin/assets/images/logo-icon.png')}}" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
+                    <a class="navbar-brand" href="{{ URL::to('/admin/dashboard') }}">
+                        <b>
+                            <img src="{{ asset(getset('admin_logo')) }}" alt="homepage" class="dark-logo"
+                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;filter: grayscale(100%);" />
 
-                            <img src="{{asset('admin/assets/images/logo-light-icon.png')}}" alt="homepage" class="light-logo" />
+                            <img src="{{ asset(getset('admin_logo')) }}" alt="homepage" class="light-logo"
+                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;filter: grayscale(100%);" />
                         </b>
-                        <!--End Logo icon -->
-                        <!-- Logo text --><span>
-                         <!-- dark Logo text -->
-                         <img src="{{asset('admin/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" />
-                         <!-- Light Logo text -->
-                         <img src="{{asset('admin/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /></span> </a>
+
+
+                    </a>
                 </div>
+
                 <!-- ============================================================== -->
                 <!-- End Logo -->
                 <!-- ============================================================== -->
@@ -118,13 +117,16 @@
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <img src="{{asset('admin/assets/images/users/1.jpg')}}" alt="user" class="">
-                              <span class="hidden-md-down">Mark &nbsp;<i class="fa fa-angle-down"></i></span>
+                              <span class="hidden-md-down">
+                                {{ Auth::user()->name }} &nbsp;<i class="fa fa-angle-down"></i>
+                            </span>
+
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-wallet"></i> Change Password</a>
 
-                                <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a>
+                                {{--  <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a>  --}}
 
                                 <a href="{{URL::to('/admin/logout')}}" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                             </div>

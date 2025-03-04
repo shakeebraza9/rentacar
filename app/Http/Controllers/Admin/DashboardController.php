@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\order;
+use App\Models\Product;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -30,8 +32,8 @@ class DashboardController extends Controller
     |
     */
 
- 
- 
+
+
 
     /**
      * Create a new controller instance.
@@ -40,10 +42,33 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-       
-        
-        return view('admin.dashboard');
+        $totalOrders = Order::count();
+        $totalRevenue = Order::where('payment_status', 1)->sum('amount');
+        $totalUsers = User::count();
+        $pendingOrders = Order::where('status', 'pending')->count();
+        $totalProducts = Product::count(); // Fetch total products
+
+        // Sales Data for Bar Chart (last 6 months)
+        $monthlySalesLabels = collect(range(1, 6))->map(fn($m) => now()->subMonths($m)->format('M Y'))->reverse()->values();
+        $monthlySalesArray = $monthlySalesLabels->toArray();
+        $monthlySalesData = collect($monthlySalesLabels)->map(fn($m) =>
+            Order::whereMonth('created_at', now()->subMonths(array_search($m, $monthlySalesArray)))->sum('amount')
+        );
+
+        // Order Status Data for Pie Chart
+        $orderStatusData = [
+            Order::where('status', 'pending')->count(),
+            Order::where('status', 'apporve')->count(),
+            Order::where('status', 'completed')->count(),
+            Order::where('status', 'cancelled')->count()
+        ];
+
+        return view('admin.dashboard', compact(
+            'totalOrders', 'totalRevenue', 'totalUsers', 'pendingOrders', 'totalProducts',
+            'monthlySalesLabels', 'monthlySalesData', 'orderStatusData'
+        ));
     }
+
 
     /**
      * Create a new controller instance.
@@ -52,7 +77,7 @@ class DashboardController extends Controller
      */
     public function changepassword()
     {
-           
+
         return view('admin.changepassword');
     }
 
@@ -63,7 +88,7 @@ class DashboardController extends Controller
      */
     public function changepassword_submit(Request $request)
     {
-    
+
         $id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -116,15 +141,15 @@ class DashboardController extends Controller
             $file->preview = asset($file->path);
             $file->save();
         }
-        
+
     }
 
 
 
-    
-
-   
 
 
-    
+
+
+
+
 }
