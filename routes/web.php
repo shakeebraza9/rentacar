@@ -40,8 +40,7 @@ Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::cla
 
 // ticket
 Route::Post('/check-availability', [App\Http\Controllers\TicketController::class, 'checkAvailability']);
-Route::get('/book-ticket/{id}', [App\Http\Controllers\TicketController::class, 'bookTicket'])->name('book.ticket');
-
+Route::get('/book-ticket', [App\Http\Controllers\TicketController::class, 'bookTicket'])->name('book.ticket');
 
 
 

@@ -619,21 +619,19 @@ $(document).ready(function () {
                     let ticketCard = $(this).closest(".card");
                     let ticketId = $(this).data("ticket-id");
 
-                    // Find the correct dropdown menu inside the clicked ticket card
+
                     let closestDropdown = ticketCard.find(".dropdown-menu");
 
-                    // Find quantity inputs inside this dropdown
+
                     let adultInput = closestDropdown.find("input[name='no_of_adult']");
                     let childInput = closestDropdown.find("input[name='no_of_child']");
 
-                    // Extract values
+
                     let adultQuantity = parseInt(adultInput.val()) || 0;
                     let childQuantity = parseInt(childInput.val()) || 0;
 
-                    // Find the correct date picker input inside the same ticket card
-                    let selectedDate = ticketCard.find(".datapicker-" + ticketId).val();
 
-                    console.log(`Ticket ID: ${ticketId}, Date: ${selectedDate}, Adults: ${adultQuantity}, Children: ${childQuantity}`);
+                    let selectedDate = ticketCard.find(".datapicker-" + ticketId).val();
 
                     $.ajax({
                         url: "/check-availability",
@@ -650,13 +648,18 @@ $(document).ready(function () {
                         success: function (response) {
                             $.toast({
                                 heading: response.status === "success" ? 'Success' : 'Error',
-                                text: response.message,  // Show actual message from the response
+                                text: response.message,
                                 position: 'top-right',
                                 loaderBg: '#ff6849',
                                 icon: response.status === "success" ? 'success' : 'error',
                                 hideAfter: 3500,
                                 stack: 6
                             });
+                            if(response.status === "success" ){
+                                setTimeout(function () {
+                                    window.location.href = response.redirect_url;
+                                }, 1500);
+                            }
                         },
                         error: function (xhr) {
                             $.toast({
