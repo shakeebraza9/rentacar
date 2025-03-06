@@ -41,7 +41,11 @@ Route::get('/attractions/list', [App\Http\Controllers\AttractionsController::cla
 // ticket
 Route::Post('/check-availability', [App\Http\Controllers\TicketController::class, 'checkAvailability']);
 Route::get('/book-ticket', [App\Http\Controllers\TicketController::class, 'bookTicket'])->name('book.ticket');
-
+Route::Post('/place-order-ticket', [App\Http\Controllers\TicketController::class, 'placeorder'])->name('place.order');
+Route::get('/checkoutticket/{order_id}', [App\Http\Controllers\TicketController::class, 'checkoutPage'])->name('place.checkout');
+Route::post('/process-payment-ticket', [App\Http\Controllers\PaymentTicketController::class, 'processPayment'])->name('process.payment.ticket');
+Route::get('/payment/success-ticket{order_id}', [App\Http\Controllers\PaymentTicketController::class, 'success'])->name('payment.success.ticket');
+Route::get('/payment/cancel-ticket', [App\Http\Controllers\PaymentTicketController::class, 'cancel'])->name('payment.cancel.ticket');
 
 
 Route::get('/booking/{slug}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking');
@@ -63,7 +67,9 @@ Route::get('/blogs/{slug}', [App\Http\Controllers\BlogController::class, 'show']
 
 Route::get('/combination_maker', [App\Http\Controllers\HomeController::class, 'combination_maker']);
 Route::get('/blogs/categories/{id}', [App\Http\Controllers\HomeController::class, 'blog_categories']);
-
+Route::post('/process-payment', [PaymentController::class, 'processPayment'])->name('process.payment');
+Route::get('/payment/success{order_id}', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 
 //Carts
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'cart']);
@@ -276,9 +282,7 @@ Route::get('/admin/categories/create', [App\Http\Controllers\Admin\CategoryContr
     // payments
 
 
-    Route::post('/process-payment', [PaymentController::class, 'processPayment'])->name('process.payment');
-    Route::get('/payment/success{order_id}', [PaymentController::class, 'success'])->name('payment.success');
-    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
 
 });
 
