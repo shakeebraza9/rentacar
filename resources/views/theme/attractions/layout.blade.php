@@ -126,10 +126,10 @@ $attractions= MenuHelper::getsubAttractions(45);
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{ Auth::user()->name }}</a>
                         <ul class="dropdown-menu dropdown-menu-end text-center text-md-left">
                             <li><a href="{{ route('customer.profile') }}" class="dropdown-item">My Profile</a></li>
-                            <li><a href="{{ route('customer.carts') }}" class="dropdown-item">My Cart</a></li>
+                            {{--  <li><a href="{{ route('customer.carts') }}" class="dropdown-item">My Cart</a></li>  --}}
                             <li><a href="{{ route('customer.history') }}" class="dropdown-item">Booking List</a></li>
-                            <li><a href="{{ route('customer.referral') }}" class="dropdown-item">Refer & Earn</a></li>
-                            <li><a href="{{ route('customer.cases') }}" class="dropdown-item">Cases</a></li>
+                            {{--  <li><a href="{{ route('customer.referral') }}" class="dropdown-item">Refer & Earn</a></li>  --}}
+                            {{--  <li><a href="{{ route('customer.cases') }}" class="dropdown-item">Cases</a></li>  --}}
 
                             <li><a href="{{ route('weblogout') }}" class="dropdown-item">Logout</a></li> <!-- Logout route -->
                         </ul>

@@ -196,6 +196,16 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::post('/admin/ticket/update/{id}', [App\Http\Controllers\Admin\TicketController::class, 'update'])->name('ticket.update');
     Route::get('/admin/ticket/delete/{id}', [App\Http\Controllers\Admin\TicketController::class, 'delete'])->name('ticket.delete');
 
+    // Order Ticket
+    Route::get('/admin/ticketorders/index', [App\Http\Controllers\Admin\TicketOrderController::class, 'index']);
+    Route::get('/admin/ticketorders/edit/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'edit']);
+    Route::Post('/admin/ticketorders/update/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'update'])->name("admin.ticketorders.update");
+    Route::prefix('admin/ordersticket')->name('admin.ordersticket.')->group(function () {
+        Route::get('/send-confirmation/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'sendConfirmation'])->name('sendConfirmation');
+        Route::get('/download-invoice/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'downloadInvoice'])->name('downloadInvoice');
+    });
+
+
 
     //orders
     Route::get('/admin/orders/index', [App\Http\Controllers\Admin\OrderController::class, 'index']);

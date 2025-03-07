@@ -35,4 +35,9 @@ class Ticket extends Model
     {
         return $this->hasMany(Variation::class, 'ticket_id');
     }
+
+    public function getVariationsByType()
+    {
+        return $this->variations->groupBy('type');
+    }
 }

@@ -223,6 +223,7 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{URL::to('admin/attractions/index')}}">Attractions</a></li>
                                 <li><a href="{{URL::to('admin/ticket/index')}}">Ticket</a></li>
+                                <li><a href="{{URL::to('admin/ticketorders/index')}}">Ticket Order</a></li>
                             </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>

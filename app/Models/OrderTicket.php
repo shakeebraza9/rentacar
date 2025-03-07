@@ -30,4 +30,13 @@ class OrderTicket extends Model
     protected $casts = [
         'addons' => 'array', // Automatically convert JSON to array
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userid');
+    }
 }
