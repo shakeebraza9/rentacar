@@ -28,6 +28,9 @@ use Illuminate\Validation\Rule;
 use Laravel\Ui\Presets\React;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use PDF;
+
+use App\Mail\OrderConfirmationMail;
 
 
 class TicketOrderController extends Controller
@@ -183,117 +186,46 @@ class TicketOrderController extends Controller
     }
 
 
-public function updatePickupDeliver(Request $request, $id)
-{
-    $id = Crypt::decryptString($id);
-    $order = OrderTicket::find($id);
 
-    if (!$order) {
-        return response()->json(['error' => 'Order not found.'], 404);
-    }
-
-    $field = $request->input('field');
-    $value = $request->input('value');
-
-    if (!in_array($field, ['pickup_car_date', 'deliver_car_date'])) {
-        return response()->json(['error' => 'Invalid field.'], 400);
-    }
-
-    $order->$field = Carbon::now(); // Save Current Date & Time
-    $order->save();
-
-    return response()->json(['success' => true]);
-}
-
-
-
-public function getTotalTime($id)
-{
-    $id = Crypt::decryptString($id);
-    $order = OrderTicket::find($id);
-
-    if (!$order || !$order->pickup_car_date || !$order->deliver_car_date) {
-        return response()->json(['total_time' => 'Not Available']);
-    }
-
-    $pickupDate = Carbon::parse($order->pickup_car_date);
-    $deliverDate = Carbon::parse($order->deliver_car_date);
-
-    $diffInDays = $pickupDate->diffInDays($deliverDate);
-    $diffInHours = $pickupDate->diffInHours($deliverDate) % 24;
-
-    return response()->json(['total_time' => "$diffInDays days, $diffInHours hours"]);
-}
-
-
-
-    public function delete($id)
+    public function downloadInvoice($id)
     {
-        $product = Product::find(Crypt::decryptString($id));
+        $order = OrderTicket::find($id);
 
-        if($product == false){
-            return back()->with('warning','Record Not Found');
-        }else{
-            ProductCollection::where('product_id',$product->id)->delete();
-            $product->delete();
-            return redirect('/admin/products/index')->with('success','Record Deleted Success');
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
         }
 
-    }
+        $ticket = Ticket::find($order->ticket_id);
+        $attraction = $ticket ? Attraction::find($ticket->attraction_id) : null;
 
-    public function sendExtraPaymentEmail($id)
-{
-    $order = OrderTicket::find($id);
+        $addons = json_decode($order->addons, true);
+        $totalAddons = collect($addons)->sum(function ($addon) {
+            return $addon['price'] * $addon['quantity'];
+        });
 
-    if (!$order) {
-        return response()->json(['success' => false, 'message' => 'Order not found!'], 404);
-    }
+        $grandTotal = ($order->adult_quantity * $ticket->selling_price) +
+                      ($order->child_quantity * $ticket->discount_price) +
+                      $totalAddons - getset('discount_value_Ticket');
 
-    $fromDate    = Carbon::parse($order->from_date);
-    $toDate      = Carbon::parse($order->to_date);
-    $pickupDate  = $order->pickup_car_date ? Carbon::parse($order->pickup_car_date) : $fromDate;
-    $deliverDate = $order->deliver_car_date ? Carbon::parse($order->deliver_car_date) : null;
+        $pdf = PDF::loadView('admin.ticketorders.invoice', compact('order', 'ticket', 'attraction', 'addons', 'totalAddons', 'grandTotal'));
 
-    if (!$deliverDate) {
-        return response()->json(['success' => false, 'message' => 'Delivery date not provided!'], 400);
-    }
-    $bookedHours = $fromDate->diffInHours($toDate);
-    $actualHours = $pickupDate->diffInHours($deliverDate);
-    $delayHours = $actualHours - $bookedHours;
-
-    $totalAmount = (float) $order->amount;
-    $totalPenalty = 0;
-    $penaltyPercentage = 0;
-
-    if ($delayHours > 0) {
-        $penaltyPercentage = 10;
-        if ($delayHours > 1) {
-            $penaltyPercentage += ($delayHours - 1) * 5;
-        }
-        $penaltyPercentage = min($penaltyPercentage, 100);
-        $totalPenalty = ($totalAmount * $penaltyPercentage) / 100;
+        return $pdf->download('invoice_' . $order->id . '.pdf');
     }
 
 
-    $email = $order->buyer_email;
-    Mail::raw("Dear {$order->buyer_name},\n\nYour rental return was delayed by {$delayHours} hour(s). A penalty of {$penaltyPercentage}% has been applied.\nTotal Penalty Amount: $totalPenalty\n\nThank you!", function ($message) use ($email) {
-        $message->to($email)
-                ->subject('Extra Payment Notification');
-    });
+    public function sendConfirmation($id)
+    {
+        // Get Order Details
+        $order = OrderTicket::findOrFail($id);
+        $ticket = Ticket::findOrFail($order->ticket_id);
+        $attraction = $ticket->attraction;
+        $addons = json_decode($order->addons, true);
 
-    // Update the order with the penalty amount.
-    $order->extra_amount = $totalPenalty;
-    $order->extra_amount_status = 1;
-    $order->save();
+        // Send Confirmation Email
+        Mail::to($order->email)->send(new OrderConfirmationMail($order, $ticket, $attraction, $addons));
 
-    return response()->json(['success' => true, 'message' => 'Email sent successfully!', 'penalty' => $totalPenalty]);
-}
-
-
-
-
-
-
+        return back()->with('success', 'Confirmation email sent successfully!');
+    }
 
 
 }
