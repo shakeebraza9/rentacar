@@ -188,5 +188,31 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
             });
         });
 
+        $(document).on("click", ".delete-order", function () {
+            let orderId = $(this).data("id");
+            let url = "{{ route('admin.ordersticket.delete', ':id') }}".replace(':id', orderId);
+
+            if (confirm("Are you sure you want to delete this order? This action cannot be undone.")) {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                    },
+                    success: function (response) {
+                        if (response.status === "success") {
+                            alert("Order deleted successfully!");
+                            location.reload(); // Refresh page after successful deletion
+                        } else {
+                            alert("Error: " + response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            }
+        });
+
     </script>
 @endsection

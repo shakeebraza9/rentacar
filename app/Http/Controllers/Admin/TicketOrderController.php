@@ -93,10 +93,10 @@ class TicketOrderController extends Controller
                                 <i class="fas fa-edit"></i> Edit
                             </a>';
 
-                // Delete Button
-                $deleteBtn = '<button class="btn btn-sm btn-danger delete-order" data-id="'.$value->id.'">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>';
+                            $deleteBtn = '<button class="btn btn-sm btn-danger delete-order" data-id="'.$value->id.'">
+                            <i class="fas fa-trash-alt"></i> Delete
+                         </button>';
+
 
                 $data[] = [
                     'id' => $editBtn . ' ' . $deleteBtn,
@@ -225,6 +225,17 @@ class TicketOrderController extends Controller
         Mail::to($order->email)->send(new OrderConfirmationMail($order, $ticket, $attraction, $addons));
 
         return back()->with('success', 'Confirmation email sent successfully!');
+    }
+    public function delete($id)
+    {
+        try {
+            $order = OrderTicket::findOrFail($id);
+            $order->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Order deleted successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to delete order.']);
+        }
     }
 
 

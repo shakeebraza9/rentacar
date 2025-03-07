@@ -204,6 +204,9 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
         Route::get('/send-confirmation/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'sendConfirmation'])->name('sendConfirmation');
         Route::get('/download-invoice/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'downloadInvoice'])->name('downloadInvoice');
     });
+    Route::delete('/admin/ordersticket/delete/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'delete'])
+    ->name('admin.ordersticket.delete');
+
 
 
 
