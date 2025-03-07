@@ -647,6 +647,7 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Middleware\\WebMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/WebMiddleware.php',
         'App\\Mail\\ExtraPaymentMail' => __DIR__ . '/../..' . '/app/Mail/ExtraPaymentMail.php',
+        'App\\Mail\\OrderConfirmationMail' => __DIR__ . '/../..' . '/app/Mail/OrderConfirmationMail.php',
         'App\\Models\\AccountDetail' => __DIR__ . '/../..' . '/app/Models/AccountDetail.php',
         'App\\Models\\Attraction' => __DIR__ . '/../..' . '/app/Models/Attraction.php',
         'App\\Models\\Attribute' => __DIR__ . '/../..' . '/app/Models/Attribute.php',
