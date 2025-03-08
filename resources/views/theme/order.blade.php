@@ -117,8 +117,54 @@
                                         $extraHourCharge += ($productprice * ($i * 10)) / 100;
                                     }
 
-                                    // Calculate final total
-                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge;
+
+
+
+
+                                    $peek_from_time = $global_d['peek_from_time'] ?? '01:00 AM';
+                                    $peek_to_time = $global_d['peek_to_time'] ?? '03:00 AM';
+                                    $peekExtraAmount = $global_d['peek_extra_amount'] ?? 0;
+
+                                    $frombookingTime = $from;
+                                    $bookingtimeto = $today;
+
+
+                                    $peekEnd = Carbon::parse($frombookingTime->format('Y-m-d') . ' ' . $peek_from_time);
+                                    $peekStart = Carbon::parse($bookingtimeto->format('Y-m-d') . ' ' . $peek_to_time);
+
+
+                                    if ($frombookingTime->copy()->addDay()->between($peekStart, $peekEnd) ||
+                                        $bookingtimeto->copy()->between($peekStart, $peekEnd)) {
+                                        $extraCharge = $peekExtraAmount;
+                                    } else {
+                                        $extraCharge = 0;
+                                    }
+
+                                    if($global_d['session_enable'] == 1){
+
+
+                                        $session_to_date = $global_d['session_to_date'];
+                                        $session_from_date = $global_d['session_from_date'];
+
+
+
+                                        $sessionFrom = Carbon::parse($session_from_date);
+                                        $sessionTo = Carbon::parse($session_to_date);
+
+
+
+                                        if (($from->between($sessionFrom, $sessionTo)) || ($today->between($sessionFrom, $sessionTo))) {
+                                            $session_extra_amount    = $global_d['session_extra_amount'];
+                                        } else {
+                                            $session_extra_amount = 0;
+                                        }
+
+
+                                    }else{
+                                        $session_extra_amount = 0;
+                                    }
+
+                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge + $extraCharge + $session_extra_amount;
                                     $total = max(0, $totalBeforeDiscount - $discountAmount);
                                 @endphp
 
@@ -135,6 +181,19 @@
                                     <td>Pickup Fee</td>
                                     <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
                                 </tr>
+                                <tr>
+                                    <td>Peak Hour</td>
+                                    <td class="text-end">{{ number_format($extraCharge, 2) }}</td>
+                                </tr>
+                                @if($global_d['session_enable'] == 1)
+
+
+                                <tr>
+                                    <td>{{ $global_d['session_name'] }} - Charges</td>
+                                    <td class="text-end">{{ number_format($session_extra_amount, 2) }}</td>
+                                </tr>
+
+                                @endif
                                 <tr>
                                     <td>Return Fee</td>
                                     <td class="text-end">{{ number_format($return_fee, 2) }}</td>
@@ -274,6 +333,8 @@
                         </div>
                         <input type="hidden" name="selected_addons" id="selected-addons">
                         <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
+                        <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}">
+                        <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}">
 
                         <div id="step2" class="stepfrom d-none">
                             <input type="hidden" name="slug" value="{{ $slug }}">

@@ -54,16 +54,27 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
-
         foreach ($request->all() as $key => $value) {
-            if(isset($value['value'])){
-                if(in_array($value['type'],['text','textarea','keywords','image'])){
-                     Setting::where('field',$key)->update(["value" => $value['value']]);
+            if (isset($value['value'])) {
+                // Allowed field types
+                $allowedTypes = ['text', 'textarea', 'keywords', 'image', 'date', 'time', 'enable'];
+
+                if (in_array($value['type'], $allowedTypes)) {
+                    $updatedValue = $value['value'];
+
+                    // Convert time fields to 12-hour format with AM/PM
+                    if ($value['type'] == 'time') {
+                        $updatedValue = date("h:i A", strtotime($value['value'])); // Converts "13:00" to "01:00 PM"
+                    }
+
+                    Setting::where('field', $key)->update(["value" => $updatedValue]);
                 }
             }
         }
-        return back()->with('success','Record Updated');
 
+        return back()->with('success', 'Settings Updated Successfully!');
     }
+
+
 
 }

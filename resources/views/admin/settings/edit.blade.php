@@ -106,6 +106,54 @@
                             </div>
                             @break
 
+                                {{-- Date Field --}}
+                            @case('date')
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>{{ ucwords(str_ireplace("_", " ", $item->field)) }}</label>
+                                    <input
+                                        type="date"
+                                        value="{{ $item->value }}"
+                                        class="form-control"
+                                        placeholder="Select Date"
+                                        name="{{ $item->field }}[value]">
+                                    <input type="hidden" name="{{ $item->field }}[type]" value="{{ $item->type }}">
+                                </div>
+                            </div>
+                            @break
+
+                        {{-- Time Field --}}
+                        @case('time')
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>{{ ucwords(str_ireplace("_", " ", $item->field)) }}</label>
+                                    <input
+                                        type="time"
+                                        value="{{ $item->value }}"
+                                        class="form-control"
+                                        placeholder="Select Time"
+                                        name="{{ $item->field }}[value]">
+                                    <input type="hidden" name="{{ $item->field }}[type]" value="{{ $item->type }}">
+                                </div>
+                            </div>
+                            @break
+
+                        {{-- Enable/Disable Toggle --}}
+                        @case('enable')
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>{{ ucwords(str_ireplace("_", " ", $item->field)) }}</label>
+                                    <select
+                                        class="form-control"
+                                        name="{{ $item->field }}[value]">
+                                        <option value="1" @if($item->value == '1') selected @endif>Enable</option>
+                                        <option value="0" @if($item->value == '0') selected @endif>Disable</option>
+                                    </select>
+                                    <input type="hidden" name="{{ $item->field }}[type]" value="{{ $item->type }}">
+                                </div>
+                            </div>
+                            @break
+
                             @default
                             <div class="col-md-12">
                                 <div class="form-group">

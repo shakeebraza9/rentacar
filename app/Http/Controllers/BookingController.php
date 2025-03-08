@@ -218,10 +218,11 @@ public function checkout(Request $request)
     $productPrice = (float) ($product->selling_price ?? 0);
     $selectedAddons = json_decode($request->selected_addons, true) ?? [];
     $addonsTotal = array_sum(array_column($selectedAddons, 'total'));
-
+    $extraChargepeek = $request->extraChargepeek ?? 0;
+    $session_extra_amount = $request->session_extra_amount ?? 0;
     $discountAmount = ($productPrice * $discountPercent) / 100;
 
-    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal;
+    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal + $extraChargepeek + $session_extra_amount;
     $total = max(0, $totalBeforeDiscount - $discountAmount);
 
     $order = Order::create([
