@@ -39,8 +39,13 @@ return [
             'log.FileName' => storage_path('logs/paypal.log'),
             'log.LogLevel' => 'ERROR'
         ],
-    ],
 
+
+    ],
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
     'toyyibpay' => [
         'user_id' => env('TOYYIBPAY_USER_ID'),
         'secret'  => env('TOYYIBPAY_SECRET'),

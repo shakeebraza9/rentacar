@@ -124,6 +124,11 @@
                                 <label class="btn btn-outline-primary flex-fill py-2" for="toyyibpay">
                                     <i class="bi bi-credit-card"></i> Toyyibpay
                                 </label>
+
+                                <input type="radio" class="btn-check" name="payment_method" id="stripe" value="stripe" required>
+                                <label class="btn btn-outline-primary flex-fill py-2" for="stripe">
+                                    <i class="bi bi-credit-card-2-back"></i> Stripe
+                                </label>
                             </div>
                         </div>
 
