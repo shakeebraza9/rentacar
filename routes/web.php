@@ -93,6 +93,10 @@ Route::get('/test', [App\Http\Controllers\HomeController::class, 'test']);
 Route::get('/login', [App\Http\Controllers\WebAuthController::class, 'login'])->name('weblogin');
 Route::get('/register', [App\Http\Controllers\WebAuthController::class, 'register'])->name('register');
 Route::get('/forgotpassword', [App\Http\Controllers\WebAuthController::class, 'forgotPassword'])->name('forgotpassword');
+Route::post('/sendlink', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('sendlink');
+Route::get('/reset-password/{token}', [App\Http\Controllers\WebAuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [App\Http\Controllers\WebAuthController::class, 'resetPassword'])->name('password.update');
+
 Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'createAccount'])->name('createAccount');
 Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin'])->name('webpostlogin');
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');

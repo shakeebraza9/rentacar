@@ -11,6 +11,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class WebAuthController extends Controller
 {
@@ -160,29 +164,62 @@ class WebAuthController extends Controller
         return redirect(route('weblogin'));
     }
 
- /**
-     * Send a reset link to the given user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        // Check if the email exists
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return back()->with('error', 'We couldn’t find a user with that email.');
+        }
+
+        // Generate a reset token
+        $token = Str::random(60);
+        DB::table('password_resets')->updateOrInsert(
+            ['email' => $request->email],
+            ['token' => Hash::make($token), 'created_at' => now()]
+        );
+
+        // Send email with reset link
+        $resetLink = route('password.reset', ['token' => $token, 'email' => $request->email]);
+
+        Mail::send('emails.forgot_password', ['resetLink' => $resetLink], function ($message) use ($request) {
+            $message->to($request->email)->subject('Reset Your Password');
+        });
+
+        return back()->with('status', 'We have emailed your password reset link!');
+    }
+
+    // ✅ Show Reset Password Form
+    public function showResetForm($token)
+    {
+        return view('theme.reset_password', ['token' => $token]);
+    }
+
+    // ✅ Handle Password Reset
+    public function resetPassword(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+            'token' => 'required',
         ]);
 
-        // Send the password reset link
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        // Check if the password reset link was sent successfully
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with('status', __($status));
-        } else {
-            return back()->withErrors(['email' => __($status)]);
+        $resetData = DB::table('password_resets')->where('email', $request->email)->first();
+        if (!$resetData || !Hash::check($request->token, $resetData->token)) {
+            return back()->with('error', 'Invalid or expired reset token.');
         }
+
+        // Reset password
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Delete the reset token
+        DB::table('password_resets')->where('email', $request->email)->delete();
+
+        return redirect()->route('weblogin')->with('success', 'Your password has been reset successfully.');
     }
 
 }
