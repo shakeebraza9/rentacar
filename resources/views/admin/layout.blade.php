@@ -23,11 +23,16 @@
 
     <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Perfect Scrollbar CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/css/perfect-scrollbar.min.css">
+
 
     <style>
         .menu-button:hover{
             color: #03a9f3;
         }
+
+
     </style>
     @yield('css')
 
@@ -147,136 +152,141 @@
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+            <aside class="left-sidebar">
+                <!-- Sidebar scroll-->
+                <div class="scroll-sidebar">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav">
 
-                        <li><a class=" waves-effect waves-dark" href="{{URL::to('admin/dashboard')}}"
-                            aria-expanded="false"><i class="icon-speedometer"></i>
-                            <span class="hide-menu">Dashboard</span></a>
-                        </li>
+                            <li><a class=" waves-effect waves-dark" href="{{URL::to('admin/dashboard')}}"
+                                aria-expanded="false"><i class="icon-speedometer"></i>
+                                <span class="hide-menu">Dashboard</span></a>
+                            </li>
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-user"></i>
-                            <span class="hide-menu"> Users </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/users/create')}}">Add New User</a></li>
-                                <li><a href="{{URL::to('admin/users/index')}}">All Users</a></li>
-                            </ul>
-                        </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-user"></i>
+                                <span class="hide-menu"> Users </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/users/create')}}">Add New User</a></li>
+                                    <li><a href="{{URL::to('admin/users/index')}}">All Users</a></li>
+                                </ul>
+                            </li>
 
-                        {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-multiple-outline"></i>
-                            <span class="hide-menu"> Roles </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/roles/create')}}">Add New Role</a></li>
-                                <li><a href="{{URL::to('admin/roles/index')}}">All Roles</a></li>
-                            </ul>
-                        </li> --}}
+                            {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-multiple-outline"></i>
+                                <span class="hide-menu"> Roles </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/roles/create')}}">Add New Role</a></li>
+                                    <li><a href="{{URL::to('admin/roles/index')}}">All Roles</a></li>
+                                </ul>
+                            </li> --}}
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-menu"></i>
-                            <span class="hide-menu"> Menus </span></a>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-menu"></i>
+                                <span class="hide-menu"> Menus </span></a>
 
-                            <ul aria-expanded="false" class="collapse">
-                                {{--  <li><a href="{{URL::to('admin/menus/create')}}">Add New Menus</a></li>  --}}
-                                <li><a href="{{URL::to('admin/menus/index')}}">All Menus</a></li>
-                            </ul>
-                        </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-google-pages"></i>
-                            <span class="hide-menu"> Pages </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    {{--  <li><a href="{{URL::to('admin/menus/create')}}">Add New Menus</a></li>  --}}
+                                    <li><a href="{{URL::to('admin/menus/index')}}">All Menus</a></li>
+                                </ul>
+                            </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-google-pages"></i>
+                                <span class="hide-menu"> Pages </span></a>
 
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/page/create')}}">Add New pages</a></li>
-                                <li><a href="{{URL::to('admin/page/index')}}">All pages</a></li>
-                            </ul>
-                        </li>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/page/create')}}">Add New pages</a></li>
+                                    <li><a href="{{URL::to('admin/page/index')}}">All pages</a></li>
+                                </ul>
+                            </li>
 
-                        <li><a class="has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-folder-multiple-image"></i>
-                            <span class="hide-menu"> Slider </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/sliders/create')}}">Add New Slider</a></li>
-                                <li><a href="{{URL::to('admin/sliders/index')}}">All Slider</a></li>
-                            </ul>
-                        </li>
+                            <li><a class="has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-folder-multiple-image"></i>
+                                <span class="hide-menu"> Slider </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/sliders/create')}}">Add New Slider</a></li>
+                                    <li><a href="{{URL::to('admin/sliders/index')}}">All Slider</a></li>
+                                </ul>
+                            </li>
 
-                        {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-gallery"></i>
-                            <span class="hide-menu"> Collections </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/collections/create')}}">Add New Collection</a></li>
-                                <li><a href="{{URL::to('admin/collections/index')}}">All Collection</a></li>
-                            </ul>
-                        </li> --}}
+                            {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-gallery"></i>
+                                <span class="hide-menu"> Collections </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/collections/create')}}">Add New Collection</a></li>
+                                    <li><a href="{{URL::to('admin/collections/index')}}">All Collection</a></li>
+                                </ul>
+                            </li> --}}
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-apps"></i>
-                            <span class="hide-menu"> Category </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                {{--  <li><a href="{{URL::to('admin/categories/create')}}">Add New Category</a></li>  --}}
-                                <li><a href="{{URL::to('admin/categories/index')}}">All Category</a></li>
-                                {{--  <li><a href="{{URL::to('admin/categories/sort')}}">Sort Category</a></li>  --}}
-                            </ul>
-                        </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-apps"></i>
+                                <span class="hide-menu"> Category </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    {{--  <li><a href="{{URL::to('admin/categories/create')}}">Add New Category</a></li>  --}}
+                                    <li><a href="{{URL::to('admin/categories/index')}}">All Category</a></li>
+                                    {{--  <li><a href="{{URL::to('admin/categories/sort')}}">Sort Category</a></li>  --}}
+                                </ul>
+                            </li>
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>
-                            <span class="hide-menu"> Attractions </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/attractions/index')}}">Attractions</a></li>
-                                <li><a href="{{URL::to('admin/ticket/index')}}">Ticket</a></li>
-                                <li><a href="{{URL::to('admin/ticketorders/index')}}">Ticket Order</a></li>
-                            </ul>
-                        </li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-border-all"></i>
-                            <span class="hide-menu"> Products </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/products/create')}}">Add New Car</a></li>
-                                <li><a href="{{URL::to('admin/products/index')}}">All Cars</a></li>
-                                <li><a href="{{URL::to('admin/orders/index')}}">All Orders</a></li>
-                            </ul>
-                        </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-umbrella-beach"></i>
+                                <span class="hide-menu"> Attractions </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/attractions/index')}}">Attractions</a></li>
+                                    <li><a href="{{URL::to('admin/ticket/index')}}">Ticket</a></li>
+                                    <li><a href="{{URL::to('admin/ticketorders/index')}}">Ticket Order</a></li>
+                                </ul>
+                            </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-car"></i>
+                                <span class="hide-menu"> Products </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/products/create')}}">Add New Car</a></li>
+                                    <li><a href="{{URL::to('admin/products/index')}}">All Cars</a></li>
+                                    <li><a href="{{URL::to('admin/orders/index')}}">All Orders</a></li>
+                                </ul>
+                            </li>
 
-                        {{--  <li><a class="waves-effect waves-dark"
-                            href="{{URL::to('admin/orders/index')}}"
-                            aria-expanded="false"><i class="ti-money"></i>
-                            <span class="hide-menu"> Orders </span></a>
-                        </li>  --}}
-                        <li><a class="waves-effect waves-dark"
-                            href="{{URL::to('admin/review/index')}}"
-                            aria-expanded="false"><i class="ti-star"></i>
-                            <span class="hide-menu"> Review </span></a>
-                        </li>
+                            {{--  <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/orders/index')}}"
+                                aria-expanded="false"><i class="ti-money"></i>
+                                <span class="hide-menu"> Orders </span></a>
+                            </li>  --}}
+                            <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/review/index')}}"
+                                aria-expanded="false"><i class="ti-star"></i>
+                                <span class="hide-menu"> Review </span></a>
+                            </li>
+                            <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/review/index')}}"
+                                aria-expanded="false"><i class="fa fa-question-circle"></i>
+                                <span class="hide-menu"> FAQ,s </span></a>
+                            </li>
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-monitor"></i>
-                            <span class="hide-menu"> Report </span></a>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-monitor"></i>
+                                <span class="hide-menu"> Report </span></a>
 
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/reports/clients/index')}}">Customer</a></li>
-                                <li><a href="{{URL::to('admin/products/index')}}">Admin Report</a></li>
-                            </ul>
-                        </li>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/reports/clients/index')}}">Customer</a></li>
+                                    <li><a href="{{URL::to('admin/products/index')}}">Admin Report</a></li>
+                                </ul>
+                            </li>
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-folder-multiple-outline"></i>
-                            <span class="hide-menu"> Filemanager </span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{URL::to('admin/filemanager/create')}}">Add New File</a></li>
-                                <li><a href="{{URL::to('admin/filemanager')}}">All Files</a></li>
-                            </ul>
-                        </li>
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-folder-multiple-outline"></i>
+                                <span class="hide-menu"> Filemanager </span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="{{URL::to('admin/filemanager/create')}}">Add New File</a></li>
+                                    <li><a href="{{URL::to('admin/filemanager')}}">All Files</a></li>
+                                </ul>
+                            </li>
 
-                        <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-settings"></i>
-                            <span class="hide-menu">Settings</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                               @foreach (explode(',',$global_d['grouping']) as $item)
-                                <li><a href="{{URL::to('admin/settings/edit')}}?group={{$item}}">
-                                  {{ ucwords(str_ireplace("_", " ",$item))}}</a></li>
-                               @endforeach
-                            </ul>
-                        </li>
+                            <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-settings"></i>
+                                <span class="hide-menu">Settings</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                @foreach (explode(',',$global_d['grouping']) as $item)
+                                    <li><a href="{{URL::to('admin/settings/edit')}}?group={{$item}}">
+                                    {{ ucwords(str_ireplace("_", " ",$item))}}</a></li>
+                                @endforeach
+                                </ul>
+                            </li>
 
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -423,10 +433,21 @@
     </script>
     @endif
 
+    <!-- Perfect Scrollbar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/perfect-scrollbar.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var sidebar = document.querySelector(".scroll-sidebar");
+            if (sidebar) {
+                var ps = new PerfectScrollbar(sidebar, {
+                    wheelSpeed: 1,
+                    suppressScrollX: true,
+                    swipeEasing: true
+                });
+            }
+        });
+    </script>
 
-    <!-- ============================================================== -->
-    <!-- Pages JS -->
-    <!-- ============================================================== -->
     @yield('js')
 
  </body>
