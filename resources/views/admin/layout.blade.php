@@ -251,9 +251,14 @@
                                 <span class="hide-menu"> Review </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
-                                href="{{URL::to('admin/review/index')}}"
+                                href="{{URL::to('admin/faq/index')}}"
                                 aria-expanded="false"><i class="fa fa-question-circle"></i>
                                 <span class="hide-menu"> FAQ,s </span></a>
+                            </li>
+                            <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/blog/index')}}"
+                                aria-expanded="false"><i class='fas fa-blog'></i>
+                                <span class="hide-menu">Blog </span></a>
                             </li>
 
                             <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-monitor"></i>

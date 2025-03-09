@@ -231,6 +231,26 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::get('/admin/reports/clients/index', [App\Http\Controllers\Admin\ReportsController::class, 'clientIndex']);
 
 
+    Route::prefix('admin/faq')->group(function () {
+        Route::get('/index', [App\Http\Controllers\Admin\FaqTestController::class, 'index'])->name('faq.index');
+        Route::get('/create', [App\Http\Controllers\Admin\FaqTestController::class, 'create'])->name('faq.create');
+        Route::post('/store', [App\Http\Controllers\Admin\FaqTestController::class, 'store'])->name('faq.store');
+        Route::get('/edit/{id}', [App\Http\Controllers\Admin\FaqTestController::class, 'edit'])->name('faq.edit');
+        Route::POST('/update/{id}', [App\Http\Controllers\Admin\FaqTestController::class, 'update'])->name('faq.update');
+        Route::delete('/delete/{id}', [App\Http\Controllers\Admin\FaqTestController::class, 'destroy'])->name('faq.delete');
+
+    });
+    Route::prefix('admin/blog')->group(function () {
+        Route::get('/index', [App\Http\Controllers\Admin\BlogAdminController::class, 'index'])->name('blog.index');
+        Route::get('/create', [App\Http\Controllers\Admin\BlogAdminController::class, 'create'])->name('blog.create');
+        Route::post('/store', [App\Http\Controllers\Admin\BlogAdminController::class, 'store'])->name('blog.store');
+        Route::get('/edit/{id}', [App\Http\Controllers\Admin\BlogAdminController::class, 'edit'])->name('blog.edit');
+        Route::POST('/update/{id}', [App\Http\Controllers\Admin\BlogAdminController::class, 'update'])->name('blog.update');
+        Route::delete('/delete/{id}', [App\Http\Controllers\Admin\BlogAdminController::class, 'destroy'])->name('blog.delete');
+
+    });
+
+
 
     //Sliders
     Route::get('/admin/sliders/index', [App\Http\Controllers\Admin\SliderController::class, 'index']);

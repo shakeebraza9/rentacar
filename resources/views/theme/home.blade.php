@@ -144,7 +144,7 @@ Launch demo modal
                             <div class="tab-content p-3" id="searchTabContent">
                                 <div class="tab-pane fade show active" id="car-rental" role="tabpanel"
                                     aria-labelledby="car-rental-tab">
-                                    
+
                                     <form method="get" accept-charset="utf-8" id="bookingForm">
                                         <div class="row gx-1 gy-2 gy-md-0">
                                             <div class="col-md-4" style="min-width: 38%;">
@@ -178,7 +178,7 @@ Launch demo modal
                                                             <option value="{{ trim($location) }}">{{ trim($location) }}</option>
                                                         @endforeach
                                                     </select>
-                                                    
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -388,14 +388,14 @@ Launch demo modal
                                 </div>
 
 
-                   
 
-                             
+
+
                             </div>
                         </div>
                     </div>
 
-               
+
                 </div>
             </div>
         </section>
@@ -459,7 +459,7 @@ Launch demo modal
                         </button>
                     </li>
                 @endforeach
-                
+
                 </ul>
             </div>
         </section>
@@ -658,78 +658,7 @@ Launch demo modal
             <div class="container">
                 <h2 class="text-center text-primary mt-3">FAQ</h2>
 
-                <div class="accordion alt mt-4" id="accordionFaq">
-                    <div class="accordion-item shadow-sm">
-                        <h2 class="accordion-header" id="heading-12">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-12" aria-expanded="false" aria-controls="collapse-12">
-                                How much does it cost to rent a car in Langkawi? </button>
-                        </h2>
-                        <div id="collapse-12" class="accordion-collapse collapse" aria-labelledby="heading-12"
-                            data-bs-parent="#accordionFaq">
-                            <div class="accordion-body">
-                                The starting price for an average rental car is RM70.00 per day.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item shadow-sm">
-                        <h2 class="accordion-header" id="heading-13">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-13" aria-expanded="false" aria-controls="collapse-13">
-                                Is it necessary to rent a car in Langkawi?
-                            </button>
-                        </h2>
-                        <div id="collapse-13" class="accordion-collapse collapse" aria-labelledby="heading-13"
-                            data-bs-parent="#accordionFaq">
-                            <div class="accordion-body">
-                                Renting a car in Langkawi is highly advisable as it is cheaper and more convenient
-                                than using public transportation. </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item shadow-sm">
-                        <h2 class="accordion-header" id="heading-14">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-14" aria-expanded="false" aria-controls="collapse-14">
-                                What are the most affordable cars to rent in Langkawi?
-                            </button>
-                        </h2>
-                        <div id="collapse-14" class="accordion-collapse collapse" aria-labelledby="heading-14"
-                            data-bs-parent="#accordionFaq">
-                            <div class="accordion-body">
-                                Smaller cars, such as the Perodua Axia, Proton Saga, and Perodua Bezza are the most
-                                affordable options for rental in Langkawi. </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item shadow-sm">
-                        <h2 class="accordion-header" id="heading-15">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-15" aria-expanded="false" aria-controls="collapse-15">
-                                What are the required documents to rent a car in Langkawi?
-                            </button>
-                        </h2>
-                        <div id="collapse-15" class="accordion-collapse collapse" aria-labelledby="heading-15"
-                            data-bs-parent="#accordionFaq">
-                            <div class="accordion-body">
-                                You will need to provide a valid driving license and a passport or identity card to
-                                rent a car in Langkawi. </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item shadow-sm">
-                        <h2 class="accordion-header" id="heading-16">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-16" aria-expanded="false" aria-controls="collapse-16">
-                                What are the types of cars available to rent in Langkawi?
-                            </button>
-                        </h2>
-                        <div id="collapse-16" class="accordion-collapse collapse" aria-labelledby="heading-16"
-                            data-bs-parent="#accordionFaq">
-                            <div class="accordion-body">
-                                We offer a wide range of cars including Compact, Sedans, MPVs, SUVs, and Luxury
-                                cars.
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {!! getFaqsByType('car') !!}
             </div>
         </section>
 
@@ -740,7 +669,7 @@ Launch demo modal
             </div>
         </section>
         <script>
-          
+
 
 
             document.getElementById("bookingForm").addEventListener("submit", function(event) {
@@ -751,7 +680,7 @@ Launch demo modal
                 let pickupTime = document.getElementById("start-time").value;
                 let returnDate = document.getElementById("return_date").value;
                 let returnTime = document.getElementById("end-time").value;
-        
+
                 let formData = {
                     pickup_location: pickupLocation,
                     return_location: returnLocation,
@@ -760,7 +689,7 @@ Launch demo modal
                     return_date: returnDate,
                     return_time: returnTime
                 };
-        
+
                 let encodedData = encodeURIComponent(JSON.stringify(formData));
                 let redirectUrl = "{{ url('/bookingfilter') }}/" + encodedData;
                 window.location.href = redirectUrl;
@@ -769,7 +698,7 @@ Launch demo modal
             document.addEventListener("DOMContentLoaded", function() {
                 let diffLocCheckbox = document.getElementById("diff_loc");
                 let returnCol = document.getElementById("return_col");
-        
+
                 diffLocCheckbox.addEventListener("change", function() {
                     if (this.checked) {
                         returnCol.classList.remove("d-none");
@@ -786,7 +715,7 @@ Launch demo modal
                 defaultDate: ["today"],
                 minDate: "today",
                 disableMobile: "true"
-    
+
             });
             flatpickr("#return_date", {
                 altInput: true,
@@ -795,7 +724,7 @@ Launch demo modal
                 defaultDate: ["today"],
                 minDate: "today",
                 disableMobile: "true"
-    
+
             });
         </script>
     </div>

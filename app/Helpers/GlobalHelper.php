@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\DB;
+use App\Models\Faq;
 
 if (!function_exists('getset')) {
     function getset($key)
@@ -39,5 +40,44 @@ if (!function_exists('getLatestAttractions')) {
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
+    }
+}
+
+
+if (!function_exists('getFaqsByType')) {
+    function getFaqsByType($type)
+    {
+        $faqs = Faq::where('type', $type)->get();
+        $accordionId = 'accordionFaq_' . $type;
+
+        $html = '<div class="accordion alt mt-4" id="' . $accordionId . '">';
+
+        if ($faqs->isEmpty()) {
+            $html .= '<div class="alert alert-warning">No FAQs found for this category.</div>';
+        } else {
+            foreach ($faqs as $index => $faq) {
+                $collapseId = "collapse-$type-$index";
+                $headingId = "heading-$type-$index";
+
+                $html .= '<div class="accordion-item shadow-sm">
+                            <h2 class="accordion-header" id="' . $headingId . '">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#' . $collapseId . '" aria-expanded="false" aria-controls="' . $collapseId . '">
+                                    ' . htmlspecialchars($faq->name) . '
+                                </button>
+                            </h2>
+                            <div id="' . $collapseId . '" class="accordion-collapse collapse" aria-labelledby="' . $headingId . '"
+                                data-bs-parent="#' . $accordionId . '">
+                                <div class="accordion-body">
+                                    ' . htmlspecialchars($faq->description) . '
+                                </div>
+                            </div>
+                        </div>';
+            }
+        }
+
+        $html .= '</div>';
+
+        return $html;
     }
 }

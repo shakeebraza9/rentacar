@@ -18,7 +18,7 @@ $attractions= MenuHelper::getsubAttractions(45);
     {{-- @yield('metatags') --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Langkawi Car Rental at Airport & Jetty - MRR HOLIDAYS</title>
+    <title> Car Rental at Airport & Jetty - MRR HOLIDAYS</title>
     <link href="{{ asset(getset('fav_icon')) }}" type="image/x-icon" rel="icon">
     <link rel="stylesheet" href="{{ asset('theme/asset/css/mmenu.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/asset/css/all.min.css') }}">
