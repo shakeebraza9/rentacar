@@ -29,14 +29,14 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL CATEGORIES LIST
+            <h4 class="text-themecolor">ALL REVIEW LIST
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Categories</li>
+                    <li class="breadcrumb-item active">Review</li>
                 </ol>
             </div>
         </div>
@@ -46,14 +46,28 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 <div class="row">
                     <div class="col-sm-12">
                         <section class="card">
-                            <header class="card-header" style="background-color: #6b0909">
-                                <h4 class="mb-0 text-white" >All Categories List</h4>
+                            <header class="card-header d-flex justify-content-between align-items-center" style="background-color: #6b0909">
+                                <h4 class="mb-0 text-white">All Review List</h4>
+
+                                <div>
+                                    <!-- Add Button -->
+                                    <a href="{{ route('createadminreview') }}" class="btn btn-success btn-sm">
+                                        <i class="fas fa-plus"></i> Add Review
+                                    </a>
+
+                                    <!-- Sort Button -->
+                                    <a class="btn btn-primary btn-sm" id="sortButton" href="{{ route('review_sort') }}">
+                                        <i class="fas fa-sort"></i> Sort
+                                    </a>
+                                </div>
                             </header>
+
                         <div class="card-body">
                           <div class="table-responsive m-t-40">
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
                                         <tr class="" >
+                                            <th>Action</th>
                                             <th>#</th>
                                             <th>Image</th>
                                             <th>Product</th>
@@ -61,7 +75,6 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                                             <th>Email</th>
                                             <th>Review</th>
                                             <th>Status</th>
-                                            {{--  <th>Action</th>     --}}
                                         </tr>
                                      </thead>
                                     <tbody>
@@ -128,51 +141,31 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
             application_table.draw();
         });
 
+        $(document).on('click', '.delete-review', function () {
+            var reviewId = $(this).data('id'); // Get Encrypted ID
+            var url = "{{ route('admin.review.destroy', ':id') }}".replace(':id', reviewId);
 
-
-        $(".mydatatable").delegate(".is_enable", "change", function(){
-            var isChecked = $(this).prop('checked');
-            $.ajax({
-                url: "{{URL::to('/admin/status')}}",
-                data: {
-                    id:$(this).data('id'),
-                    table:'product_reviews',
-                    column:'active',
-                    value: $(this).prop('checked') ? 1: 0,
-                },
-                dataType: "json",
-                success: function (response) {
-
-                },
-                errror:function (response) {
-
-                },
-            });
-            console.log(isChecked);
+            if (confirm("Are you sure you want to delete this review?")) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            $('.mydatatable').DataTable().ajax.reload();
+                        } else {
+                            alert("Error deleting review.");
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                    }
+                });
+            }
         });
-
-
-        $(".mydatatable").delegate(".is_featured", "change", function(){
-            var isChecked = $(this).prop('checked');
-            $.ajax({
-                url: "{{URL::to('/admin/status')}}",
-                data: {
-                    id:$(this).data('id'),
-                    table:'categories',
-                    column:'is_featured',
-                    value: $(this).prop('checked') ? 1: 0,
-                },
-                dataType: "json",
-                success: function (response) {
-
-                },
-                errror:function (response) {
-
-                },
-            });
-            console.log(isChecked);
-        });
-
 
 
       });

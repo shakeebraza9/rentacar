@@ -235,6 +235,14 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     //Review
     // Route::get('admin/review/index', [App\Http\Controllers\Admin\ReviewController::class, 'index']);
     Route::get('admin/review/index', [App\Http\Controllers\ReviewController::class, 'index']);
+    Route::get('admin/review/add', [App\Http\Controllers\ReviewController::class, 'createadmin'])->name('createadminreview');
+    Route::get('admin/review/sort', [App\Http\Controllers\ReviewController::class, 'sort'])->name('review_sort');
+    Route::post('admin/review/sort', [App\Http\Controllers\ReviewController::class, 'Managesort'])->name('submite_sort');
+    Route::post('admin/review/reviewstore', [App\Http\Controllers\ReviewController::class, 'submit'])->name('admin.review.store');
+    Route::get('admin/review/edit/{id}', [App\Http\Controllers\ReviewController::class, 'edit'])->name('admin.review.edit');
+    Route::post('admin/review/update/{id}', [App\Http\Controllers\ReviewController::class, 'update'])->name('admin.review.update');
+    Route::delete('admin/review/destroy/{id}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('admin.review.destroy');
+
     // client Report
     Route::get('/admin/reports/clients/index', [App\Http\Controllers\Admin\ReportsController::class, 'clientIndex']);
 

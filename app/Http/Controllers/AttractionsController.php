@@ -62,14 +62,18 @@ class AttractionsController extends Controller
         $tickets = Ticket::where('attraction_id', $attraction->id)->where('status', 'active') ->with('variations')->get();
         $reviews = ProductReview::join('users', 'product_reviews.user_id', '=', 'users.id')
         ->join('products', 'product_reviews.product_id', '=', 'products.id')
-        ->join('filemanager', 'products.image', '=', 'filemanager.id')
-        ->select('product_reviews.*',
-                 'users.name as user_name',
-                 'users.email as user_email',
-                 'products.title as product_name',
-                 'filemanager.path as image_path')
+        ->join('filemanager', 'products.image', '=', 'filemanager.id') // Join with filemanager
+        ->select(
+            'product_reviews.*',
+            'users.name as user_name',
+            'users.email as user_email',
+            'products.title as product_name',
+            'filemanager.path as image_path' // Select image path from filemanager
+        )
         ->where('product_reviews.active', 1)
+        ->orderBy('product_reviews.sort_order', 'ASC') // ✅ Sorting by sort_order
         ->get();
+
 
         // Pass data to the view
         return view('theme.attractions.detail', compact('attraction', 'allAttractions', 'tickets','reviews'));

@@ -21,6 +21,7 @@ class ProductReview extends Model
         'title',
         'ip_address',
         'verified_purchase',
+        'sort_order',
         'created_at',
         'updated_at'
     ];
