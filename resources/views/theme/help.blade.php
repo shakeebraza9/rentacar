@@ -4,6 +4,8 @@
 <head>
     <title>Help Center</title>
     <meta data-n-head="ssr" charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta data-n-head="ssr" name="viewport" content="width=device-width, initial-scale=1">
     <meta data-n-head="ssr" data-hid="viewport" name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
@@ -21876,10 +21878,10 @@
                                     </div>
                                 </a>
                                 <div id="navigation-container" class="ms-auto" data-v-70d248cc="">
-                                    <div id="full-navigation" data-v-70d248cc=""><a id="ticket-submit-link"
-                                            href="javascript:void(0);" class="nav-item" data-v-70d248cc="">
-                                            Submit Ticket
-                                        </a> <a href="https://www.langkawibook.my/" target="_blank" class="nav-item"
+                                    <div id="full-navigation" data-v-70d248cc="">
+                                        <a id="ticket-submit-link" href="javascript:void(0);" class="nav-item">Submit Ticket</a>
+
+                                        <a href="{{ route('home') }}" target="_blank" class="nav-item"
                                             data-v-70d248cc="">
                                             Our Website
                                         </a> <!----></div>
@@ -22067,86 +22069,98 @@
                 </div>
             </div>
         </div>
+<style>
 
-
-        <div data-v-16da334c="" data-v-70d248cc="" class="modal-backdrop">
-            <div data-v-16da334c="" role="dialog" aria-labelledby="Ticket Submission Modal"
-                aria-describedby="Submit a ticket" class="modal">
-                <div data-v-16da334c="" class="modal-header"><span data-v-16da334c="" class="header-text">
-                        Submit Ticket
-                    </span> <button data-v-16da334c="" type="button" class="btn-close"><svg data-v-16da334c=""
-                            xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-x">
-                            <line data-v-16da334c="" x1="18" y1="6" x2="6" y2="18"></line>
-                            <line data-v-16da334c="" x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg></button></div>
-                <div data-v-16da334c="" class="modal-body">
-                    <form data-v-16da334c="" id="ticket-form">
-                        <section data-v-16da334c=""><label data-v-16da334c="" for="sender-name" class="label"><span
-                                    data-v-16da334c="">
-                                    Name
-                                </span></label> <input data-v-16da334c="" id="sender-name" placeholder="Required"
-                                type="text" name="sender-name" class="input-text"> <!----></section>
-                        <section data-v-16da334c=""><label data-v-16da334c="" for="sender-email" class="label"><span
-                                    data-v-16da334c="">
-                                    Email
-                                </span></label> <input data-v-16da334c="" id="sender-email" placeholder="Required"
-                                type="text" name="sender-email" class="input-text"> <!----> <!----></section>
-                        <section data-v-16da334c=""><label data-v-16da334c="" for="ticket-subject" class="label"><span
-                                    data-v-16da334c="">
-                                    Subject
-                                </span></label> <input data-v-16da334c="" id="ticket-subject" placeholder="Required"
-                                type="text" name="ticket-subject" class="input-text"> <!----></section>
-                        <section data-v-16da334c=""><label data-v-16da334c="" for="ticket-message" class="label"><span
-                                    data-v-16da334c="">
-                                    Message
-                                </span></label> <textarea data-v-16da334c="" id="ticket-message" placeholder="Required"
-                                name="ticket-message" class="input-text"></textarea> <!----></section> <!---->
-                        <section data-v-16da334c="">
-                            <div data-v-16da334c="">
-                                <div data-v-16da334c="">
-                                    <div style="width: 304px; height: 78px;">
-                                        <div><iframe title="reCAPTCHA" width="304" height="78" role="presentation"
-                                                name="a-b4m995tv66e7" frameborder="0" scrolling="no"
-                                                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
-                                                src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6Lc0UrQZAAAAABsyOt6QVvxqMHPFL-IwZH5P8pbQ&amp;co=aHR0cHM6Ly9sYW5na2F3aWJvb2sudGF3ay5oZWxwOjQ0Mw..&amp;hl=en&amp;v=IyZ984yGrXrBd6ihLOYGwy9X&amp;size=normal&amp;cb=zh5azv2k55y2"></iframe>
-                                        </div><textarea id="g-recaptcha-response" name="g-recaptcha-response"
-                                            class="g-recaptcha-response"
-                                            style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
-                                    </div><iframe style="display: none;"></iframe>
-                                </div>
-                            </div> <!---->
-                        </section>
-                    </form>
-                    <div data-v-16da334c="" id="submission-success" style="display: none;"><img data-v-16da334c=""
-                            src="/_nuxt/img/ticket-submit-success.9f20241.svg">
-                        <p data-v-16da334c="" class="title">Thank you!</p>
-                        <p data-v-16da334c="" class="sub-title">Your request has been sent</p>
-                    </div>
-                </div> <!---->
-                <div data-v-16da334c="" class="modal-footer"><button data-v-16da334c="" class="btn"
-                        style="background-color: rgb(3, 168, 78); color: rgb(247, 247, 249); display: none;">
-                        Go back to knowledgebase
-                    </button> <button data-v-16da334c="" disabled="disabled" class="btn"
-                        style="background-color: rgb(3, 168, 78); color: rgb(247, 247, 249);"><span data-v-16da334c="">
-                            Submit request
-                        </span></button></div>
-            </div>
+    .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 400px;
+        }
+</style>
+<div id="ticket-modal" class="modal-backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
+    <div class="modal" style="background: white; width: 400px; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+            <span class="header-text" style="font-size: 18px; font-weight: bold;">Submit Ticket</span>
+            <button id="close-modal" type="button" class="btn-close" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
         </div>
-        <script>window.__NUXT__ = (function (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t) { return { layout: "default", data: [{ categories: [{ _id: "62b26eefb8401e090652181b", ancestry: [], articlesCount: 15, authors: [{ infoVersion: 7, name: "Azri Syazwan", positionTitle: g, profileImage: { url: "a\u002F62ccdad018de700d033d9434\u002Fprofile\u002FVK_7LgJp5d.png", type: b }, id: "62ccdad018de700d033d9434" }, { infoVersion: h, name: k, positionTitle: l, profileImage: { type: b, url: m }, id: n }, { infoVersion: o, name: p, positionTitle: g, profileImage: { type: b, url: q }, id: r }], categoryId: "62b26eefb2f2600906d6581d", description: c, hasContent: a, icon: { type: s, content: "taxi" }, kbId: i, name: "CAR RENTAL", parent: d, position: 0, siteId: e, slug: "car-rental", updatedAt: "2024-12-28T00:01:41.486Z", remainingAuthors: h }, { _id: "62b27001b8401e090652181d", ancestry: [], articlesCount: 22, authors: [{ infoVersion: h, name: k, positionTitle: l, profileImage: { type: b, url: m }, id: n }, { infoVersion: 5, name: "Don Sayid Anand", positionTitle: "Customer Experience", profileImage: { type: b, url: "a\u002F651a87005392e67a7bf589b6\u002Fprofile\u002FXahWN9MlJU.png" }, id: "651a87005392e67a7bf589b6" }, { infoVersion: o, name: p, positionTitle: g, profileImage: { type: b, url: q }, id: r }], categoryId: "62b27001b2f2600906d65827", description: c, hasContent: a, icon: { type: s, content: "boat" }, kbId: i, name: "ATTRACTION", parent: d, position: t, siteId: e, slug: "attraction", updatedAt: "2024-05-18T01:45:01.831Z", remainingAuthors: t }], nextPage: d }], fetch: [], error: d, state: { site: { enabled: a, primary: a, language: f, title: "Help Center", description: c, header: "LangkawiBook Help Center", banner: { title: "Have Questions?", subtitle: "Find Your Answer Here!" }, links: [{ id: "P9bEsUEh", label: "Our Website", url: "https:\u002F\u002Fwww.langkawibook.my\u002F" }], ticketForm: { enabled: a, additionalFields: [], fileUpload: d }, widgetId: c, siteId: e }, settings: { sites: [{ id: e, primary: a, language: f, enabled: a }], locked: j, published: a, whitelabel: { expiry: "1970-01-01T00:00:00.000Z", enabled: j }, socialLinks: { linkedin: c, facebook: "https:\u002F\u002Fwww.facebook.com\u002Flangkawibook.my", instagram: "https:\u002F\u002Fwww.instagram.com\u002Flangkawibook.my\u002F", twitter: c }, colors: { primary: "#03a84e", highlight: "#2abd00", headingText: "#f7f7f9", categoryText: "#373737" }, font: "arial", homepageLayout: "card", feedback: { style: "thumbs", enabled: a }, ticketFormEnabled: a, subdomain: "langkawibook", logo: { type: b, content: "61656a4e86aee40a573628ed\u002Fkb\u002Flogo\u002F_JP2LOESFh.png" }, headerBanner: { type: b, content: "61656a4e86aee40a573628ed\u002Fkb\u002Fbanner\u002Fheader\u002FWEDkWqK2pi.png" }, googleAnalyticsId: c, createdAt: "2022-01-24T06:45:28.377Z", updatedAt: "2023-06-24T06:24:43.809Z", propertyId: i, favIcon: "https:\u002F\u002Ftawk.link\u002Fthumb\u002F61656a4e86aee40a573628ed\u002Fkb\u002Flogo\u002F_JP2LOESFh.png?width=32&height=32", availableLanguages: [f] }, articlePath: d, isTabArticle: j, slugs: d, i18n: { locale: f, messages: { submit_ticket: "Submit Ticket", search: { show_results: "Showing search results for \"{text}\"", search_results: "Search Results", no_results_header: "No search results", no_results_text: "Please, try again or {linkStart}Message Us{linkEnd}", input_placeholder: "Search for answers", recent_searches: "Recent Searches", show_all_results: "Show all results ({count})", search_error: "Unable to search article. {message}", searching_text: "Searching for \"{text}\"" }, category: { all_categories: "All Categories", authorsName_2: "{author1} and {author2}", authorsName_3: "{author1}, {author2} and {author3}", written_by: "{names} and {count} other | {names} and {count} others", other_categories: "Other Categories", list_load_error: "Unable to load categories." }, generic: { last_update: "Last Update {date}", num_articles: "{count} article | {count} articles", retry: "Retry", internal_server_error: "Server is unavailable. Please try again.", unauthorized_error: "You do not have access to perform this action.", previous_page: "Previous", next_page: "Next" }, ticket: { required: "Required", recaptcha_fail: "Please tick the recaptcha", select_file: "Select file", field_required: "Field is required", email_invalid: "Email is invalid", thank_you: "Thank you!", request_sent: "Your request has been sent", submit_request: "Submit request", back_knowledgebase: "Go back to knowledgebase", no_file: "No file selected", submit_error: "Unable to submit ticket. Please check your form and try again.", upload_error: "Unable to upload file.", name_label: "Name", email_label: "Email", subject_label: "Subject", message_label: "Message" }, article: { related_articles: "Related Articles", next_article: "Next Article", need_help: "Still need help? {linkStart}Message Us{linkEnd}", yes: "Yes", no: "No", liked_rating: "{num1} out of {num2} liked this article", rating_title: "Was this article helpful?", also_read: "People also read" }, error: { back_home: "Back to Home", "404_title": "It's Empty Here", "404_info": "The page you are looking for might be removed or temporarily unavailable", "500_title": "Internal Server Error", "500_info": "Something’s gone wrong. It’s not you, it’s us.{lineBreak}Please try again later.", generic_title: "Something went wrong.", generic_message_1: "Sorry, we'll get the problem fixed as soon as we possibly can.", generic_message_2: "Contact us if refreshing doesn't fix things.", refresh_page: "Refresh Page" } }, routeParams: {} } }, serverRendered: a, routePath: "\u002F", config: { baseUrl: "https:\u002F\u002Ftawk.help", fileBaseUrl: "https:\u002F\u002Ftawk.link", recaptchaSite: "6Lc0UrQZAAAAABsyOt6QVvxqMHPFL-IwZH5P8pbQ", ticketAttachmentUrl: "https:\u002F\u002Fupload.tawk.to", embedUrl: "https:\u002F\u002Fembed.tawk.to" } } }(true, "file", "", null, "primary", "en-us", "Mr", 3, "61656a4e86aee40a573628ed", false, "Reena Hamid", "Your Travel Planner", "a\u002F6374437166dc360d1f5d8219\u002Fprofile\u002Fq_KQ17IqhR.jpeg", "6374437166dc360d1f5d8219", 4, "Adam", "a\u002F65d6a8ad8cafbe21f05acd01\u002Fprofile\u002FjNIWcSyG4n.png", "65d6a8ad8cafbe21f05acd01", "predefined", 2));</script>
-        <script src="/_nuxt/runtime.7bdba52.js" defer=""></script>
-        <script src="/_nuxt/commons/lang.index~index.955abf2.js" defer=""></script>
-        <script src="/_nuxt/pages/index.cae256c.js" defer=""></script>
-        <script src="/_nuxt/commons/57629570.18610b8.js" defer=""></script>
-        <script src="/_nuxt/commons/app.34d8254.js" defer=""></script>
-        <script src="/_nuxt/vendors~app.7b38564.js" defer=""></script>
-        <script src="/_nuxt/app.a0bb740.js" defer=""></script>
-        <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'91472b209eb1fcfb',t:'MTczOTk3NzY2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
-        <iframe height="1" width="1"
-            style="position: absolute; top: 0px; left: 0px; border: medium; visibility: hidden;"></iframe>
+        <div class="modal-body" style="padding: 15px 0;">
+            <form id="ticket-form">
+                <div style="margin-bottom: 10px;">
+                    <label for="sender-name" class="form-label" style="display: block; font-weight: bold;">Name</label>
+                    <input type="text" id="sender-name" class="form-control" placeholder="Required" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="sender-email" class="form-label" style="display: block; font-weight: bold;">Email</label>
+                    <input type="email" id="sender-email" class="form-control" placeholder="Required" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="ticket-subject" class="form-label" style="display: block; font-weight: bold;">Subject</label>
+                    <input type="text" id="ticket-subject" class="form-control" placeholder="Required" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="ticket-message" class="form-label" style="display: block; font-weight: bold;">Message</label>
+                    <textarea id="ticket-message" class="form-control" placeholder="Required" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; height: 100px;"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: flex-end; border-top: 1px solid #ddd; padding-top: 10px;">
+            <button type="button" class="btn btn-success" style="background: #03a84e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Submit Request</button>
+        </div>
+    </div>
+</div>
+
+
 
     </body>
 </body>
+<script>
+    document.getElementById("ticket-submit-link").addEventListener("click", function() {
+        document.getElementById("ticket-modal").style.display = "flex";
+    });
+
+    document.getElementById("close-modal").addEventListener("click", function() {
+        document.getElementById("ticket-modal").style.display = "none";
+    });
+
+
+    document.querySelector(".btn-success").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        let formData = {
+            name: document.getElementById("sender-name").value,
+            email: document.getElementById("sender-email").value,
+            subject: document.getElementById("ticket-subject").value,
+            message: document.getElementById("ticket-message").value,
+        };
+
+        fetch("/submit-report", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            document.getElementById("ticket-form").reset();
+            document.getElementById("ticket-modal").style.display = "none";
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script>
 
 </html>

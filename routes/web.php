@@ -101,7 +101,7 @@ Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'c
 Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin'])->name('webpostlogin');
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
 Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
-
+Route::post('/submit-report', [App\Http\Controllers\ReportController::class, 'store']);
 
     Route::middleware(['webLoginChk'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
@@ -118,6 +118,14 @@ Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout
     Route::get('/orderdetails/{id}', [App\Http\Controllers\CustomerController::class, 'details'])->name('order.details');
     Route::get('/referral', [App\Http\Controllers\CustomerController::class, 'referral'])->name('customer.referral');
     Route::get('/cases', [App\Http\Controllers\CustomerController::class, 'cases'])->name('customer.cases');
+
+
+
+
+    Route::get('/ticket/details/{id}', [App\Http\Controllers\CustomerController::class, 'ticketdetails'])->name('ticket.details');
+    Route::get('/product/review/{product_id}', [App\Http\Controllers\ReviewController::class, 'show'])->name('product.Review');
+    Route::post('/product/review/submit', [App\Http\Controllers\ReviewController::class, 'store'])->name('product.submitReview');
+
 });
 
 

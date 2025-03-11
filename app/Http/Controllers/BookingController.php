@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 
-
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -52,80 +52,70 @@ class BookingController extends Controller
         }
 
 
-public function show2($data)
-{
+        public function show2($data)
+        {
+            $decodedData = json_decode(urldecode($data), true);
 
-    $decodedData = json_decode(urldecode($data), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return abort(400, "Invalid booking data");
+            }
 
+            $pickupLocation = $decodedData['pickup_location'] ?? null;
+            $returnLocation = $decodedData['return_location'] ?? null;
+            $pickupDate = $decodedData['pickup_date'] ?? null;
+            $returnDate = $decodedData['return_date'] ?? null;
+            $pickup_time = $decodedData['pickup_time'] ?? null;
+            $return_time = $decodedData['return_time'] ?? null;
 
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        return abort(400, "Invalid booking data");
-    }
+            $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default: Current Date & Time
+            $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default: Next Day Same Time
 
+            if (!empty($pickupDate) && !empty($pickup_time)) {
+                $pickupDateTime = Carbon::parse("$pickupDate $pickup_time")->format('Y-m-d H:i:s');
+            }
 
-    $pickupLocation = $decodedData['pickup_location'] ?? null;
-    $returnLocation = $decodedData['return_location'] ?? null;
-    $pickupDate = $decodedData['pickup_date'] ?? null;
-    $returnDate = $decodedData['return_date'] ?? null;
-    $pickup_time = $decodedData['pickup_time'] ?? null;
-    $return_time = $decodedData['return_time'] ?? null;
+            if (!empty($returnDate) && !empty($return_time)) {
+                $returnDateTime = Carbon::parse("$returnDate $return_time")->format('Y-m-d H:i:s');
+            }
 
-        $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default: Current Date & Time
-        $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default: Next Day Same Time
+            $pickupDate = $pickupDate ? Carbon::parse($pickupDate) : null;
+            $returnDate = $returnDate ? Carbon::parse($returnDate) : null;
 
-        if (!empty($pickupDate) && !empty($pickup_time)) {
-            $pickupDateTime = Carbon::parse("$pickupDate $pickup_time")->format('Y-m-d H:i:s');
+            // Fetch all products
+            $productsQuery = Product::query();
+
+            if ($pickupLocation) {
+                $productsQuery->whereRaw("LOWER(pickup_location) LIKE ?", ['%' . strtolower($pickupLocation) . '%']);
+            }
+            if ($returnLocation) {
+                $productsQuery->where('dropoff_location', $returnLocation);
+            }
+
+            // Filter out booked products
+            if ($pickupDate && $returnDate) {
+                $productsQuery->whereNotExists(function ($query) use ($pickupDate, $returnDate) {
+                    $query->select(DB::raw(1))
+                        ->from('orders')
+                        ->whereRaw('orders.pro_id = products.id')
+                        ->where(function ($q) use ($pickupDate, $returnDate) {
+                            $q->whereDate('orders.to_date', '>=', $pickupDate)
+                              ->whereDate('orders.from_date', '<=', $returnDate);
+                        });
+                });
+            }
+
+            $numberOfRecords = $productsQuery->count();
+
+            $allProducts = $productsQuery->take(4)->get();
+
+            $availableProducts = $allProducts->take(1);
+            $similarProducts = $allProducts->slice(1, 3);
+
+            $product = $availableProducts->first();
+
+            return view('theme.bookingnew', compact('product', 'availableProducts', 'similarProducts', 'numberOfRecords', 'pickupDateTime', 'returnDateTime'));
         }
 
-        if (!empty($returnDate) && !empty($return_time)) {
-            $returnDateTime = Carbon::parse("$returnDate $return_time")->format('Y-m-d H:i:s');
-        }
-
-        // dd($pickupDateTime, $returnDateTime);
-
-
-    $pickupDate = $pickupDate ? \Carbon\Carbon::parse($pickupDate) : null;
-    $returnDate = $returnDate ? \Carbon\Carbon::parse($returnDate) : null;
-
-    $productsQuery = Product::leftJoin('orders', 'products.id', '=', 'orders.pro_id')
-        ->select(
-            'products.*',
-            'orders.id as order_id',
-            'orders.from_date',
-            'orders.to_date'
-        );
-
-        if ($pickupLocation) {
-            $productsQuery->whereRaw("LOWER(products.pickup_location) LIKE ?", ['%' . strtolower($pickupLocation) . '%']);
-        }
-        if ($returnLocation) {
-            $productsQuery->where('products.dropoff_location', $returnLocation);
-        }
-
-
-    if ($pickupDate && $returnDate) {
-        $productsQuery->where(function ($query) use ($pickupDate, $returnDate) {
-            $query->whereNull('orders.id')
-                  ->orWhere(function ($query) use ($pickupDate, $returnDate) {
-                      $query->whereDate('orders.to_date', '<', $pickupDate)
-                            ->orWhereDate('orders.from_date', '>', $returnDate);
-                  });
-        });
-    }
-    $numberOfRecords = $productsQuery->count();
-
-    $allProducts = $productsQuery->take(4)->get();
-
-
-    $availableProducts = $allProducts->take(1);
-    $similarProducts = $allProducts->slice(1, 3);
-    $product = $availableProducts->first();
-
-
-    $isBooked = $productsQuery->whereNotNull('orders.id')->exists();
-
-    return view('theme.bookingnew', compact('isBooked', 'product', 'availableProducts', 'similarProducts','numberOfRecords','pickupDateTime','returnDateTime'));
-}
 
 
 

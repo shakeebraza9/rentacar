@@ -105,6 +105,9 @@
                                                             <a href="{{ route('order.details', ['id' => Crypt::encryptString($order->id)]) }}" class="btn btn-sm btn-primary">
                                                                 View Details
                                                             </a>
+                                                            <a href="{{ route('product.Review', ['product_id' => Crypt::encryptString($order->pro_id)]) }}" class="btn btn-sm btn-primary">
+                                                                Review
+                                                            </a>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -142,20 +145,46 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="table-responsive ">
-                            <table class="table table-striped">
-                                <thead>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead class="">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Attraction Name</th>
-                                        <th>Ticket Details</th>
-                                        <th>Price</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
                                         <th>Payment Status</th>
-                                        <th>Actions</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
+                                    @foreach($tickets as $ticket)
+                                        <tr>
+                                            <td>{{ $ticket->id }}</td>
+                                            <td>{{ $ticket->name }}</td>
+                                            <td>
+                                                <strong>Adults:</strong> {{ $ticket->adult_quantity }}<br>
+                                                <strong>Children:</strong> {{ $ticket->child_quantity }}
+                                            </td>
+                                            <td>RM {{ number_format($ticket->amount, 2) }}</td>
+                                            <td>
+                                                <span class="badge {{ $ticket->payment_status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $ticket->payment_status == 1 ? 'Paid' : 'Pending' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if($ticket->payment_status == 0)
+                                                    <a href="{{ route('place.checkout', ['order_id' => encrypt($ticket->id)]) }}" class="btn btn-sm btn-warning">
+                                                        Pay Now
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('ticket.details', ['id' => encrypt($ticket->id)]) }}" class="btn btn-sm btn-primary">
+                                                        View Details
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

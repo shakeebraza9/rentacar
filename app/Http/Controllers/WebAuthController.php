@@ -76,7 +76,7 @@ class WebAuthController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'country' => $request->country,
             'password' => Hash::make($request->password),
-            'role_id' => 1, // Assuming 'customer' role has id 1
+            'role_id' => 0, // Assuming 'customer' role has id 1
             'created_by' => 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

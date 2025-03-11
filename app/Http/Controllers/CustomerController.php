@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\AccountDetail;
 use App\Models\Order;
+use App\Models\Ticket;
+use App\Models\OrderTicket;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
-
+use Illuminate\Support\Facades\DB;
 class CustomerController extends Controller
 {
     public function profile()
@@ -143,20 +145,29 @@ class CustomerController extends Controller
             return redirect()->route('weblogin')->with('error', 'Please log in to view your order history.');
         }
 
-        $sortable = ['id', 'from_date', 'to_date', 'payment_status'];
+        $sortable = ['id', 'from_date', 'to_date', 'payment_status', 'date'];
 
         $sort = in_array($request->query('sort'), $sortable) ? $request->query('sort') : 'created_at';
         $direction = $request->query('direction') === 'asc' ? 'asc' : 'desc';
 
-
-        $query = Order::where('userid', Auth::id());
+        // Fetch car rental orders
+        $ordersQuery = Order::where('userid', Auth::id());
         if ($request->has('payment_status') && $request->payment_status !== '') {
-            $query->where('payment_status', $request->payment_status);
+            $ordersQuery->where('payment_status', $request->payment_status);
         }
-        $orders = $query->orderBy($sort, $direction)->get();
+        $orders = $ordersQuery->orderBy($sort, $direction)->get();
 
-        return view('theme.history', compact('orders', 'sort', 'direction', 'request'));
+        // Fetch attraction ticket bookings
+        $ticketsQuery = DB::table('order_ticket')->where('userid', Auth::id());
+        if ($request->has('payment_status_exp') && $request->payment_status_exp !== '') {
+            $ticketsQuery->where('payment_status', $request->payment_status_exp);
+        }
+        $tickets = $ticketsQuery->orderBy($sort, $direction)->get();
+
+        return view('theme.history', compact('orders', 'tickets', 'sort', 'direction', 'request'));
     }
+
+
     public function details(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -173,6 +184,18 @@ class CustomerController extends Controller
         return view('theme.order-details', compact('order'));
     }
 
+    public function ticketdetails($id)
+    {
+        try {
+            $ticketId = Crypt::decrypt($id);
+            $orderTickets = OrderTicket::where('id', $ticketId)->firstOrFail();
+            $ticket = Ticket::findOrFail($orderTickets->ticket_id);
+
+            return view('theme.attractions.ticketdetails', compact('ticket', 'orderTickets'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Invalid Ticket ID');
+        }
+    }
 
 
 

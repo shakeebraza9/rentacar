@@ -642,71 +642,61 @@
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <h6>Name</h6>
-                                                <div class="border-bottom pb-2">
-                                                    adasd </div>
+                                                <div class="border-bottom pb-2" id="summary-name">---</div>
                                             </div>
                                             <div class="col-md-6 mt-4 mt-md-0">
                                                 <h6>Email</h6>
-                                                <div class="border-bottom pb-2">
-                                                    aa@gmail.com </div>
+                                                <div class="border-bottom pb-2" id="summary-email">---</div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <h6>Country of Origin</h6>
-                                                <div class="border-bottom pb-2">
-                                                    QA </div>
+                                                <div class="border-bottom pb-2" id="summary-country">---</div>
                                             </div>
                                             <div class="col-md-6">
                                                 <h6>Phone Number</h6>
-                                                <div class="border-bottom pb-2">
-                                                    +923456677678 </div>
+                                                <div class="border-bottom pb-2" id="summary-phone">---</div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <h6>Driver Name</h6>
-                                                <div class="border-bottom pb-2">
-                                                    adasd </div>
+                                                <div class="border-bottom pb-2" id="summary-driver-name">---</div>
                                             </div>
                                             <div class="col-md-6 mt-4 mt-md-0">
                                                 <h6>Driver Mobile Number</h6>
-                                                <div class="border-bottom pb-2">
-                                                    +923456677678 </div>
+                                                <div class="border-bottom pb-2" id="summary-driver-phone">---</div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <h6>Driver ID/Passport Number</h6>
-                                                <div class="border-bottom pb-2">
-                                                    23424 </div>
+                                                <div class="border-bottom pb-2" id="summary-driver-id">---</div>
                                             </div>
                                             <div class="col-md-6 mt-4 mt-md-0">
                                                 <h6>Driver License Number</h6>
-                                                <div class="border-bottom pb-2">
-                                                    234234234 </div>
+                                                <div class="border-bottom pb-2" id="summary-driver-license">---</div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <h6>Age</h6>
-                                                <div class="border-bottom pb-2">
-                                                    33 </div>
+                                                <div class="border-bottom pb-2" id="summary-age">---</div>
                                             </div>
                                             <div class="col-md-6 mt-4 mt-md-0">
                                                 <h6>How did you hear about us</h6>
-                                                <div class="border-bottom pb-2">
-                                                    Google Search </div>
+                                                <div class="border-bottom pb-2" id="summary-heard-from">---</div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-md">
                                                 <h6>Note</h6>
-                                                <div class="border-bottom pb-2">
-                                                    234234234 </div>
+                                                <div class="border-bottom pb-2" id="summary-note">---</div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
 
@@ -961,4 +951,37 @@ showStep(1);
 
 
 </script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to update summary fields
+        function updateSummary() {
+            document.getElementById("summary-name").textContent = document.getElementById("name").value || "---";
+            document.getElementById("summary-email").textContent = document.getElementById("email").value || "---";
+            document.getElementById("summary-country").textContent = document.getElementById("country").value || "---";
+            document.getElementById("summary-phone").textContent =
+                document.getElementById("country-code").value + " " + (document.getElementById("phone-number").value || "---");
+
+            document.getElementById("summary-driver-name").textContent = document.getElementById("driver-name").value || "---";
+            document.getElementById("summary-driver-phone").textContent = document.getElementById("get-driver-mobile-number").value || "---";
+            document.getElementById("summary-driver-id").textContent = document.getElementById("driver-ic-number").value || "---";
+            document.getElementById("summary-driver-license").textContent = document.getElementById("driver-license-number").value || "---";
+
+            document.getElementById("summary-age").textContent = document.getElementById("user-age").value || "---";
+            document.getElementById("summary-heard-from").textContent = document.getElementById("heard-from-id").value || "---";
+            document.getElementById("summary-note").textContent = document.getElementById("note").value || "---";
+        }
+
+        // Attach event listeners to input fields
+        document.querySelectorAll("#name, #email, #country, #phone-number, #country-code, #driver-name, #get-driver-mobile-number, #driver-ic-number, #driver-license-number, #user-age, #heard-from-id, #note").forEach(input => {
+            input.addEventListener("input", updateSummary);
+        });
+
+        // Also update summary when country code changes
+        document.getElementById("country-code").addEventListener("change", updateSummary);
+    });
+    </script>
+
 @endsection

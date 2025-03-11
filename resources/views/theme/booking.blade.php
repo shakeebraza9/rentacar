@@ -125,7 +125,7 @@
 
                                         $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
                                         ?>
-                                        <a href="<?= route('customers.orders', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) ?>"
+                                        <a href="<?= route('customers.orders', ['slug' => $similarProduct->slug, 'today' => $today, 'from' => $nextDay]) ?>"
                                             class="btn btn-primary">
                                             Book Now
                                         </a>

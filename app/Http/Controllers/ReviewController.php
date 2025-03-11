@@ -10,9 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
-use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
+use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 class ReviewController extends Controller
 {
     public function index(Request $request)
@@ -78,5 +79,41 @@ class ReviewController extends Controller
 
     return view('admin.review.index');
 }
+
+public function show($encryptedProductId)
+{
+    try {
+        $product_id = Crypt::decryptString($encryptedProductId);
+        $product = Product::findOrFail($product_id);
+
+        return view('theme.reviewsadd', compact('product'));
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Invalid product ID');
+    }
+}
+
+public function store(Request $request)
+    {
+        // Validate request
+        $request->validate([
+            'product_id' => 'required|integer',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string',
+        ]);
+
+        // Store review in database
+        ProductReview::create([
+            'product_id' => $request->product_id,
+            'user_id' => Auth::id(), // Assuming the user is logged in
+            'review' => $request->review,
+            'star' => $request->rating,
+            'title' => $request->title ?? null,
+            'ip_address' => $request->ip(),
+            'verified_purchase' => 1, // You can modify this logic
+            'active' => 1, // Default as active
+        ]);
+
+        return redirect()->back()->with('success', 'Review submitted successfully!');
+    }
 
 }
