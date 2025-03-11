@@ -40,7 +40,8 @@ class Order extends Model
         'pickup_car_date',
         'deliver_car_date',
         'payment_status',
-        'amount'
+        'amount',
+        'depositeamount'
     ];
 
     protected $casts = [

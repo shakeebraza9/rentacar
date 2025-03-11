@@ -84,6 +84,8 @@ use Carbon\Carbon;
             <p><strong>Product Name:</strong> {{ $data->product->title ?? 'N/A' }}</p>
             <p><strong>Price:</strong> {{ $data->product->selling_price ?? 'N/A' }}</p>
             <p><strong>Description:</strong> {!! $data->product->description ?? 'N/A' !!}</p>
+            <p><strong>Pay Amount:</strong> {!! $data->amount ?? 'N/A' !!}</p>
+            <p><strong>Deposit Amount:</strong> {!! $data->depositeamount ?? 'N/A' !!}</p>
 
             <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
 

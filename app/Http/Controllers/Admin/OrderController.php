@@ -90,17 +90,30 @@ class OrderController extends Controller
                 ? '<span style="color: green; font-weight: bold;">Paid</span>'
                 : '<span style="color: red; font-weight: bold;">Unpaid</span>';
 
-            $data[] = [
-                'id' => '<a href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'">#'.$value->id.'</a>', // ID (Action)
-                'buyer_name' => $value->buyer_name,
-                'buyer_email' => $value->buyer_email,
-                'buyer_phone_number' => $value->buyer_phone_number,
-                'to_date' => date('d-m-Y h:i A', strtotime($value->to_date)),   // Format To Date
-                'from_date' => date('d-m-Y h:i A', strtotime($value->from_date)), // Format From Date
-                'payment_status' => $payment_status_label,
-                'amount' => 'RM ' . $value->amount,
-                'status' => $value->status,
-            ];
+            $deposit_status_label = $value->deposit_status == 1
+                ? '<span style="color: green; font-weight: bold;">Paid</span>'
+                : '<span style="color: red; font-weight: bold;">Unpaid</span>';
+                $data[] = [
+                    'id' => '
+                        <a href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <button class="btn btn-sm btn-danger delete-order" data-id="'.Crypt::encryptString($value->id).'">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    ', // ID (Action)
+                    'buyer_name' => $value->buyer_name,
+                    'buyer_email' => $value->buyer_email,
+                    'buyer_phone_number' => $value->buyer_phone_number,
+                    'to_date' => date('d-m-Y h:i A', strtotime($value->to_date)),   // Format To Date
+                    'from_date' => date('d-m-Y h:i A', strtotime($value->from_date)), // Format From Date
+                    'payment_status' => $payment_status_label,
+                    'deposit_status' => $deposit_status_label,
+                    'amount' => 'RM ' . $value->amount,
+                    'status' => $value->status,
+                ];
+
+
         }
 
 
@@ -289,6 +302,18 @@ public function getTotalTime($id)
 }
 
 
+public function destroy($id)
+{
+    try {
+        $orderId = Crypt::decryptString($id);
+        $order = Order::findOrFail($orderId);
+        $order->delete();
+
+        return response()->json(['message' => 'Order deleted successfully.']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Order deletion failed.'], 500);
+    }
+}
 
 
 

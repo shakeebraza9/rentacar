@@ -236,6 +236,7 @@
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{URL::to('admin/products/create')}}">Add New Car</a></li>
                                     <li><a href="{{URL::to('admin/products/index')}}">All Cars</a></li>
+                                    <li><a href="{{URL::to('admin/cartype/index')}}">Cars Type</a></li>
                                     <li><a href="{{URL::to('admin/orders/index')}}">All Orders</a></li>
                                 </ul>
                             </li>
@@ -261,8 +262,7 @@
                                 <span class="hide-menu">Blog </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
-                                href="{{URL::to('admin/report/index')}}"
-                                aria-expanded="false"> <i class="mdi mdi-monitor"></i>></i>
+                                href="{{URL::to('admin/report/index')}}"aria-expanded="false"> <i class="mdi mdi-monitor"></i>
                                 <span class="hide-menu">Customer Queries</span></a>
                             </li>
 {{--

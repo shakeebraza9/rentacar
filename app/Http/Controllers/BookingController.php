@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\Cart;
 use App\Models\Setting;
 use Carbon\Carbon;
+use App\Models\CarType;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 
@@ -120,26 +121,31 @@ class BookingController extends Controller
 
 
 
-public function index($slug, Request $request)
-{
-    $booking = Product::where('slug', $slug)->firstOrFail();
-    $today = $request->query('today');
-    $from = $request->query('from');
+        public function index($slug, Request $request)
+        {
+            $booking = Product::where('slug', $slug)->firstOrFail();
+            $today = $request->query('today');
+            $from = $request->query('from');
 
-    if ($today) {
-        $today = Carbon::parse($today)->setTimeFromTimeString($today);
-    } else {
-        $today = Carbon::now()->setTime(6, 0, 0);
-    }
+            if ($today) {
+                $today = Carbon::parse($today)->setTimeFromTimeString($today);
+            } else {
+                $today = Carbon::now()->setTime(6, 0, 0);
+            }
 
-    if ($from) {
-        $from = Carbon::parse($from)->setTimeFromTimeString($from);
-    } else {
-        $from = Carbon::now()->addDay()->setTime(6, 0, 0);
-    }
+            if ($from) {
+                $from = Carbon::parse($from)->setTimeFromTimeString($from);
+            } else {
+                $from = Carbon::now()->addDay()->setTime(6, 0, 0);
+            }
 
-    return view('theme.order', compact('booking', 'slug', 'today', 'from'));
-}
+            $carType = CarType::where('slug', strtolower($booking->type))->first();
+            $price = $carType ? $carType->amount : 50.00;
+
+            return view('theme.order', compact('booking', 'slug', 'today', 'from', 'price'));
+        }
+
+
 
 
 
@@ -215,6 +221,18 @@ public function checkout(Request $request)
     $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal + $extraChargepeek + $session_extra_amount;
     $total = max(0, $totalBeforeDiscount - $discountAmount);
 
+
+    $paymentType = $request->input('payment_type');
+
+    if ($paymentType === 'deposit') {
+        $depositeamount = $request->input('depositeamount');
+
+    } else {
+        $depositeamount = 0 ;
+
+    }
+
+
     $order = Order::create([
         'pro_id' => $product->id,
         'userid' => $userId,
@@ -238,12 +256,24 @@ public function checkout(Request $request)
         'status' => $request->status ?? 'pending',
         'payment_status' => $request->payment_status ?? 0,
         'amount' => $total,
+        'depositeamount' => $depositeamount,
         'selected_addons' => json_encode($selectedAddons),
     ]);
 
+    if ($paymentType === 'deposit') {
+
+        return redirect()->route('checkoutdeposit', [
+            'order_id' => Crypt::encryptString($order->id),
+        ])->with('success', 'Pay a deposit amount');
+
+    } else {
+
     return redirect()->route('checkout', [
         'order_id' => Crypt::encryptString($order->id),
-    ])->with('success', 'Order placed successfully!');
+    ])->with('success', 'Pay a Full amount');
+
+    }
+
 }
 
 

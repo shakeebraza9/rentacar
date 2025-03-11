@@ -104,6 +104,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                                 <th>To Date</th>
                                 <th>From Date</th>
                                 <th>Payment Status</th>
+                                <th>Deposit Status</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                             </tr>
@@ -130,7 +131,7 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
             var application_table = $('.mydatatable').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false, // Disable the default search box
+                searching: false,
                 fixedColumns: false,
                 fixedHeader: false,
                 scrollCollapse: false,
@@ -142,7 +143,6 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                     url: "{{ URL::to('admin/orders/index') }}",
                     type: "GET",
                     data: function (d) {
-                        // Pull data from filter inputs
                         d.buyer_name = $('#buyer_name').val();
                         d.payment_status = $('#payment_status').val();
                         d.status = $('#status').val();
@@ -157,28 +157,25 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                     { data: 'from_date', name: 'from_date' },
                     { data: 'to_date', name: 'to_date' },
                     { data: 'payment_status', name: 'payment_status' },
+                    { data: 'deposit_status', name: 'deposit_status' },
                     { data: 'amount', name: 'amount' },
                     { data: 'status', name: 'status' },
                 ],
                 initComplete: function () {
-                    // Redraw DataTable on filter change
                     $('#buyer_name, #payment_status, #status, #date_range').on('change keyup', function () {
                         application_table.draw();
                     });
 
-                    // Initialize custom JavaScript (e.g., toggle switches)
                     $('.js-switch').each(function () {
                         new Switchery($(this)[0], $(this).data());
                     });
                 }
             });
 
-            // Optional: Trigger DataTable redraw when the "Apply Filters" button is clicked
             $('#searchButton').click(function () {
                 application_table.draw();
             });
 
-            // Optional: Reset filters and redraw the table
             $('#resetButton').click(function () {
                 $('#buyer_name').val('');
                 $('#payment_status').val('');
@@ -186,7 +183,30 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
                 $('#date_range').val('');
                 application_table.draw();
             });
+
+            // Delete Order
+            $(document).on('click', '.delete-order', function () {
+                let orderId = $(this).data('id');
+
+                if (confirm('Are you sure you want to delete this order?')) {
+                    $.ajax({
+                        url: '/admin/orders/delete/' + orderId,
+                        type: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            alert(response.message);
+                            application_table.draw(); // Reload DataTable after deletion
+                        },
+                        error: function (xhr) {
+                            alert('Error deleting order.');
+                        }
+                    });
+                }
+            });
         });
+
 
     </script>
 @endsection

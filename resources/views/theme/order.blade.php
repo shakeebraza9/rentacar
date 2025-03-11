@@ -335,6 +335,7 @@
                         <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
                         <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}">
                         <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}">
+                        <input type="hidden" name="depositeamount" value="{{ $price }}">
 
                         <div id="step2" class="stepfrom d-none">
                             <input type="hidden" name="slug" value="{{ $slug }}">
@@ -797,7 +798,7 @@
 
                                     <!-- initiate razer payment method selection -->
 
-
+                                    <input type="hidden" id="paymentType" name="payment_type" value="full">
 
                                 <div class="row gx-md-8 mt-5">
                                     <div class="col-md border-end">
@@ -805,7 +806,7 @@
                                             <div class="col">
                                                 <div class="text-muted mb-2"><i class="fas fa-hand-holding-usd"></i>
                                                     Place Deposit</div>
-                                                <h2 class="text-primary">RM 100.00</h2>
+                                                <h2 class="text-primary">RM {{ $price }}</h2>
                                             </div>
                                             <div class="col-auto">
                                                 <button class="btn btn-primary price-selector" data-value="0" value="0"
@@ -891,6 +892,11 @@ showStep(1);
     toggleSection("invoice", "invoice-area");
     toggleSection("other-driver", "area_driver");
 
+    document.getElementById("btn_deposit").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default redirect
+        document.getElementById("paymentType").value = "deposit"; // Set deposit type
+        document.getElementById("checkoutForm").submit(); // Submit form
+    });
 
     function proceedToCheckout() {
         const isStep2Valid = validateStep2();
@@ -900,9 +906,9 @@ showStep(1);
             return;
         }
 
-        document.getElementById('checkoutForm').submit();
+        document.getElementById("paymentType").value = "full"; // Set full payment type
+        document.getElementById("checkoutForm").submit();
     }
-
 
     document.addEventListener("DOMContentLoaded", function () {
         function updateAddonTotal() {

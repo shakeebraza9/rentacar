@@ -28,6 +28,20 @@ class PaymentController extends Controller
             return abort(404, 'Invalid Order ID.');
         }
     }
+    public function checkoutdeposit($encrypted_order_id)
+    {
+        try {
+            // Order ID decrypt karein
+            $order_id = Crypt::decryptString($encrypted_order_id);
+
+            // Order fetch karein
+            $order = Order::with('product')->findOrFail($order_id);
+
+            return view('theme.checkoutdeposit', compact('order'));
+        } catch (\Exception $e) {
+            return abort(404, 'Invalid Order ID.');
+        }
+    }
 
 
 

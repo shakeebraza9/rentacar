@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Ui\Presets\React;
+use App\Models\CarType;
 use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
@@ -213,9 +214,9 @@ class ProductController extends Controller
          $product_details = DB::table('product_details')->where('proid', '=', $id)->get();
          //  dd($product->collection);
          $filemanager = Filemanager::where('is_enable',1)->get();
+         $carTypes = CarType::select('title', 'slug')->get();
 
-
-        return view('admin.products.edit',compact('product','categories','brands','location','attributes','collections','product_details','filemanager','Subcategory'));
+        return view('admin.products.edit',compact('product','categories','brands','location','attributes','collections','product_details','filemanager','Subcategory','carTypes'));
     }
 
     function generateAttributeCombinations($attributes) {

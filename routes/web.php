@@ -81,10 +81,15 @@ Route::get('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'ca
 
 Route::get('/order-tracking', [App\Http\Controllers\CheckoutController::class, 'order_tracking']);
 Route::get('/checkout/{order_id}', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/checkoutdeposit/{order_id}', [PaymentController::class, 'checkoutdeposit'])->name('checkoutdeposit');
 
 Route::get('/order-confirmaton/{id}', [App\Http\Controllers\CheckoutController::class, 'order_confirmaton']);
 Route::post('/checkout/submit', [App\Http\Controllers\CheckoutController::class, 'checkout_submit']);
 Route::get('/get_invoice/{id}', [App\Http\Controllers\CheckoutController::class, 'get_invoice']);
+
+Route::post('/deposit/payment', [App\Http\Controllers\DepositePaymentController::class, 'processPayment'])->name('deposit.payment');
+Route::get('/depositpayment/success', [App\Http\Controllers\DepositePaymentController::class, 'paymentSuccess'])->name('depositpayment.success');
+Route::get('/depositpayment/cancel', [App\Http\Controllers\DepositePaymentController::class, 'paymentCancel'])->name('depositpayment.cancel');
 
 
 Route::get('/test', [App\Http\Controllers\HomeController::class, 'test']);
@@ -189,7 +194,16 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::post('/admin/products/variations/{id}', [App\Http\Controllers\Admin\ProductController::class, 'variations']);
     Route::get('/admin/products/remove-variation/{id}', [App\Http\Controllers\Admin\ProductController::class, 'remove_variation']);
 
+// car type
 
+Route::get('/admin/cartype/index', [App\Http\Controllers\Admin\CarTypeController::class, 'index'])->name('admin.cartype.index');
+Route::get('/admin/cartype/create', [App\Http\Controllers\Admin\CarTypeController::class, 'create'])->name('admin.cartype.create');
+Route::post('/admin/cartype/store', [App\Http\Controllers\Admin\CarTypeController::class, 'store'])->name('admin.cartype.store');
+
+Route::get('/admin/cartype/edit/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'edit'])->name('admin.cartype.edit');
+Route::post('/admin/cartype/update/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'update'])->name('admin.cartype.update');
+
+Route::delete('/admin/cartype/delete/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'destroy'])->name('admin.cartype.delete');
 
 
     //Attractions
@@ -231,6 +245,7 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
     Route::post('/admin/send-extra-payment-email/{id}', [App\Http\Controllers\Admin\OrderController::class, 'sendExtraPaymentEmail'])->name('send.extra.payment.email');
 
 
+    Route::delete('/admin/orders/delete/{id}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('orders.delete');
 
     //Review
     // Route::get('admin/review/index', [App\Http\Controllers\Admin\ReviewController::class, 'index']);
@@ -245,6 +260,14 @@ Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::cla
 
     // client Report
     Route::get('/admin/reports/clients/index', [App\Http\Controllers\Admin\ReportsController::class, 'clientIndex']);
+
+
+
+    // Client reports
+    Route::get('admin/report/index', [App\Http\Controllers\Admin\ClientReportsController::class, 'index'])
+    ->name('admin.report.index');
+    Route::get('admin/report/index', [App\Http\Controllers\Admin\ClientReportsController::class, 'index'])->name('admin.report.show');
+    Route::get('admin/report/index', [App\Http\Controllers\Admin\ClientReportsController::class, 'index'])->name('admin.report.destroy');
 
 
     Route::prefix('admin/faq')->group(function () {

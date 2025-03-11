@@ -7,17 +7,13 @@
             <!-- Dropdown Selector -->
             <label for="car_type">Select Car Type</label>
             <select name="car_type" id="car_type" class="form-control">
-                <option value="compact" {{ $product->type == 'compact' ? 'selected' : '' }}>Compact</option>
-                <option value="mpv" {{ $product->type == 'mpv' ? 'selected' : '' }}>MPV</option>
-                <option value="sedan" {{ $product->type == 'sedan' ? 'selected' : '' }}>Sedan</option>
-                <option value="SUV " {{ $product->type == 'SUV' ? 'selected' : '' }}>SUV</option>
-                <option value="luxury_compact" {{ $product->type == 'luxury_compact' ? 'selected' : '' }}>Luxury Compact</option>
-                <option value="luxury_mpv" {{ $product->type == 'luxury_mpv' ? 'selected' : '' }}>Luxury MPV</option>
-                <option value="Luxury_SUV" {{ $product->type == 'Luxury_SUV' ? 'selected' : '' }}>Luxury SUV</option>
-                <option value="Luxury_Sedan" {{ $product->type == 'Luxury_Sedan' ? 'selected' : '' }}>Luxury Sedan</option>
-                <option value="Other" {{ $product->type == 'Other' ? 'selected' : '' }}>Other</option>
-
+                @foreach($carTypes as $carType)
+                    <option value="{{ $carType->slug }}" {{ $product->type == $carType->slug ? 'selected' : '' }}>
+                        {{ $carType->title }}
+                    </option>
+                @endforeach
             </select>
+
         </div>
     </div>
 </section>
