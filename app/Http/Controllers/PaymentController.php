@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Crypt;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -127,9 +128,10 @@ public function processPayment(Request $request)
 
     // PayPal Payment Handling
     if ($paymentMethod === 'paypal') {
+
         try {
             $provider = new \Srmklive\PayPal\Services\PayPal;
-            $provider->setApiCredentials(config('services.paypal'));
+            $provider->setApiCredentials(config('paypal'));
             $paypalToken = $provider->getAccessToken();
 
             $orderData = [
@@ -137,7 +139,7 @@ public function processPayment(Request $request)
                 "purchase_units" => [
                     [
                         "amount" => [
-                            "currency_code" => "MYR",
+                            "currency_code" => config('paypal.currency'), // USD, MYR, etc.
                             "value" => $order->amount
                         ]
                     ]
@@ -150,6 +152,8 @@ public function processPayment(Request $request)
 
             $paypalOrder = $provider->createOrder($orderData);
 
+
+
             if (isset($paypalOrder['id'])) {
                 foreach ($paypalOrder['links'] as $link) {
                     if ($link['rel'] === 'approve') {
@@ -160,8 +164,10 @@ public function processPayment(Request $request)
 
             return back()->with('error', 'Error processing PayPal payment.');
         } catch (\Exception $e) {
+            Log::error('PayPal Error: ' . $e->getMessage());
             return back()->with('error', 'PayPal Error: ' . $e->getMessage());
         }
+
     }
 
     // ToyyibPay Payment Handling

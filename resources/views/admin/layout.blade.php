@@ -260,15 +260,21 @@
                                 aria-expanded="false"><i class='fas fa-blog'></i>
                                 <span class="hide-menu">Blog </span></a>
                             </li>
-
-                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-monitor"></i>
+                            <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/report/index')}}"
+                                aria-expanded="false"> <i class="mdi mdi-monitor"></i>></i>
+                                <span class="hide-menu">Customer Queries</span></a>
+                            </li>
+{{--
+                            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-monitor"></i>
                                 <span class="hide-menu"> Report </span></a>
 
                                 <ul aria-expanded="false" class="collapse">
                                     <li><a href="{{URL::to('admin/reports/clients/index')}}">Customer</a></li>
                                     <li><a href="{{URL::to('admin/products/index')}}">Admin Report</a></li>
                                 </ul>
-                            </li>
+                            </li>  --}}
 
                             <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-folder-multiple-outline"></i>
                                 <span class="hide-menu"> Filemanager </span></a>

@@ -26,7 +26,7 @@ class PaymentTicketController extends Controller
         if ($paymentMethod === 'paypal') {
             try {
                 $provider = new \Srmklive\PayPal\Services\PayPal;
-                $provider->setApiCredentials(config('services.paypal'));
+                $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
 
                 $orderData = [
@@ -34,7 +34,7 @@ class PaymentTicketController extends Controller
                     "purchase_units" => [
                         [
                             "amount" => [
-                                "currency_code" => "MYR",
+                                "currency_code" => config('paypal.currency'),
                                 "value" => $order->amount
                             ]
                         ]
