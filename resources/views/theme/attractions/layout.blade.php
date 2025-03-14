@@ -109,7 +109,7 @@ $attractions= MenuHelper::getsubAttractions(45);
                         <a href="{{ route('blog.index') }}" class="nav-link border-right px-md-4 py-md-0 my-md-2">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a href="https://MRR HOLIDAYS.tawk.help/" target="_blank"
+                        <a href="{{ route('help.index') }}" target="_blank"
                             class="nav-link border-right px-md-4 py-md-0 my-md-2">Help</a>
                     </li>
                     <li class="nav-item dropdown mx-3">

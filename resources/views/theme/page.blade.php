@@ -30,7 +30,10 @@
 
 <main class="main">
     <div class="container">
+        @if ($page->title != 'Terms and Conditions')
         <h1 class="my-4">{{ $page->title }}</h1>
+
+        @endif
         {!! $page->content !!}
 
     </div>

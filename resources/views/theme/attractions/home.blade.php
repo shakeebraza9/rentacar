@@ -98,7 +98,7 @@
                                 <ul class="nav nav-tabs nav-justified pt-3 px-md-3 mb-2 mb-md-0" id="searchTab"
                                     role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <a href="../index.html"><button class="nav-link btn " id="car-rental-tab"
+                                        <a href="{{ route('home') }}"><button class="nav-link btn " id="car-rental-tab"
                                                 type="button" role="tab" aria-controls="car-rental"
                                                 aria-selected="false"><span class="icon-circle"><i
                                                         class="fa fa-car"></i></span>
@@ -107,7 +107,7 @@
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <a href="../attractions.html"><button class="nav-link btn active"
+                                        <a href="{{ route('attractions') }}"><button class="nav-link btn active"
                                                 id="experience-tab" type="button" role="tab" aria-controls="experience"
                                                 aria-selected="false"><span class="icon-circle"><i
                                                         class="fa fa-umbrella-beach"></i></span>
@@ -340,35 +340,7 @@
                 </div>
             </section>
 
-            <section class="mt-6 bg-light py-5 text-center">
-                <div class="container">
-                    <img src="../img/logo-langkawibook.svg" class="img-fluid mx-auto mb-4" style="height: 40px" alt="">
-                    <p class="h5 mb-3">
-                        With Langkawibook, discover the best activities, tours, and attractions that Langkawi has to
-                        offer. Get your adrenaline pumping with the <a href="langkawi-skycab-cable-car.html"
-                            target="_blank">Langkawi Skycab</a>, the world’s steepest cable car ride that offers
-                        breathtaking views of the island. Or, explore the marine life with <a
-                            href="underwater-world-langkawi.html" target="_blank">Underwater World Langkawi</a>, one of
-                        the largest marine and freshwater aquaria in South East Asia. </p>
 
-                    <p class="h5 mb-3">
-                        We also offer bookings for many other attractions and tour packages in Langkawi, such as <a
-                            href="langkawi-mangrove-tour.html" target="_blank">Kilim Geoforest Park Mangrove Tour</a>,
-                        <a href="island-hopping-langkawi.html" target="_blank">Island Hopping Boat Tours</a>, <a
-                            href="jetski-tour-by-mega-water-sports.html" target="_blank">Jetski Tour</a>, <a
-                            href="paradise-101-langkawi.html" target="_blank">Adventure 101 Paradise Island</a>, <a
-                            href="wildlife-park-langkawi.html" target="_blank">Wildlife Park Langkawi</a> and more!
-                    </p>
-
-                    <p class="h5 mb-3">
-                        Don't miss out on these unforgettable experiences in Langkawi! Book with us today and take
-                        advantage of our amazing deals and discounts. With our easy-to-use booking engine, planning your
-                        Langkawi adventure has never been easier. </p>
-
-                    <p class="h5">
-                        Check out our list of <a href="../blogs/best-things-to-do-in-langkawi.html" target="_blank">15
-                            best things to do in Langkawi</a> to help plan your trip. </p>
-                </div>
             </section>
 
             <script>

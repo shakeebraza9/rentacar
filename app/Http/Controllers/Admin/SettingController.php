@@ -57,7 +57,7 @@ class SettingController extends Controller
         foreach ($request->all() as $key => $value) {
             if (isset($value['value'])) {
                 // Allowed field types
-                $allowedTypes = ['text', 'textarea', 'keywords', 'image', 'date', 'time', 'enable'];
+                $allowedTypes = ['text', 'textarea', 'keywords', 'image', 'date', 'time', 'enable','code'];
 
                 if (in_array($value['type'], $allowedTypes)) {
                     $updatedValue = $value['value'];

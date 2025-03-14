@@ -107,7 +107,7 @@ Launch demo modal
                             <ul class="nav nav-tabs nav-justified pt-3 px-md-3 mb-2 mb-md-0" id="searchTab"
                                 role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a href="index.html"><button class="nav-link btn active" id="car-rental-tab"
+                                    <a href="{{ route('home') }}"><button class="nav-link btn active" id="car-rental-tab"
                                             type="button" role="tab" aria-controls="car-rental"
                                             aria-selected="false"><span class="icon-circle"><i
                                                     class="fa fa-car"></i></span>
@@ -116,7 +116,7 @@ Launch demo modal
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <a href="attractions.html"><button class="nav-link btn " id="experience-tab"
+                                    <a href="{{ route('attractions') }}"><button class="nav-link btn " id="experience-tab"
                                             type="button" role="tab" aria-controls="experience"
                                             aria-selected="false"><span class="icon-circle"><i
                                                     class="fa fa-umbrella-beach"></i></span>

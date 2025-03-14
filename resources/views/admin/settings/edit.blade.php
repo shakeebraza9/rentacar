@@ -1,5 +1,7 @@
 @extends('admin.layout')
 @section('css')
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <link href="{{asset('admin/assets/summernote/summernote-bs4.css')}}" rel="stylesheet">
 <style>
@@ -92,19 +94,55 @@
 
                             @break
 
-
                             @case('textarea')
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>{{ ucwords(str_ireplace("_", " ",$item->field))}}</label>
-                                    <textarea class="summernote form-control"
-                                      placeholder="{{ ucwords(str_ireplace("_", " ",$item->field))}}"
-                                      name="{{$item->field}}[value]">{!!$item->value!!}</textarea>
-                                      <input type="hidden" name="{{$item->field}}[type]"
-                                      value="{{$item->type}}" >
+                                    <label class="form-label fw-semibold text-muted">
+                                      {{ ucwords(str_ireplace("_", " ",$item->field)) }}
+                                    </label>
+                                    <textarea
+                                      class="form-control shadow-sm border-2 rounded-3"
+                                      style="min-height: 150px;"
+                                      placeholder="✏️ {{ ucwords(str_ireplace("_", " ",$item->field)) }}"
+                                      name="{{$item->field}}[value]"
+                                    >{!!$item->value!!}</textarea>
+                                    <input type="hidden" name="{{$item->field}}[type]" value="{{$item->type}}">
                                 </div>
                             </div>
                             @break
+
+                            @case('code')
+                            <div class="col-md-12 mb-12">
+                                <label class="form-label fw-semibold text-muted">
+                                    {{ ucwords(str_ireplace("_", " ", $item->field)) }}
+                                </label>
+                                <input type="hidden" name="{{$item->field}}[type]" value="{{$item->type}}">
+                                <textarea style="display:none;" name="{{$item->field}}[value]" id="{{$item->field}}">{!! htmlspecialchars($item->value) !!}</textarea>
+                                <div id="{{$item->field}}_quill_editor" style="min-height:200px; background-color:#fff;"></div>
+                            </div>
+
+                            <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var quill = new Quill('#{{$item->field}}_quill_editor', {
+                                    theme: 'snow',
+                                    placeholder: 'Type your content here...',
+                                    modules: { toolbar: true }
+                                });
+
+                                // Load initial content from textarea
+                                quill.root.innerHTML = document.getElementById('{{$item->field}}').value;
+
+                                // Submit form handler to transfer content back to textarea
+                                document.getElementById('{{$item->field}}').form.addEventListener('submit', function() {
+                                    document.getElementById('{{$item->field}}').value = quill.root.innerHTML;
+                                });
+                            });
+                            </script>
+                            @break
+
+
+
+
 
                                 {{-- Date Field --}}
                             @case('date')
@@ -175,7 +213,7 @@
 
                         @endforeach
 
-                        <div class="col-md-12 text-center pt-5">
+                        <div class="col-md-12 text-center pt-5" style="margin-top: 30px;">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>

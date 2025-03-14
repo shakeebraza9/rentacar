@@ -107,7 +107,7 @@ Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLog
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
 Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
 Route::post('/submit-report', [App\Http\Controllers\ReportController::class, 'store']);
-
+Route::get('/our-team', [App\Http\Controllers\OurTeamController::class, 'index'])->name('our-team');
     Route::middleware(['webLoginChk'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [App\Http\Controllers\CustomerController::class, 'profile'])->name('customer.profile');
