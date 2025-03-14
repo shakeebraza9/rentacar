@@ -61,6 +61,23 @@ $attractions= MenuHelper::getsubAttractions(45);
             }
         </style>
 
+        <script type="text/javascript">
+            function changeLanguage(lang) {
+              const selectField = document.querySelector('.goog-te-combo');
+              selectField.value = lang;
+              selectField.dispatchEvent(new Event('change'));
+            }
+
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                includedLanguages: 'en,ms' // Add more as needed
+              }, 'google_translate_element');
+            }
+          </script>
+          <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
 @yield('css')
 </head>
@@ -110,26 +127,25 @@ $attractions= MenuHelper::getsubAttractions(45);
                             class="nav-link border-right px-md-4 py-md-0 my-md-2">Help</a>
                     </li>
                     <li class="nav-item dropdown mx-3">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-expanded="false"><span class="flag-icon flag-icon-gb"></span></a>
-                        <ul class="dropdown-menu dropdown-menu-end text-center text-md-left">
-                            <li class="dropdown-header text-start">Select Language</li>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <span class="flag-icon flag-icon-gb"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header">Select Language</li>
                             <li>
-                                <a href="index.html" data-value="en"
-                                    class="lang nav-link text-dark d-flex align-items-center">
-                                    <span class="flag-icon flag-icon-gb" style="margin-right: 8px;"></span>
-                                    <span class="small text-nowrap">English</span>
+                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="changeLanguage('en');">
+                                    <span class="flag-icon flag-icon-gb me-2"></span> English
                                 </a>
                             </li>
                             <li>
-                                <a href="ms.html" data-value="ms"
-                                    class="lang nav-link text-dark d-flex align-items-center">
-                                    <span class="flag-icon flag-icon-my" style="margin-right: 8px;"></span>
-                                    <span class="small text-nowrap">Bahasa Malaysia</span>
+                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="changeLanguage('ms');">
+                                    <span class="flag-icon flag-icon-my me-2"></span> Bahasa Malaysia
                                 </a>
                             </li>
                         </ul>
+                        <div id="google_translate_element" style="display:none;"></div>
                     </li>
+
                     @if(Auth::check())  <!-- Check if the user is authenticated -->
                     <li class="nav-item dropdown mx-3">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{ Auth::user()->name }}</a>
