@@ -32,6 +32,8 @@ Route::get('/reviews', [App\Http\Controllers\HomeController::class, 'reviews'])-
 Route::get('/help', [App\Http\Controllers\HelpController::class, 'help'])->name('help.index');
 Route::get('/category/{id}', [App\Http\Controllers\HelpController::class, 'show'])->name('category.show');
 Route::get('/help-entry/{id}', [App\Http\Controllers\HelpController::class, 'details'])->name('help.entry.show');
+Route::get('/help-search', [App\Http\Controllers\HelpController::class, 'search'])->name('help.search');
+
 // attractions
 Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
 Route::get('/attractions/detail/{slug}', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');

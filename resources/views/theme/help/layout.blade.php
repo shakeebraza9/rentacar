@@ -310,10 +310,10 @@
         @yield("search")
         <div class="container search-container" style="margin-top:20px;width:100%;margin-left: 134px;">
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="input-group" style="max-width:600px; margin:auto;">
-                        <input type="text" class="form-control" placeholder="Search for answers"
-                               style="border-radius:0; padding:12px 20px; border:1px solid #ddd;">
+                <div class="col-md-12">
+                    <div class="input-group" style="max-width:90%; margin:auto;">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search for answers"
+                            style="border-radius:0; padding:12px 20px; border:1px solid #ddd;">
                         <span class="input-group-text bg-white border-start-0">
                             <i class="fas fa-search text-muted"></i>
                         </span>
@@ -321,8 +321,16 @@
                 </div>
             </div>
         </div>
+        
 
+        
+        
     </header>
+    <ul id="search-results" class="faq-list mt-3" style="position: absolute;
+  top: 131px;
+  right: 12%;
+  width: 74%;background-color:white;z-index:999; border:1px soild #00c853;">
+    </ul>
 
 
 
@@ -411,6 +419,24 @@
                     alert('Something went wrong!');
                 }
             });
+        });
+
+
+
+        $('#search-input').on('keyup', function () {
+            let query = $(this).val();
+            if (query.length > 2) { // Only search if input is more than 2 characters
+                $.ajax({
+                    url: "{{ route('help.search') }}",
+                    type: "GET",
+                    data: { search: query },
+                    success: function (response) {
+                        $('#search-results').html(response);
+                    }
+                });
+            } else {
+                $('#search-results').html('');
+            }
         });
 
     });

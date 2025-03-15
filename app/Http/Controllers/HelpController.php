@@ -58,7 +58,28 @@ class HelpController extends Controller
         return view('theme.help-details', compact('helpEntry', 'category', 'relatedEntries'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+    
 
+        $helpEntries = Help::where('title', 'LIKE', "%{$query}%")->take(5)->get();
+    
+
+        $output = '';
+        if (count($helpEntries) > 0) {
+            foreach ($helpEntries as $entry) {
+                $output .= '<li style="margin-left: 12px;"><a href="'.route('help.entry.show', $entry->id).'">
+                                <i class="fas fa-file-alt"></i> ' . $entry->title . '
+                            </a></li>';
+            }
+        } else {
+            $output = '<li class="text-muted">No results found</li>';
+        }
+    
+        return response()->json($output);
+    }
+    
 
 
 }
