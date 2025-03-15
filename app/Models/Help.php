@@ -19,4 +19,12 @@ class Help extends Model
         'description',
         'status'
     ];
+
+    /**
+     * Define the relationship: Each Help entry belongs to a Category
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

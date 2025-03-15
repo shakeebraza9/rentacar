@@ -30,8 +30,8 @@ Route::get('/pages/{slug}', [App\Http\Controllers\HomeController::class, 'pageCo
 Route::get('/reviews', [App\Http\Controllers\HomeController::class, 'reviews'])->name('reviews.index');
 
 Route::get('/help', [App\Http\Controllers\HelpController::class, 'help'])->name('help.index');
-
-
+Route::get('/category/{id}', [App\Http\Controllers\HelpController::class, 'show'])->name('category.show');
+Route::get('/help-entry/{id}', [App\Http\Controllers\HelpController::class, 'details'])->name('help.entry.show');
 // attractions
 Route::get('/attractions', [App\Http\Controllers\AttractionsController::class, 'home'])->name('attractions');
 Route::get('/attractions/detail/{slug}', [App\Http\Controllers\AttractionsController::class, 'attractionsdetail'])->name('attractions.detail');
@@ -106,8 +106,13 @@ Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'c
 Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin'])->name('webpostlogin');
 Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
 Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
-Route::post('/submit-report', [App\Http\Controllers\ReportController::class, 'store']);
+Route::post('/submit-report', [App\Http\Controllers\ReportController::class, 'store'])->name('submit-report');
 Route::get('/our-team', [App\Http\Controllers\OurTeamController::class, 'index'])->name('our-team');
+
+
+
+
+
     Route::middleware(['webLoginChk'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [App\Http\Controllers\CustomerController::class, 'profile'])->name('customer.profile');
