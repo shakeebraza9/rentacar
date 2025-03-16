@@ -155,14 +155,15 @@
                                     $totalHours = $today->diffInHours($from);
                                     $extraHours = max(0, $totalHours - 24);
                                     $extraHourCharge = 0;
-                                    if ($extraHours > 5) {
-                                        $extraHourCharge = $productprice;
+                                    if ($extraHours > 0) {
+                                        $fullBlocks = floor($extraHours / 6);               // Full 6-hour blocks
+                                        $remainingHours = $extraHours % 6;                  // Leftover hours
+
+                                        $extraHourCharge = ($fullBlocks * $productprice) + ($remainingHours * $extra_hour);
                                     } else {
                                         $extraHourCharge = 0;
-                                        for ($i = 1; $i <= $extraHours; $i++) {
-                                            $extraHourCharge += $extra_hour;
-                                        }
                                     }
+
 
 
 
