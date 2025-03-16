@@ -252,6 +252,11 @@
                                 <span class="hide-menu"> Review </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/team/index')}}"
+                                aria-expanded="false"><i class="fa fa-group"></i>
+                                <span class="hide-menu"> Team </span></a>
+                            </li>
+                            <li><a class="waves-effect waves-dark"
                                 href="{{URL::to('admin/faq/index')}}"
                                 aria-expanded="false"><i class="fa fa-question-circle"></i>
                                 <span class="hide-menu"> FAQ,s </span></a>

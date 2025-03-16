@@ -270,6 +270,10 @@ Route::delete('/admin/cartype/delete/{id}', [App\Http\Controllers\Admin\CarTypeC
 
 
 
+    // team
+    Route::resource('admin/team', App\Http\Controllers\Admin\TeamController::class);
+
+
     // Client reports
     Route::get('admin/report/index', [App\Http\Controllers\Admin\ClientReportsController::class, 'index'])
     ->name('admin.report.index');

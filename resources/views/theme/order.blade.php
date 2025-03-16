@@ -153,16 +153,18 @@
 
 
                                     $totalHours = $today->diffInHours($from);
-                                    $extraHours = max(0, $totalHours - 24);
-                                    $extraHourCharge = 0;
-                                    if ($extraHours > 0) {
-                                        $fullBlocks = floor($extraHours / 6);               // Full 6-hour blocks
-                                        $remainingHours = $extraHours % 6;                  // Leftover hours
-
-                                        $extraHourCharge = ($fullBlocks * $productprice) + ($remainingHours * $extra_hour);
-                                    } else {
+                                        $extraHours = max(0, $totalHours - 24);
                                         $extraHourCharge = 0;
-                                    }
+
+                                        if ($extraHours > 0) {
+                                            $fullBlocks = floor($extraHours / 6);               // Full 6-hour blocks
+                                            $remainingHours = $extraHours % 6;                  // Leftover hours
+
+                                            $hourlyRate = ($productprice * $extra_hour) / 100;  // Percent per hour
+
+                                            $extraHourCharge = ($fullBlocks * $productprice) + ($remainingHours * $hourlyRate);
+                                        }
+
 
 
 
