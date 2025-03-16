@@ -886,17 +886,19 @@
     document.addEventListener("DOMContentLoaded", function () {
         const inputs = document.querySelectorAll(".phone");
         if (window.intlTelInput) {
-          inputs.forEach(function(input) {
-            window.intlTelInput(input, {
-              separateDialCode: true,
-              preferredCountries: ["pk", "in", "us", "gb", "ae"],
-              utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
+            inputs.forEach(function(input) {
+                window.intlTelInput(input, {
+                    separateDialCode: true,
+                    initialCountry: "my", // Malaysia as default
+                    preferredCountries: ["my", "pk", "in", "us", "gb", "ae"],
+                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
+                });
             });
-          });
         } else {
-          console.error("intlTelInput not loaded");
+            console.error("intlTelInput not loaded");
         }
-      });
+    });
+
 
 </script>
 
