@@ -227,7 +227,7 @@ public function checkout(Request $request)
         'userid' => $userId,
         'buyer_name' => $request['name'],
         'buyer_email' => $request['email'],
-        'buyer_phone_number' =>  $request->phone_number2,
+        'buyer_phone_number' =>  $request->phone_number1,
         'passport' => $request->user_passport,
         'license' => $request->user_license,
         'buyer_country_of_origin' => $request['country'],
