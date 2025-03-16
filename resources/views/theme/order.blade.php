@@ -153,17 +153,27 @@
 
 
                                     $totalHours = $today->diffInHours($from);
-                                        $extraHours = max(0, $totalHours - 24);
-                                        $extraHourCharge = 0;
+                                    $extraHours = max(0, $totalHours - 24);
+                                    $extraHourCharge = 0;
 
-                                        if ($extraHours > 0) {
-                                            $fullBlocks = floor($extraHours / 6);               // Full 6-hour blocks
-                                            $remainingHours = $extraHours % 6;                  // Leftover hours
+                                    if ($extraHours > 0) {
+                                        if ($extraHours <= 5) {
 
-                                            $hourlyRate = ($productprice * $extra_hour) / 100;  // Percent per hour
+                                            $extraHourCharge = ($productprice * $extra_hour) / 100;
+                                        } elseif ($extraHours >= 6 && $extraHours <= 24) {
 
-                                            $extraHourCharge = ($fullBlocks * $productprice) + ($remainingHours * $hourlyRate);
+                                            $extraHourCharge = $productprice;
+                                        } elseif ($extraHours >= 25 && $extraHours <= 30) {
+
+                                            $hourlyRate = ($productprice * 10) / 100;
+                                            $extraHourCharge = $extraHours * $hourlyRate;
+                                        } elseif ($extraHours >= 31) {
+
+                                            $hoursBeyond30 = $extraHours - 30;
+                                            $blocks = ceil($hoursBeyond30 / 6);
+                                            $extraHourCharge = ($blocks + 1) * $productprice;
                                         }
+                                    }
 
 
 
@@ -280,11 +290,11 @@
                 </div>
 
                 <div class="col-md-7 mt-4 mt-md-0">
-                    <h3 class="text-primary">Add-ons</h3>
+                    <h3 class="text-primary" id="headingfrom">Add-ons</h3>
                     <form method="post" action="{{ route('cusmoter.checkout')}}" id="checkoutForm">
                         @csrf
                         <div id="step1" class="stepfrom">
-                            <h3>Step 1: Select Add-ons</h3>
+                            {{--  <h3>Step 1: Select Add-ons</h3>  --}}
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -997,15 +1007,17 @@ function showStep(step) {
             return;
         }
     }
+
     if (step === 2) {
         $('#rentalamount-sidebar').show();
         document.getElementById('rentalamount-heading').style.display = 'block';
-
     }
 
+    // Hide all step content sections
     document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
     document.getElementById('step' + step).classList.remove('d-none');
 
+    // Update wizard steps indicator visuals
     const firstStepEl = document.querySelector('.wizard-indicator li.sepfist');
     const firstStepDiv = firstStepEl.querySelector('.step');
     firstStepEl.classList.add('complete');
@@ -1013,18 +1025,17 @@ function showStep(step) {
 
     const wizardSteps = document.querySelectorAll('.wizard-indicator li');
 
-
     wizardSteps.forEach((stepLi, index) => {
         if (index === 0) return;
 
         const stepNumber = index + 1;
         const stepDiv = stepLi.querySelector('.step');
+
         if (stepNumber < step) {
             stepLi.classList.remove('active');
             stepLi.classList.add('complete');
             stepDiv.innerHTML = '<span class="fa fa-check"></span>';
         } else if (stepNumber === step) {
-            console.log(stepLi.textContent);
             stepLi.classList.remove('active');
             stepLi.classList.add('complete');
             stepDiv.innerHTML = '<span class="fa fa-check"></span>';
@@ -1033,6 +1044,13 @@ function showStep(step) {
             stepDiv.textContent = stepNumber;
         }
     });
+
+
+    const currentStepIndex = step ;
+    const currentCaptionEl = document.querySelectorAll('.wizard-indicator li .caption')[currentStepIndex];
+    if (currentCaptionEl) {
+        document.getElementById('headingfrom').textContent = currentCaptionEl.textContent.trim();
+    }
 }
 
 
