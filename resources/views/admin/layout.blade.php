@@ -71,10 +71,10 @@
                     <a class="navbar-brand" href="{{ URL::to('/admin/dashboard') }}">
                         <b>
                             <img src="{{ asset(getset('admin_logo')) }}" alt="homepage" class="dark-logo"
-                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;filter: grayscale(100%);" />
+                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;" />
 
-                            <img src="{{ asset(getset('admin_logo')) }}" alt="homepage" class="light-logo"
-                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;filter: grayscale(100%);" />
+                            <img src="{{ asset(getset('admin_logo')) }}" alt="homepage"
+                                style="height: 50px; width: auto; max-width: 150px; object-fit: contain;" />
                         </b>
 
 

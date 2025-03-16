@@ -66,13 +66,46 @@
                             </ul>
                         </div>
                     </div>
+                    @php
+                    use Carbon\Carbon;
+                    $bookingStart = Carbon::parse($today ?? now());
+                    $bookingEnd = Carbon::parse($from ?? now());
+
+                    $durationInMinutes = $bookingStart->diffInMinutes($bookingEnd);
+
+                    $durationDays = floor($durationInMinutes / (60 * 24));
+                    $remainingMinutesAfterDays = $durationInMinutes % (60 * 24);
+
+                    $durationHours = floor($remainingMinutesAfterDays / 60);
+                    $durationMinutes = $remainingMinutesAfterDays % 60;
+
+                    $bookingDuration = '';
+
+                    if ($durationDays > 0) {
+                        $bookingDuration .= $durationDays . ' day' . ($durationDays > 1 ? 's' : '');
+                    }
+                    if ($durationHours > 0) {
+                        if ($bookingDuration !== '') {
+                            $bookingDuration .= ' ';
+                        }
+                        $bookingDuration .= $durationHours . ' hour' . ($durationHours > 1 ? 's' : '');
+                    }
+                    if ($durationMinutes > 0) {
+                        if ($bookingDuration !== '') {
+                            $bookingDuration .= ' ';
+                        }
+                        $bookingDuration .= $durationMinutes . ' min' . ($durationMinutes > 1 ? 's' : '');
+                    }
+
+                    @endphp
+
                     <div class="card"  >
                         <div class="card-body">
                             <h5 class="text-primary">Rental Amount</h5>
                             <h3 class="d-inline-block">
                                 RM <b>{{ number_format($booking->selling_price, 2) }}</b>
                             </h3>
-                            <i> for {{ $booking->duration }}</i>
+                            <i> for {{ $bookingDuration  }}</i>
                             <hr>
 
                             <div class="row">
@@ -98,7 +131,7 @@
                             <table class="table" id="rentalamount-sidebar" >
                                 <tbody>
                                     @php
-                                    use Carbon\Carbon;
+
 
                                     $rental = $global_d['rental'] ?? 0;
                                     $extra_hour = $global_d['extra_hour'] ?? 0;
@@ -113,11 +146,22 @@
                                     $from = Carbon::parse($from ?? now());
                                     $today = Carbon::parse($today ?? now());
 
+
+
+
+
+
+
                                     $totalHours = $today->diffInHours($from);
                                     $extraHours = max(0, $totalHours - 24);
                                     $extraHourCharge = 0;
-                                    for ($i = 1; $i <= $extraHours; $i++) {
-                                        $extraHourCharge += ($productprice * ($i * 10)) / 100;
+                                    if ($extraHours > 5) {
+                                        $extraHourCharge = $productprice;
+                                    } else {
+                                        $extraHourCharge = 0;
+                                        for ($i = 1; $i <= $extraHours; $i++) {
+                                            $extraHourCharge += $extra_hour;
+                                        }
                                     }
 
 
@@ -172,12 +216,15 @@
                                 @endphp
 
 
+
+
+
                                 <tr>
                                     <td>Rental</td>
                                     <td class="text-end">{{ number_format($rental, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Extra Hour ({{ $booking->extra_hours ?? 0 }})</td>
+                                    <td>Extra Hour ({{ $extraHours ?? 0 }})</td>
                                     <td class="text-end" style="color:#690C0B;">{{ number_format($extraHourCharge, 2) }} </td>
                                 </tr>
                                 <tr>
