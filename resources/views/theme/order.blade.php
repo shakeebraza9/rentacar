@@ -535,7 +535,7 @@
                                     </div>
 
                                     <!-- Invoice Details (Hidden by Default) -->
-                                    <div id="invoice-area" class="">
+                                    <div id="invoice-area" class="" style="display:none;">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3"><label for="invoice-name">Name</label><input class=" form-control " type="text" name="invoice_name" placeholder="e.g. John Doe" id="invoice-name" aria-required="true"><span class="help-block text-muted"> </span><div class="invalid-feedback"></div></div>                            </div>
@@ -882,6 +882,22 @@
 
 @endsection
 @section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const invoiceCheckbox = document.getElementById("invoice");
+        const invoiceArea = document.getElementById("invoice-area");
+
+        invoiceCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                invoiceArea.style.display = "block";
+            } else {
+                invoiceArea.style.display = "none";
+            }
+        });
+    });
+    </script>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const inputs = document.querySelectorAll(".phone");
