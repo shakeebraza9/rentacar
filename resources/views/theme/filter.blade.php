@@ -20,7 +20,7 @@
                 <div class="input-group select2-floating position-relative">
                     <select class="form-control input-group border-0"
                             name="custom_return_location" id="input_return">
-                        <option value="" selected>Select return location</option>
+
                         @foreach(explode(',', getset('location')) as $location)
                             <option value="{{ trim($location) }}">{{ trim($location) }}</option>
                         @endforeach

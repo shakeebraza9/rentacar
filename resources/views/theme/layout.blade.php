@@ -42,7 +42,7 @@ $attractions= MenuHelper::getsubAttractions(45);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css">
     <style>
         .label-fleet-deals {
             position: absolute;
@@ -325,6 +325,10 @@ $attractions= MenuHelper::getsubAttractions(45);
 
     </footer>
     <!-- Modal -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/intlTelInput.min.js"></script>
+
+    <!-- Load utils AFTER main JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"></script>
 
     <script>
         $(document).ready(function () {

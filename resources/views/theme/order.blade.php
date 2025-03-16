@@ -10,6 +10,8 @@
 
 @section('css')
 
+
+
 <style>
     .row {
 
@@ -26,11 +28,11 @@
         <div class="container my-5">
             <div class="wrapper-wizard">
                 <ol class="wizard-indicator">
-                    <li class="complete">
-                        <div class="step"><span class="fa fa-check"></span></div>
+                    <li class="sepfist">
+                        <div class="step">1</div>
                         <div class="caption">Vehicle</div>
                     </li>
-                    <li class="complete active">
+                    <li>
                         <div class="step">2</div>
                         <div class="caption">Add-ons</div>
                     </li>
@@ -43,6 +45,7 @@
                         <div class="caption">Payment</div>
                     </li>
                 </ol>
+
             </div>
 
             <div class="row gx-5">
@@ -63,7 +66,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card"  >
                         <div class="card-body">
                             <h5 class="text-primary">Rental Amount</h5>
                             <h3 class="d-inline-block">
@@ -90,9 +93,9 @@
 
                             <hr>
 
-                            <h5 class="text-primary">Summary of Charges</h5>
+                            <h5 class="text-primary" id="rentalamount-heading">Summary of Charges</h5>
 
-                            <table class="table">
+                            <table class="table" id="rentalamount-sidebar" >
                                 <tbody>
                                     @php
                                     use Carbon\Carbon;
@@ -181,19 +184,19 @@
                                     <td>Pickup Fee</td>
                                     <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
                                 </tr>
-                                <tr>
+                                {{--  <tr>
                                     <td>Peak Hour</td>
                                     <td class="text-end">{{ number_format($extraCharge, 2) }}</td>
-                                </tr>
-                                @if($global_d['session_enable'] == 1)
+                                </tr>  --}}
+                                {{--  @if($global_d['session_enable'] == 1)  --}}
 
 
-                                <tr>
+                                {{--  <tr>
                                     <td>{{ $global_d['session_name'] }} - Charges</td>
                                     <td class="text-end">{{ number_format($session_extra_amount, 2) }}</td>
-                                </tr>
+                                </tr>  --}}
 
-                                @endif
+                                {{--  @endif  --}}
                                 <tr>
                                     <td>Return Fee</td>
                                     <td class="text-end">{{ number_format($return_fee, 2) }}</td>
@@ -203,13 +206,14 @@
                                     <td class="text-end"><span id="addon-price">0.00</span></td>
                                 </tr>
                                 <tr>
+                                    <td>Discount</td>
+                                    <td class="text-end"><span id="addon-price">-{{ number_format($discountAmount, 2) }}</span></td>
+                                </tr>
+                                {{--  <tr>
                                     <td>Total Without Discount,Extra Hour (0),Add-ons</td>
                                     <td class="text-end">{{ number_format($totalBeforeDiscount, 2) }} </td>
-                                </tr>
-                                <tr class="text-end">
-                                    <td>Discount ({{ number_format($discountPercent, 2) }}%)</td>
-                                    <td class="fw-bold">-{{ number_format($discountAmount, 2) }}</td>
-                                </tr>
+                                </tr>  --}}
+
                                 <tr class="text-end fw-bold">
                                     <td>Total Amount</td>
                                     <td class="text-primary">
@@ -366,7 +370,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="phone-number" class="form-label">Phone Number</label>
-                                                <div class="input-group" style="display: flex; align-items: center;">
+                                                {{--  <div class="input-group" style="display: flex; align-items: center;">
                                                     <select class="form-select" name="country_code" id="country-code"
                                                         required style="width: auto; min-width: 100px; flex-shrink: 0;">
                                                         <option value="+1">+1 (USA)</option>
@@ -374,12 +378,13 @@
                                                         <option value="+60">+60 (Malaysia)</option>
                                                         <option value="+92">+92 (Pakistan)</option>
                                                         <option value="+91">+91 (India)</option>
-                                                        <!-- Add more country codes as needed -->
+
                                                     </select>
                                                     <input class="form-control" type="tel" name="phone_number" required
                                                         placeholder="e.g. 1234567890" id="phone-number"
                                                         style="flex-grow: 1; max-width: 250px;">
-                                                </div>
+                                                </div>  --}}
+                                                <input class="form-control phone" type="tel" id="phone" name="phone_number1" />
                                                 <div class="invalid-feedback">Please provide a valid phone number.</div>
                                             </div>
                                         </div>
@@ -393,11 +398,14 @@
                                             <div class="mb-3">
                                                 <label for="country" class="form-label">Country of Origin</label>
                                                 <select class="form-select" name="country" required id="country">
-                                                    <option value="" selected>Select your country</option>
-                                                    <option value="MY">Malaysia</option>
-                                                    <option value="SG">Singapore</option>
-                                                    <option value="GB">United Kingdom</option>
-                                                    <!-- Add more countries here -->
+                                                    @php
+                                                    $allCountry = explode(',', getset('country')); // Split by comma
+                                                @endphp
+
+                                                @foreach($allCountry as $country)
+                                                    <option value="{{ trim($country) }}">{{ trim($country) }}</option>
+                                                @endforeach
+
                                                 </select>
                                                 <div class="invalid-feedback">Please select a country.</div>
                                             </div>
@@ -535,7 +543,7 @@
                                                 <div class="mb-3">
                                                     <label for="phone-number" class="form-label">Phone Number</label>
                                                     <div class="input-group" style="display: flex; align-items: center;">
-                                                        <select class="form-select" name="country_code" id="country-code"  style="width: auto; min-width: 100px; flex-shrink: 0;">
+                                                        {{--  <select class="form-select" name="country_code" id="country-code"  style="width: auto; min-width: 100px; flex-shrink: 0;">
                                                             <option value="+1">+1 (USA)</option>
                                                             <option value="+44">+44 (UK)</option>
                                                             <option value="+60">+60 (Malaysia)</option>
@@ -543,7 +551,11 @@
                                                             <option value="+91">+91 (India)</option>
                                                             <!-- Add more country codes as needed -->
                                                         </select>
-                                                        <input class="form-control" type="tel" name="phone_number"  placeholder="e.g. 1234567890" id="phone-number" style="flex-grow: 1; max-width: 250px;">
+                                                        <input class="form-control" type="tel" name="phone_number2"  placeholder="e.g. 1234567890" id="phone-number" style="flex-grow: 1; max-width: 250px;">
+                                                          --}}
+                                                          <input class="form-control phone" type="tel" id="phone2" name="phone_number2" />
+                                                          <div class="invalid-feedback">Please provide a valid phone number.</div>
+
                                                     </div>
                                                     <div class="invalid-feedback">Please provide a valid phone number.</div>
                                                 </div>
@@ -619,6 +631,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="flight-number">Flight No.</label>
+                                        <input class=" form-control " type="text" name="flight_number" placeholder="AK6304" id="flight-number">
+                                        <span class="help-block text-muted">
+                                        </span>
+                                        <div class="invalid-feedback">
+                                            </div>
+                                        </div>
 
                                     <!-- Note -->
                                     <div class="mb-3">
@@ -634,7 +654,7 @@
                         </div>
 
                         <div id="step3" class="stepfrom d-none">
-                            <div class="col-md-7">
+                            <div class="col-md-10">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <h4 class="text-primary">Customer Details</h4>
@@ -737,7 +757,8 @@
                                                 <div class="row">
                                                     <div class="col-md-5">
                                                         <h5 class="text-primary">Rental Location</h5>
-                                                        {{ $booking->pickup_location }}
+                                                        {{ request('pickup_location') ?? $booking->pickup_location }}
+
                                                         <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->pickup_time)) }}</div>
                                                     </div>
                                                     <div class="col-md-2 my-auto">
@@ -745,7 +766,7 @@
                                                     </div>
                                                     <div class="col-md-5">
                                                         <h5 class="text-primary">Drop-off Location</h5>
-                                                        {{ $booking->dropoff_location }}
+                                                        {{ request('return_location') ??  $booking->dropoff_location }}
                                                         <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->dropoff_time)) }}</div>
                                                     </div>
                                                 </div>
@@ -779,7 +800,7 @@
                                                             <td class="text-end">{{ number_format($addons, 2) }}</td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Discount ({{ number_format($discountPercent, 2) }}%)</td>
+                                                            <td>Discount </td>
                                                             <td class="fw-bold">-{{ number_format($discountAmount, 2) }}</td>
                                                         </tr>
                                                         <tr class="text-end fw-bold">
@@ -800,7 +821,13 @@
 
                                     <input type="hidden" id="paymentType" name="payment_type" value="full">
 
-                                <div class="row gx-md-8 mt-5">
+
+
+
+
+
+
+                                {{--  <div class="row gx-md-8 mt-5">
                                     <div class="col-md border-end">
                                         <div class="row align-items-center">
                                             <div class="col">
@@ -816,10 +843,32 @@
                                         </div>
                                     </div>
 
+                                </div>  --}}
+                            </div>
+
+                            <div class="container" style="max-width: 100%; margin: 0 auto;">
+                                <div class="row" style="background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                    <div class="col-md-6" style="border-right: 1px solid #eee; padding-right: 20px;">
+                                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                            <i class="fas fa-money-bill-wave" style="color: #6c757d; margin-right: 10px;"></i>
+                                            <span style="color: #6c757d; font-size: 14px;">Place Deposit</span>
+                                        </div>
+                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ $price }}</div>
+                                        <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit"> Place Deposit </button>
+                                    </div>
+
+                                    <div class="col-md-6" style="padding-left: 20px;">
+                                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                            <i class="fas fa-credit-card" style="color: #6c757d; margin-right: 10px;"></i>
+                                            <span style="color: #6c757d; font-size: 14px;">Pay Full</span>
+                                        </div>
+                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ number_format($total, 2) }}</div>
+                                        <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Full</button>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-secondary" onclick="showStep(2)">Previous</button>
-                         <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>
+                         {{--  <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>  --}}
 
 
                         </div>
@@ -833,6 +882,24 @@
 
 @endsection
 @section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll(".phone");
+        if (window.intlTelInput) {
+          inputs.forEach(function(input) {
+            window.intlTelInput(input, {
+              separateDialCode: true,
+              preferredCountries: ["pk", "in", "us", "gb", "ae"],
+              utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js"
+            });
+          });
+        } else {
+          console.error("intlTelInput not loaded");
+        }
+      });
+
+</script>
+
 <script>
     function validateStep2() {
     const step2 = document.getElementById('step2');
@@ -854,20 +921,55 @@ function showStep(step) {
 
     if (step === 3) {
         const isStep2Valid = validateStep2();
+        $('#rentalamount-sidebar').hide();
+        document.getElementById('rentalamount-heading').style.display = 'none';
+
         if (!isStep2Valid) {
             alert('Please fill out all required fields in Step 2.');
             return;
         }
     }
+    if (step === 2) {
+        $('#rentalamount-sidebar').show();
+        document.getElementById('rentalamount-heading').style.display = 'block';
+
+    }
 
     document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
     document.getElementById('step' + step).classList.remove('d-none');
 
-    document.querySelectorAll('.wizard-indicator li').forEach(stepLi => {
-        stepLi.classList.remove('active');
+    const firstStepEl = document.querySelector('.wizard-indicator li.sepfist');
+    const firstStepDiv = firstStepEl.querySelector('.step');
+    firstStepEl.classList.add('complete');
+    firstStepDiv.innerHTML = '<span class="fa fa-check"></span>';
+
+    const wizardSteps = document.querySelectorAll('.wizard-indicator li');
+
+
+    wizardSteps.forEach((stepLi, index) => {
+        if (index === 0) return;
+
+        const stepNumber = index + 1;
+        const stepDiv = stepLi.querySelector('.step');
+        if (stepNumber < step) {
+            stepLi.classList.remove('active');
+            stepLi.classList.add('complete');
+            stepDiv.innerHTML = '<span class="fa fa-check"></span>';
+        } else if (stepNumber === step) {
+            console.log(stepLi.textContent);
+            stepLi.classList.remove('active');
+            stepLi.classList.add('complete');
+            stepDiv.innerHTML = '<span class="fa fa-check"></span>';
+        } else {
+            stepLi.classList.remove('complete', 'active');
+            stepDiv.textContent = stepNumber;
+        }
     });
-    document.getElementById('step' + step).classList.add('active');
 }
+
+
+
+
 
 showStep(1);
 
@@ -968,7 +1070,7 @@ showStep(1);
             document.getElementById("summary-email").textContent = document.getElementById("email").value || "---";
             document.getElementById("summary-country").textContent = document.getElementById("country").value || "---";
             document.getElementById("summary-phone").textContent =
-                document.getElementById("country-code").value + " " + (document.getElementById("phone-number").value || "---");
+             (document.getElementById("phone").value || "---");
 
             document.getElementById("summary-driver-name").textContent = document.getElementById("driver-name").value || "---";
             document.getElementById("summary-driver-phone").textContent = document.getElementById("get-driver-mobile-number").value || "---";
@@ -986,8 +1088,11 @@ showStep(1);
         });
 
         // Also update summary when country code changes
-        document.getElementById("country-code").addEventListener("change", updateSummary);
+        {{--  document.getElementById("country-code").addEventListener("change", updateSummary);  --}}
     });
+
+
+
     </script>
 
 @endsection

@@ -59,7 +59,14 @@
                             <?= htmlspecialchars($product->stock) ?> unit left! </div>
                             <div class="row">
 
-                                <a href="{{ route('customers.orders', ['slug' => $product->slug, 'today' => $pickupDateTime, 'from' => $returnDateTime]) }}"class="btn btn-primary">Book Now</a>
+                                <a href="{{ route('customers.orders', [
+                                    'slug' => $product->slug,
+                                    'today' => $pickupDateTime,
+                                    'from' => $returnDateTime,
+                                    'pickup_location' => $pickupLocation,
+                                    'return_location' => $returnLocation
+                                ]) }}" class="btn btn-primary">Book Now</a>
+
 
 
                             </div>
@@ -123,10 +130,15 @@
 
                                         $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
                                         ?>
-                                        <a href="{{ route('customers.orders', ['slug' => $similarProduct->slug, 'today' => request('today'), 'from' => request('from')]) }}"
-                                            class="btn btn-primary">
-                                            Book Now
-                                        </a>
+                                        <a href="{{ route('customers.orders', [
+                                            'slug' => $similarProduct->slug,
+                                            'today' => $pickupDateTime,
+                                            'from' => $returnDateTime,
+                                            'pickup_location' => $pickupLocation,
+                                            'return_location' => $returnLocation
+                                        ]) }}" class="btn btn-primary">Book Now</a>
+
+
                                 </div>
                             </div>
                         </div>

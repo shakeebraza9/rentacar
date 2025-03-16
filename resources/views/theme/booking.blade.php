@@ -60,9 +60,15 @@
                                 @if($isBooked)
                                     <button class="btn btn-secondary" disabled>Already Booked</button>
                                 @else
-                                <a href="{{ route('customers.orders', ['slug' => $product->slug, 'today' => request('today'), 'from' => request('from')]) }}" class="btn btn-primary">Book Now</a>
+                                {{--  <a href="{{ route('customers.orders', ['slug' => $product->slug, 'today' => request('today'), 'from' => request('from')]) }}" class="btn btn-primary">Book Now</a>  --}}
 
-
+                                <a href="{{ route('customers.orders', [
+                                    'slug' => $product->slug,
+                                    'today' => request('today'),
+                                    'from' => request('from'),
+                                    'pickup_location' => $product->pickup_location,
+                                    'return_location' => $product->dropoff_location
+                                ]) }}" class="btn btn-primary">Book Now</a>
                                 @endif
                             </div>
                     </div>
@@ -125,10 +131,19 @@
 
                                         $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
                                         ?>
-                                        <a href="<?= route('customers.orders', ['slug' => $similarProduct->slug, 'today' => $today, 'from' => $nextDay]) ?>"
+                                        {{--  <a href="<?= route('customers.orders', ['slug' => $similarProduct->slug, 'today' => $today, 'from' => $nextDay]) ?>"
                                             class="btn btn-primary">
                                             Book Now
-                                        </a>
+                                        </a>  --}}
+
+
+                                <a href="{{ route('customers.orders', [
+                                    'slug' => $similarProduct->slug,
+                                    'today' => request('today'),
+                                    'from' => request('from'),
+                                    'pickup_location' => $similarProduct->pickup_location,
+                                    'return_location' => $similarProduct->dropoff_location
+                                ]) }}" class="btn btn-primary">Book Now</a>
                                 </div>
                             </div>
                         </div>

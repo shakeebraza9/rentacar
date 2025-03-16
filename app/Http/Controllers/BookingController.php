@@ -68,8 +68,8 @@ class BookingController extends Controller
             $pickup_time = $decodedData['pickup_time'] ?? null;
             $return_time = $decodedData['return_time'] ?? null;
 
-            $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default: Current Date & Time
-            $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default: Next Day Same Time
+            $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default now
+            $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default next day
 
             if (!empty($pickupDate) && !empty($pickup_time)) {
                 $pickupDateTime = Carbon::parse("$pickupDate $pickup_time")->format('Y-m-d H:i:s');
@@ -79,31 +79,20 @@ class BookingController extends Controller
                 $returnDateTime = Carbon::parse("$returnDate $return_time")->format('Y-m-d H:i:s');
             }
 
+
             $pickupDate = $pickupDate ? Carbon::parse($pickupDate) : null;
             $returnDate = $returnDate ? Carbon::parse($returnDate) : null;
 
-            // Fetch all products
-            $productsQuery = Product::query();
+            $productsQuery = Product::whereNotExists(function ($query) use ($pickupDateTime, $returnDateTime) {
+                $query->select(DB::raw(1))
+                    ->from('orders')
+                    ->whereRaw('orders.pro_id = products.id')
+                    ->where(function ($q) use ($pickupDateTime, $returnDateTime) {
+                        $q->whereRaw('DATE(orders.from_date) <= ?', [date('Y-m-d', strtotime($returnDateTime))])
+                          ->whereRaw('DATE(orders.to_date) >= ?', [date('Y-m-d', strtotime($pickupDateTime))]);
+                    });
+            });
 
-            if ($pickupLocation) {
-                $productsQuery->whereRaw("LOWER(pickup_location) LIKE ?", ['%' . strtolower($pickupLocation) . '%']);
-            }
-            if ($returnLocation) {
-                $productsQuery->where('dropoff_location', $returnLocation);
-            }
-
-            // Filter out booked products
-            if ($pickupDate && $returnDate) {
-                $productsQuery->whereNotExists(function ($query) use ($pickupDate, $returnDate) {
-                    $query->select(DB::raw(1))
-                        ->from('orders')
-                        ->whereRaw('orders.pro_id = products.id')
-                        ->where(function ($q) use ($pickupDate, $returnDate) {
-                            $q->whereDate('orders.to_date', '>=', $pickupDate)
-                              ->whereDate('orders.from_date', '<=', $returnDate);
-                        });
-                });
-            }
 
             $numberOfRecords = $productsQuery->count();
 
@@ -114,7 +103,7 @@ class BookingController extends Controller
 
             $product = $availableProducts->first();
 
-            return view('theme.bookingnew', compact('product', 'availableProducts', 'similarProducts', 'numberOfRecords', 'pickupDateTime', 'returnDateTime'));
+            return view('theme.bookingnew', compact('product', 'availableProducts', 'similarProducts', 'numberOfRecords', 'pickupDateTime', 'returnDateTime','pickupLocation','returnLocation'));
         }
 
 
@@ -184,22 +173,22 @@ public function checkout(Request $request)
 
     $userId = auth()->id();
 
-    $validatedData = $request->validate([
-        'slug' => 'required|string|exists:products,slug',
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'country_code' => 'required|string|max:10',
-        'country' => 'required|string|max:100',
-        'user_passport' => 'nullable|string|max:100',
-        'user_license' => 'nullable|string|max:100',
-        'from' => 'nullable|date|after_or_equal:today',
-        'today' => 'nullable|date|after_or_equal:from_date',
-    ]);
+    // $validatedData = $request->validate([
+    //     'slug' => 'required|string|exists:products,slug',
+    //     'name' => 'required|string|max:255',
+    //     'country_code' => 'required|string|max:10',
+    //     'country' => 'required|string|max:100',
+    //     'user_passport' => 'nullable|string|max:100',
+    //     'user_license' => 'nullable|string|max:100',
+    //     'from' => 'nullable|date|after_or_equal:today',
+    //     'today' => 'nullable|date|after_or_equal:from_date',
+    // ]);
 
-    $product = Product::where('slug', $validatedData['slug'])->firstOrFail();
 
-    $fromDate = $validatedData['from'] ?? now()->format('Y-m-d H:i:s');
-    $toDate = $validatedData['today'] ?? Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
+    $product = Product::where('slug', $request['slug'])->firstOrFail();
+
+    $fromDate = $request['from'] ?? now()->format('Y-m-d H:i:s');
+    $toDate = $request['today'] ?? Carbon::parse($fromDate)->addDay()->format('Y-m-d H:i:s');
 
 
     $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
@@ -236,14 +225,14 @@ public function checkout(Request $request)
     $order = Order::create([
         'pro_id' => $product->id,
         'userid' => $userId,
-        'buyer_name' => $validatedData['name'],
-        'buyer_email' => $validatedData['email'],
-        'buyer_phone_number' => $validatedData['country_code'] . $request->phone_number,
+        'buyer_name' => $request['name'],
+        'buyer_email' => $request['email'],
+        'buyer_phone_number' =>  $request->phone_number2,
         'passport' => $request->user_passport,
         'license' => $request->user_license,
-        'buyer_country_of_origin' => $validatedData['country'],
+        'buyer_country_of_origin' => $request['country'],
         'buyer_sec_name' => $request->invoice_name ?? null,
-        'buyer_sec_phone_number' => $request->invoice_phone_number ?? null,
+        'buyer_sec_phone_number' => $request->phone_number2 ?? null,
         'buyer_sec_invoice_address' => $request->invoice_address ?? null,
         'driver_name' => $request->driver_name ?? null,
         'driver_id_passport_number' => $request->driver_ic_number ?? null,
@@ -251,6 +240,7 @@ public function checkout(Request $request)
         'driver_age' => $request->driver_age ?? null,
         'driver_mobile_number' => $request->driver_mobile_number ?? null,
         'note' => $request->note ?? null,
+        'flight_no' => $request->flight_number ?? null,
         'from_date' => $fromDate,
         'to_date' => $toDate,
         'status' => $request->status ?? 'pending',
