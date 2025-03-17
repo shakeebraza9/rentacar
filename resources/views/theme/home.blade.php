@@ -501,7 +501,7 @@ Launch demo modal
                                             @endif
                                         </div>
                                         <div class="card-body">
-                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}{{ $product->type }}</h5>
+                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}</h5>
                                             <ul class="list-fleet-specs">
                                                 @foreach ($product->productDetails as $detail)
                                                     <li>

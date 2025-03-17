@@ -137,24 +137,7 @@
                     $extraHours = max(0, $totalHours - 24);
                     $extraHourCharge = 0;
 
-                    if ($extraHours > 0) {
-                        if ($extraHours <= 5) {
 
-                            $extraHourCharge = ($productprice * $extra_hour) / 100;
-                        } elseif ($extraHours >= 6 && $extraHours <= 24) {
-
-                            $extraHourCharge = $productprice;
-                        } elseif ($extraHours >= 25 && $extraHours <= 30) {
-
-                            $hourlyRate = ($productprice * 10) / 100;
-                            $extraHourCharge = $extraHours * $hourlyRate;
-                        } elseif ($extraHours >= 31) {
-
-                            $hoursBeyond30 = $extraHours - 30;
-                            $blocks = ceil($hoursBeyond30 / 6);
-                            $extraHourCharge = ($blocks + 1) * $productprice;
-                        }
-                    }
 
 
 
@@ -178,10 +161,29 @@
                         }
                     }
 
-                    $total = $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge  +$session_extra_amount ;
+                    $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
                     if($discountPercent > 0){
                         $total = max(0, $total - $discountAmount);
                     }
+
+
+                    if ($extraHours > 0) {
+                        if ($extraHours >= 1 && $extraHours <= 5) {
+                            // 1hr = 10%, 2hr = 20%, ..., 5hr = 50%
+                            $extraHourCharge = ($total * ($extraHours * 10)) / 100;
+                        } elseif ($extraHours >= 6 && $extraHours <= 40) {
+                            // 6 to 40 hrs = product price x2
+                            $extraHourCharge = $total * 2;
+                        } else {
+                            // For hours > 40, calculate how many 24hr blocks beyond 40
+                            $hoursBeyond40 = $extraHours - 40;
+
+                            // Each 24hr block adds 1x product price (starting from triple)
+                            $blocks = ceil($hoursBeyond40 / 24); // e.g., 1 block = +1x
+                            $extraHourCharge = $total * (2 + $blocks);
+                        }
+                    }
+                    $total = $total + $extraHourCharge;
                 @endphp
 
                     <div class="card"  >

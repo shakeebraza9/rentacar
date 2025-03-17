@@ -31,6 +31,13 @@ h6 {
 a {
   text-decoration: none;
 }
+.btn-primary:hover {
+    color: black !important;
+    background-color: #d49c33 !important;
+    border-color: #690C0B !important;
+    box-shadow: 0px 6px 10px #d49c33 !important; /* Shadow effect */
+}
+
 a:hover,
 a:focus {
   text-decoration: none;
@@ -1493,7 +1500,7 @@ margin: 5px;
   font-size: 15px ;
 }
 .details-row  p {
-  
+
   font-size: 12px  !important;
 }
 .dtl-abdse{
@@ -1637,7 +1644,7 @@ button.btn:hover {
     width: 100%;
     border: none;
     -moz-flex: 1 1 auto;
-    flex: 1 1 auto;     
+    flex: 1 1 auto;
 }
 .search-icon {
     color: #9c9aa6;
@@ -1647,43 +1654,43 @@ button.btn:hover {
     font-size: 17px;
 }
 .custom-btn {
-    color: #690C0B; 
-    background-color: #f7f7f9; 
-    border: none; 
-    transition: background-color 0.3s, color 0.3s; 
+    color: #690C0B;
+    background-color: #f7f7f9;
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 .custom-btn:hover {
-    background-color: #e0e0e3; 
-    color: #690C0B; 
+    background-color: #e0e0e3;
+    color: #690C0B;
 }
 
 .custom-btn:focus {
-    outline: none; 
-    box-shadow: 0 0 4px #690C0B; 
+    outline: none;
+    box-shadow: 0 0 4px #690C0B;
 }
 
 .custom-btn {
-color: #690C0B; 
+color: #690C0B;
 background-color: #f7f7f9;
-border: none; 
+border: none;
 padding: 10px 15px;
 transition: all 0.3s ease;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .custom-btn:hover {
-background-color: #e0e0e3; 
+background-color: #e0e0e3;
 color: #690C0B;
 transform: translateY(-3px);
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .custom-btn:focus {
-outline: none; 
+outline: none;
 box-shadow: 0 0 4px #690C0B;
 }
 
 .btn-group .me-2 {
-margin-right: 10px; 
+margin-right: 10px;
 }
 
 
