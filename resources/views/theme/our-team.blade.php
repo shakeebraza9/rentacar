@@ -27,7 +27,7 @@
                 <div class="row mt-3 gy-4">
                     @foreach($members as $member)
                         <div class="col-md-3 text-center">
-                            <img src="{{ asset($member->image->path . '/' . $member->image->filename) }}"
+                            <img src="{{ asset($member->image->path) }}"
                                  class="img-fluid mx-auto"
                                  style="width:180px; height:180px; object-fit:cover;"
                                  alt="{{ $member->name }}">
