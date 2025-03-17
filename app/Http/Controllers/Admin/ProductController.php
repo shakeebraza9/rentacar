@@ -246,7 +246,6 @@ class ProductController extends Controller
     public function update(Request $request,$id)
     {
 
-        // dd($request->all());
 
 
         $id = Crypt::decryptString($id);
@@ -365,7 +364,7 @@ class ProductController extends Controller
         $product->type = $request->car_type;
         $product->discount_text = $request->rms_text ?? NULL;
         $product->stock = $request->unit ?? 1;
-        $product->type = $request->car_type;
+
         $product->dropoff_location = $request->dropoff_location;
         $product->pickup_location = $request->pickup_location;
         $product->save();

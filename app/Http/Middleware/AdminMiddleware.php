@@ -17,11 +17,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // Check if the user is authenticated and has role_id = 1 (Admin)
-        if (!Auth::check() || Auth::user()->role_id != 1) {
-            return redirect()->route('weblogin')->with('error', 'Access Denied: Admins Only.');
+        if (!Auth::check() || !in_array(Auth::user()->role_id, [1, 2])) {
+            return redirect()->route('weblogin')->with('error', 'Access Denied.');
         }
-
+    
         return $next($request);
     }
+    
 }
