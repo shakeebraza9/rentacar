@@ -80,4 +80,11 @@ if (!function_exists('getFaqsByType')) {
 
         return $html;
     }
+    if (!function_exists('getCarTypeBySlug')) {
+        function getCarTypeBySlug($slug)
+        {
+            return DB::table('car_type')->where('slug', $slug)->first();
+        }
+    }
+
 }

@@ -82,10 +82,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6 text-center">
-                                @if($item->image)
+                                @if($item->value)
                                     <img id="image-preview-{{$item->field}}"
                                         style="width:100px;height:100px;"
-                                        src="{{ asset('public/'.$item->image->path) }}" />
+                                        src="{{ asset($item->value) }}" />
                                 @else
                                     <p id="image-preview-{{$item->field}}">No Image Selected</p>
                                 @endif

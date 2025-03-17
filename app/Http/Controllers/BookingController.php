@@ -194,7 +194,7 @@ public function checkout(Request $request)
     $settings = Setting::whereIn('field', ['rental', 'extra_hour', 'pickup_fee', 'return_fee', 'add-ons', 'discount'])
         ->pluck('value', 'field');
 
-    $rental = (float) ($settings['rental'] ?? 0);
+    $rental = 0;
     $extra_hour = (float) ($request->extracharge ?? 0);
     $pickup_fee = (float) ($settings['pickup_fee'] ?? 0);
     $return_fee = (float) ($settings['return_fee'] ?? 0);
@@ -203,11 +203,11 @@ public function checkout(Request $request)
     $productPrice = (float) ($product->selling_price ?? 0);
     $selectedAddons = json_decode($request->selected_addons, true) ?? [];
     $addonsTotal = array_sum(array_column($selectedAddons, 'total'));
-    $extraChargepeek = $request->extraChargepeek ?? 0;
-    $session_extra_amount = $request->session_extra_amount ?? 0;
+
+    // $session_extra_amount = $request->session_extra_amount ?? 0;
     $discountAmount = ($productPrice * $discountPercent) / 100;
 
-    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal + $extraChargepeek + $session_extra_amount;
+    $totalBeforeDiscount = $rental + $extra_hour + $pickup_fee + $return_fee + $productPrice + $addonsTotal ;
     $total = max(0, $totalBeforeDiscount - $discountAmount);
 
 

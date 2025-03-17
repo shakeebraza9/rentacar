@@ -55,9 +55,9 @@ Launch demo modal
                                         class="active" aria-current="true" aria-label="Slide 1"></button>
                                 </div>
                                 <div class="carousel-inner">
-                                    @if (!empty($global_d['popup_image']) && !empty($global_d['popup_image']->path))
+                                    @if (!empty(getset('popup_image')))
                                         <div class="carousel-item active">
-                                            <img src="{{ asset($global_d['popup_image']->path) }}" class="img-fluid" alt="">
+                                            <img src="{{ asset(getset('popup_image')) }}" class="img-fluid" alt="">
                                         </div>
                                     @endif
                                 </div>
@@ -442,17 +442,17 @@ Launch demo modal
         <section class="my-7">
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
-        
+
                 @php
                     // Clean and normalize type before grouping
                     $products = $products->map(function ($product) {
                         $product->type = strtolower(trim($product->type)); // Normalize type
                         return $product;
                     });
-        
+
                     $vehicleTypes = $products->groupBy('type'); // Group by cleaned type
                 @endphp
-        
+
                 <!-- Tab Navigation -->
                 <ul class="nav nav-tabs" id="vehicleTabs" role="tablist">
                     @foreach($vehicleTypes as $type => $vehicles)
@@ -475,7 +475,7 @@ Launch demo modal
                 </ul>
             </div>
         </section>
-        
+
         <div class="tab-content" id="vehicleTabContent">
             @foreach($vehicleTypes as $type => $vehicles)
                 @php
@@ -553,8 +553,8 @@ Launch demo modal
                 </div>
             @endforeach
         </div>
-        
-        
+
+
 
 
 <section class="mt-5 bg-light py-4">

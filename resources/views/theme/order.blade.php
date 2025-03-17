@@ -99,11 +99,96 @@
 
                     @endphp
 
+
+                    @php
+
+
+                    $extra_hour = $global_d['extra_hour'] ?? 0;
+                    $pickup_fee = $global_d['pickup_fee'] ?? 0;
+                    $return_fee = $global_d['return_fee'] ?? 0;
+                    $addons = $global_d['add-ons'] ?? 0;
+                    $discountPercent = $global_d['discount'] ?? 0;
+                    $productprice = $booking->selling_price ?? 0;
+                    $bookingPrice = $booking->price ?? 0;
+                    $rental =$productprice ?? 0;
+                    if($discountPercent <= 0){
+                        $discountAmount = $productprice * $bookingPrice; // This is your existing calc
+
+                        // Now percentage difference between $productPrice and $bookingPrice
+                        $difference = abs($productprice - $bookingPrice);
+                        $average = ($productprice + $bookingPrice) / 2;
+
+                        $discountAmount = ($difference / $average) * 100;
+                    }else{
+
+                        $discountAmount = ($productprice * $discountPercent) / 100;
+                    }
+
+                    $from = Carbon::parse($from ?? now());
+                    $today = Carbon::parse($today ?? now());
+
+
+
+
+
+
+
+                    $totalHours = $today->diffInHours($from);
+                    $extraHours = max(0, $totalHours - 24);
+                    $extraHourCharge = 0;
+
+                    if ($extraHours > 0) {
+                        if ($extraHours <= 5) {
+
+                            $extraHourCharge = ($productprice * $extra_hour) / 100;
+                        } elseif ($extraHours >= 6 && $extraHours <= 24) {
+
+                            $extraHourCharge = $productprice;
+                        } elseif ($extraHours >= 25 && $extraHours <= 30) {
+
+                            $hourlyRate = ($productprice * 10) / 100;
+                            $extraHourCharge = $extraHours * $hourlyRate;
+                        } elseif ($extraHours >= 31) {
+
+                            $hoursBeyond30 = $extraHours - 30;
+                            $blocks = ceil($hoursBeyond30 / 6);
+                            $extraHourCharge = ($blocks + 1) * $productprice;
+                        }
+                    }
+
+
+
+
+
+
+
+
+
+                    $session_extra_amount = 0; // Default
+
+                    if ($global_d['season_enable'] == 1) {
+                        $sessionFrom = Carbon::parse($global_d['season_from_date']);
+                        $sessionTo = Carbon::parse($global_d['season_to_date']);
+
+                        // Check if booking date falls within the season
+                        if ($from->between($sessionFrom, $sessionTo)) {
+                            $carType = getCarTypeBySlug($booking->type);
+                            $session_extra_amount = $carType->amount ?? 0;
+                            $rental = $rental + $session_extra_amount;
+                        }
+                    }
+
+                    $total = $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge  +$session_extra_amount ;
+                    if($discountPercent > 0){
+                        $total = max(0, $total - $discountAmount);
+                    }
+                @endphp
+
                     <div class="card"  >
                         <div class="card-body">
                             <h5 class="text-primary">Rental Amount</h5>
                             <h3 class="d-inline-block">
-                                RM <b>{{ number_format($booking->selling_price, 2) }}</b>
+                                RM <b>{{ number_format($rental, 2) }}</b>
                             </h3>
                             <i> for {{ $bookingDuration  }}</i>
                             <hr>
@@ -130,110 +215,14 @@
 
                             <table class="table" id="rentalamount-sidebar" >
                                 <tbody>
-                                    @php
 
-
-                                    $rental = $global_d['rental'] ?? 0;
-                                    $extra_hour = $global_d['extra_hour'] ?? 0;
-                                    $pickup_fee = $global_d['pickup_fee'] ?? 0;
-                                    $return_fee = $global_d['return_fee'] ?? 0;
-                                    $addons = $global_d['add-ons'] ?? 0;
-                                    $discountPercent = $global_d['discount'] ?? 0;
-                                    $productprice = $booking->selling_price ?? 0;
-
-                                    $discountAmount = ($productprice * $discountPercent) / 100;
-
-                                    $from = Carbon::parse($from ?? now());
-                                    $today = Carbon::parse($today ?? now());
-
-
-
-
-
-
-
-                                    $totalHours = $today->diffInHours($from);
-                                    $extraHours = max(0, $totalHours - 24);
-                                    $extraHourCharge = 0;
-
-                                    if ($extraHours > 0) {
-                                        if ($extraHours <= 5) {
-
-                                            $extraHourCharge = ($productprice * $extra_hour) / 100;
-                                        } elseif ($extraHours >= 6 && $extraHours <= 24) {
-
-                                            $extraHourCharge = $productprice;
-                                        } elseif ($extraHours >= 25 && $extraHours <= 30) {
-
-                                            $hourlyRate = ($productprice * 10) / 100;
-                                            $extraHourCharge = $extraHours * $hourlyRate;
-                                        } elseif ($extraHours >= 31) {
-
-                                            $hoursBeyond30 = $extraHours - 30;
-                                            $blocks = ceil($hoursBeyond30 / 6);
-                                            $extraHourCharge = ($blocks + 1) * $productprice;
-                                        }
-                                    }
-
-
-
-
-
-
-
-                                    $peek_from_time = $global_d['peek_from_time'] ?? '01:00 AM';
-                                    $peek_to_time = $global_d['peek_to_time'] ?? '03:00 AM';
-                                    $peekExtraAmount = $global_d['peek_extra_amount'] ?? 0;
-
-                                    $frombookingTime = $from;
-                                    $bookingtimeto = $today;
-
-
-                                    $peekEnd = Carbon::parse($frombookingTime->format('Y-m-d') . ' ' . $peek_from_time);
-                                    $peekStart = Carbon::parse($bookingtimeto->format('Y-m-d') . ' ' . $peek_to_time);
-
-
-                                    if ($frombookingTime->copy()->addDay()->between($peekStart, $peekEnd) ||
-                                        $bookingtimeto->copy()->between($peekStart, $peekEnd)) {
-                                        $extraCharge = $peekExtraAmount;
-                                    } else {
-                                        $extraCharge = 0;
-                                    }
-
-                                    if($global_d['session_enable'] == 1){
-
-
-                                        $session_to_date = $global_d['session_to_date'];
-                                        $session_from_date = $global_d['session_from_date'];
-
-
-
-                                        $sessionFrom = Carbon::parse($session_from_date);
-                                        $sessionTo = Carbon::parse($session_to_date);
-
-
-
-                                        if (($from->between($sessionFrom, $sessionTo)) || ($today->between($sessionFrom, $sessionTo))) {
-                                            $session_extra_amount    = $global_d['session_extra_amount'];
-                                        } else {
-                                            $session_extra_amount = 0;
-                                        }
-
-
-                                    }else{
-                                        $session_extra_amount = 0;
-                                    }
-
-                                    $totalBeforeDiscount = $rental + $pickup_fee + $return_fee + $addons + $productprice + $extraHourCharge + $extraCharge + $session_extra_amount;
-                                    $total = max(0, $totalBeforeDiscount - $discountAmount);
-                                @endphp
 
 
 
 
 
                                 <tr>
-                                    <td>Rental</td>
+                                    <td>Rental </td>
                                     <td class="text-end">{{ number_format($rental, 2) }}</td>
                                 </tr>
                                 <tr>
@@ -244,10 +233,7 @@
                                     <td>Pickup Fee</td>
                                     <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
                                 </tr>
-                                {{--  <tr>
-                                    <td>Peak Hour</td>
-                                    <td class="text-end">{{ number_format($extraCharge, 2) }}</td>
-                                </tr>  --}}
+
                                 {{--  @if($global_d['session_enable'] == 1)  --}}
 
 
@@ -397,8 +383,8 @@
                         </div>
                         <input type="hidden" name="selected_addons" id="selected-addons">
                         <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
-                        <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}">
-                        <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}">
+                        {{--  <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}">  --}}
+                        {{--  <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}">  --}}
                         <input type="hidden" name="depositeamount" value="{{ $price }}">
 
                         <div id="step2" class="stepfrom d-none">
@@ -922,7 +908,7 @@
                                             <i class="fas fa-credit-card" style="color: #6c757d; margin-right: 10px;"></i>
                                             <span style="color: #6c757d; font-size: 14px;">Pay Full</span>
                                         </div>
-                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ number_format($total, 2) }}</div>
+                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;" id="totalwithaddons">RM {{ number_format($total, 2) }}</div>
                                         <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Full</button>
                                     </div>
                                 </div>
@@ -1129,6 +1115,14 @@ showStep(1);
             if (totalAmountElement2) {
                 let baseTotal = parseFloat(totalAmountElement2.dataset.baseTotal) || 0;
                 totalAmountElement2.textContent = (baseTotal + addonsTotal).toFixed(2);
+            }
+
+            let totalWithAddonsElement = document.getElementById("totalwithaddons");
+            if (totalWithAddonsElement) {
+                let currentText = totalWithAddonsElement.textContent.replace(/[^\d.]/g, '');
+                let currentTotal = parseFloat(currentText) || 0;
+                let totalWithAddons = currentTotal + addonsTotal;
+                totalWithAddonsElement.textContent = 'RM ' + totalWithAddons.toFixed(2);
             }
 
             document.getElementById("selected-addons").value = JSON.stringify(selectedAddons);

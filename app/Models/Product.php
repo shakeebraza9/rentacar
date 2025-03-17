@@ -123,6 +123,9 @@ class Product extends Model
     }
 
 
-
+    public function carType()
+    {
+        return $this->hasOne(CarType::class, 'slug');
+    }
 
 }
