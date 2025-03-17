@@ -18,11 +18,12 @@ class Authenticate
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return $this->redirectTo($request);
+            return redirect()->route('login'); // Redirect to admin login
         }
-
+    
         return $next($request);
     }
+    
 
     /**
      * Get the path the user should be redirected to when they are not authenticated.

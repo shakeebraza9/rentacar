@@ -121,15 +121,20 @@
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <img src="{{asset('admin/assets/images/users/1.jpg')}}" alt="user" class="">
+                              <img src="{{asset( Auth::user()->profile_image )??asset('admin/assets/images/users/1.jpg')}}" alt="user" class="">
                               <span class="hidden-md-down">
                                 {{ Auth::user()->name }} &nbsp;<i class="fa fa-angle-down"></i>
                             </span>
 
                             </a>
                             <div class="dropdown-menu dropdown-menu-end animated flipInY">
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-wallet"></i> Change Password</a>
+                                <a href="javascript:void(0)" class="dropdown-item" onclick="openProfilePopup()">
+                                    <i class="ti-user"></i> My Profile
+                                </a>
+                                <a href="javascript:void(0)" class="dropdown-item" onclick="openPasswordPopup()">
+                                    <i class="ti-wallet"></i> Change Password
+                                </a>
+                                
 
                                 {{--  <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a>  --}}
 
@@ -253,7 +258,8 @@
                             </li>
                             <li><a class="waves-effect waves-dark"
                                 href="{{URL::to('admin/team/index')}}"
-                                aria-expanded="false"><i class="fa fa-group"></i>
+                                aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i>
+
                                 <span class="hide-menu"> Team </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
@@ -361,9 +367,10 @@
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
 
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
+@include('admin.profile')
+
+
+
         <footer class="footer">
             © 2024 {{$global_d['site_title']}} Developed by
             <a href="#">Browndev.com</a>
@@ -405,7 +412,24 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+<script>
+    function openPasswordPopup() {
+        document.getElementById('passwordPopup').style.display = 'block';
+    }
 
+    function closePasswordPopup() {
+        document.getElementById('passwordPopup').style.display = 'none';
+    }
+
+
+    function openProfilePopup() {
+        document.getElementById('profilePopup').style.display = 'block';
+    }
+
+    function closeProfilePopup() {
+        document.getElementById('profilePopup').style.display = 'none';
+    }
+</script>
 
     @if(Session::get('success'))
     <script>

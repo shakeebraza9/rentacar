@@ -210,4 +210,66 @@ class CustomerController extends Controller
 
         return view('theme.cases');
     }
+
+    public function updateadminprofile(Request $request)
+{
+    $user = Auth::user();
+
+    // Validation rules
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'phone_number' => 'nullable|string|max:20',
+        'dob' => 'nullable|date',
+        'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Max 2MB
+    ]);
+
+        // Check if a new profile image is uploaded
+        if ($request->hasFile('profile_image')) {
+            // Delete the old image if it exists
+            if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+                unlink(public_path($user->profile_image));
+            }
+
+            // Save the new image in the public folder
+            $file = $request->file('profile_image');
+            $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+            $filePath = 'profile_images/' . $fileName;
+
+            $file->move(public_path('profile_images'), $fileName);
+
+            // Update the user model with the new file path
+            $user->profile_image = $filePath;
+        }
+
+    // Update user data
+    $user->name = $request->name;
+    $user->phone_number = $request->phone_number;
+    $user->date_of_birth = $request->dob;
+    $user->save();
+
+    return back()->with('success', 'Profile updated successfully!');
+}
+
+public function changePasswordadmin(Request $request)
+{
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|min:6',
+        'confirm_password' => 'required|same:new_password',
+    ]);
+
+    $user = Auth::user();
+
+    // Check if old password matches
+    if (!Hash::check($request->old_password, $user->password)) {
+        return back()->with('error', 'Old password is incorrect.');
+    }
+
+    // Update password
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return back()->with('success', 'Password changed successfully.');
+}
+
 }

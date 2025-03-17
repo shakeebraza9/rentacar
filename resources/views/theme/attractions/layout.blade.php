@@ -46,7 +46,9 @@ $attractions= MenuHelper::getsubAttractions(45);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 
-
+    {!! getset('google_analytics') !!}
+    {!! getset('google_tag_manager') !!}
+    {!! getset('facebook_pixel') !!}
 
     <script type="text/javascript">
         function changeLanguage(lang) {

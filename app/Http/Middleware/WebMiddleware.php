@@ -4,23 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WebMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next)
     {
-        // Your middleware logic goes here
-        if ($request->user() && $request->user()->role_id == 0) {
-            return $next($request);
+        if (Auth::check()) {
+            $role = Auth::user()->role_id;
+            if ($role === 0 || $role === 1 || $role === 2) {
+                return $next($request); 
+            }
         }
 
-        return redirect('/login')->with('error', 'You are not authorized to access this page.');
+        // Not logged in OR invalid role
+        return redirect()->route('weblogin')->with('error', 'Access denied.');
     }
 }
