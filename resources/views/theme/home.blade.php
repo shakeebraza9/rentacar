@@ -438,38 +438,49 @@ Launch demo modal
         <section class="my-7">
             <div class="container">
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
-
+        
                 @php
-                    $vehicleTypes = $products->groupBy('type'); // Group products by type
+                    // Clean and normalize type before grouping
+                    $products = $products->map(function ($product) {
+                        $product->type = strtolower(trim($product->type)); // Normalize type
+                        return $product;
+                    });
+        
+                    $vehicleTypes = $products->groupBy('type'); // Group by cleaned type
                 @endphp
-
+        
                 <!-- Tab Navigation -->
                 <ul class="nav nav-tabs" id="vehicleTabs" role="tablist">
                     @foreach($vehicleTypes as $type => $vehicles)
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link @if ($loop->first) active @endif"
-                                id="tab-{{ Str::slug(str_replace('_', ' ', $type)) }}"
-                                data-bs-toggle="tab"
-                                data-bs-target="#content-{{ Str::slug(str_replace('_', ' ', $type)) }}"
-                                type="button"
-                                role="tab"
-                                aria-controls="content-{{ Str::slug(str_replace('_', ' ', $type)) }}"
-                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                            {{ Str::title(str_replace('_', ' ', $type)) }}
-                        </button>
-                    </li>
-                @endforeach
-
+                        @php
+                            $typeSlug = Str::slug($type);
+                        @endphp
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link @if ($loop->first) active @endif"
+                                    id="tab-{{ $typeSlug }}"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#content-{{ $typeSlug }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="content-{{ $typeSlug }}"
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                {{ Str::title(str_replace('_', ' ', $type)) }}
+                            </button>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </section>
-
+        
         <div class="tab-content" id="vehicleTabContent">
             @foreach($vehicleTypes as $type => $vehicles)
+                @php
+                    $typeSlug = Str::slug($type);
+                @endphp
                 <div class="tab-pane fade @if ($loop->first) show active @endif mb-5"
-                     id="content-{{ Str::slug($type) }}"
+                     id="content-{{ $typeSlug }}"
                      role="tabpanel"
-                     aria-labelledby="tab-{{ Str::slug($type) }}">
+                     aria-labelledby="tab-{{ $typeSlug }}">
                     <div class="container mt-3">
                         <div class="row gy-4">
                             @foreach($vehicles as $product)
@@ -486,7 +497,7 @@ Launch demo modal
                                             @endif
                                         </div>
                                         <div class="card-body">
-                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}</h5>
+                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}{{ $product->type }}</h5>
                                             <ul class="list-fleet-specs">
                                                 @foreach ($product->productDetails as $detail)
                                                     <li>
@@ -506,21 +517,21 @@ Launch demo modal
                                                     <span class="text-muted fw-bold d-block">From</span>
                                                     <span class="text-muted fw-bold">RM
                                                         <h4 class="d-inline-block">
-                                                            <del>{{ htmlspecialchars(number_format($product->price, 2)) }}</del>
+                                                            <del>{{ number_format($product->price, 2) }}</del>
                                                         </h4>
                                                     </span><br>
                                                     <span class="text-danger fw-bold">RM
-                                                        <h4 class="d-inline-block">{{ htmlspecialchars(number_format($product->selling_price, 2)) }}</h4>
+                                                        <h4 class="d-inline-block">{{ number_format($product->selling_price, 2) }}</h4>
                                                     </span>
                                                 </div>
                                                 <div class="col-md-auto my-auto btnBooking_area">
                                                     <div class="fw-bold text-danger text-end">
-                                                        {{ htmlspecialchars($product->stock) }} unit left!
+                                                        {{ $product->stock }} unit left!
                                                     </div>
                                                     <div class="row">
                                                         @php
-                                                            $today = date('Y-m-d H:i:s');
-                                                            $nextDay = date('Y-m-d H:i:s', strtotime('+1 day'));
+                                                            $today = now()->format('Y-m-d H:i:s');
+                                                            $nextDay = now()->addDay()->format('Y-m-d H:i:s');
                                                         @endphp
                                                         <a href="{{ route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) }}"
                                                            class="btn btn-primary">
@@ -538,6 +549,8 @@ Launch demo modal
                 </div>
             @endforeach
         </div>
+        
+        
 
 
 <section class="mt-5 bg-light py-4">
