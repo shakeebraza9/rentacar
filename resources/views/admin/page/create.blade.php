@@ -32,6 +32,7 @@
    }
 
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
 @endsection
 @section('content')
 <div class="row page-titles">
@@ -90,9 +91,12 @@
 
                     <div class="form-group">
                         <label class="form-label">Long Details</label>
-                    <textarea id="long_description" class="form-control" name="content">{{old('Long details')}}</textarea>
-
+                        <textarea id="easymde-editor" class="form-control" name="content">{{ old('content') }}</textarea>
+                        @error('content')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
+                    
 
 
 
@@ -141,7 +145,7 @@
 
 
 @section('js')
-
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <script>
    $(function () {
     $(".title").keyup(function() {
@@ -153,10 +157,21 @@
 
     });
 
-      ClassicEditor.create(document.querySelector('#long_description')).catch(error => {
-                console.error(error);
-      });
-
+    var easyMDE = new EasyMDE({
+        element: document.getElementById("easymde-editor"),
+        spellChecker: false,
+        tabSize: 4,
+        placeholder: "Write your article or code here...",
+        toolbar: [
+            "bold", "italic", "heading", "|",
+            "code", "quote", "unordered-list", "ordered-list", "|",
+            "link", "image", "|",
+            "preview", "side-by-side", "fullscreen", "|", "guide"
+        ],
+        renderingConfig: {
+            codeSyntaxHighlighting: true
+        }
+    });
 </script>
 
 @endsection

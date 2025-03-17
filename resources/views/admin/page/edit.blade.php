@@ -1,6 +1,7 @@
 @extends('admin.layout')
 @section('css')
 <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
 
 <style>
     .invalid-feedback{
@@ -61,11 +62,14 @@
                           @endif
                     </div>  --}}
 
-
                     <div class="form-group">
                         <label class="form-label">Long Details</label>
-                        <textarea id="long_description" class="form-control" name="content">{{$model->content}}</textarea>
+                        <textarea id="long_description_editor" class="form-control" name="content">{{ old('content', $model->content) }}</textarea>
+                        @error('content')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
+                    
 
                       <div class="form-group">
                         <label class="form-label">Meta Title</label>
@@ -78,11 +82,12 @@
                     <div class="form-group">
                         <label class="form-label">Meta Description</label>
                         <input type="text" placeholder="Meta Description"
-                        value="{{$model->meta_description}}" name="meta_description" class="form-control" />
-                        @if($errors->has('meta_description'))
-                         <p class="invalid-feedback" >{{ $errors->first('meta_description') }}</p>
-                        @endif
+                            value="{{ old('meta_description', $model->meta_description) }}" name="meta_description" class="form-control" />
+                        @error('meta_description')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
+                    
 
                     {{--  <div class="form-group">
                         <label class="form-label">Meta Keywords</label>
@@ -108,7 +113,7 @@
 @endsection
 
 @section('js')
-
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <script>
 
    $(function () {
@@ -120,9 +125,21 @@
         });
 
     });
-      ClassicEditor.create(document.querySelector('#long_description')).catch(error => {
-                console.error(error);
-      });
+    var longDetailsEditor = new EasyMDE({
+        element: document.getElementById("long_description_editor"),
+        spellChecker: false,
+        tabSize: 4,
+        placeholder: "Write your article or code here...",
+        toolbar: [
+            "bold", "italic", "heading", "|",
+            "code", "quote", "unordered-list", "ordered-list", "|",
+            "link", "image", "|",
+            "preview", "side-by-side", "fullscreen", "|", "guide"
+        ],
+        renderingConfig: {
+            codeSyntaxHighlighting: true
+        }
+    });
 
 </script>
 

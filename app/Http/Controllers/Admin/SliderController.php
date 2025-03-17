@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Ui\Presets\React;
-
+use App\Models\FileManager;
 class SliderController extends Controller
 {
 
@@ -102,7 +102,8 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('admin.sliders.create');
+        $images = FileManager::all(); // Fetch all images
+        return view('admin.sliders.create', compact('images'));
     }
 
 

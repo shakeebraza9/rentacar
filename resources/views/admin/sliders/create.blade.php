@@ -68,15 +68,35 @@
                          <p class="invalid-feedback" >{{ $errors->first('link') }}</p>
                         @endif
                     </div>
-
-                     <div class="form-group">
-                        <label class="form-label" >Image</label>
-                          <input type="text" value="{{old('image_id')}}" name="image_id" class="form-control" placeholder="Image">
-                          @if($errors->has('image_id'))
-                          <p class="invalid-feedback" >{{ $errors->first('image_id') }}</p>
-                          @endif
-                      </div>
-
+                    <div class="form-group">
+                        <label class="form-label">Select Image</label>
+                        <select name="image_id" class="form-control select2" id="image-selector" required>
+                            <option value="">-- Select Image --</option>
+                            @foreach($images as $img)
+                                <option value="{{ $img->id }}" data-image="{{ asset($img->path) }}"
+                                    {{ old('image_id') == $img->id ? 'selected' : '' }}>
+                                    {{ $img->title ?? 'Image ' . $img->id }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @if($errors->has('image_id'))
+                            <p class="text-danger">{{ $errors->first('image_id') }}</p>
+                        @endif
+                    </div>
+                    
+                    <!-- Preview Area -->
+                    <div id="image-preview" style="margin-top:10px;">
+                        @if(old('image_id'))
+                            @php
+                                $selectedImage = $images->where('id', old('image_id'))->first();
+                            @endphp
+                            @if($selectedImage)
+                                <img src="{{ asset($selectedImage->path) }}" alt="Preview" style="width:100px; height:100px; object-fit:cover; border:1px solid #ccc;">
+                            @endif
+                        @endif
+                    </div>
+                    
+                    
                       <div class="form-group">
                           <label class="form-label">Sort</label>
                           <input type="number" required value="{{old('sort')}}" name="sort" class="form-control" placeholder="Sort">
@@ -125,10 +145,26 @@
 @section('js')
 
 <script>
+    $(document).ready(function() {
+        function formatImage(option) {
+            if (!option.id) return option.text;
+            var imageUrl = $(option.element).data('image');
+            return $('<span><img src="' + imageUrl + '" style="width:40px; height:40px; object-fit:cover; margin-right:10px;" /> ' + option.text + '</span>');
+        }
 
+        $('#image-selector').select2({
+            templateResult: formatImage,
+            templateSelection: formatImage,
+            width: '100%'
+        });
 
-
-
+        // Show preview on change
+        $('#image-selector').on('change', function() {
+            var imageUrl = $(this).find(':selected').data('image');
+            $('#image-preview').html('<img src="' + imageUrl + '" style="width:100px; height:100px; object-fit:cover; border:1px solid #ccc;" />');
+        });
+    });
 </script>
+
 
 @endsection

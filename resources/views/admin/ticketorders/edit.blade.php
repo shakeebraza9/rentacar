@@ -11,19 +11,23 @@
                 </div>
                 <div class="card-body">
                     @php
-                        // Fetch correct ticket variations dynamically
-                        $adultVariation = $ticket->variations->where('type', 'adult')->first();
-                        $childVariation = $ticket->variations->where('type', 'child')->first();
+    $adultVariation = $ticket->variations->where('type', 'adult')->first();
+    $childVariation = $ticket->variations->where('type', 'child')->first();
 
-                        $adultPrice = $adultVariation ? $adultVariation->price : 0;
-                        $childPrice = $childVariation ? $childVariation->price : 0;
+    $adultPrice = $adultVariation ? $adultVariation->price : 0;
+    $childPrice = $childVariation ? $childVariation->price : 0;
 
-                        $totalAdult = $order->adult_quantity * $adultPrice;
-                        $totalChild = $order->child_quantity * $childPrice;
-                        $discount = getset('discount_value_Ticket');
+    $totalAdult = $order->adult_quantity * $adultPrice;
+    $totalChild = $order->child_quantity * $childPrice;
+    $discount = getset('discount_value_Ticket');
 
-                        $grandTotal = $totalAdult + $totalChild + ($order->addons ? array_sum(array_column(json_decode($order->addons, true), 'price')) : 0) - $discount;
-                    @endphp
+    // Safe decode + array_sum
+    $addonsArray = $order->addons ? json_decode($order->addons, true) : [];
+    $addonsTotal = !empty($addonsArray) ? array_sum(array_column($addonsArray, 'price')) : 0;
+
+    $grandTotal = $totalAdult + $totalChild + $addonsTotal - $discount;
+@endphp
+
                     <table class="table">
                         <tbody>
                             <tr>
@@ -71,39 +75,37 @@
                 </div>
                 <div class="card-body">
                     @php
-                        $addons = json_decode($order->addons, true);
-                        $totalAddons = 0;
-                    @endphp
-                    <table class="table">
-                        <thead>
+                    $addons = $order->addons ? json_decode($order->addons, true) : [];
+                    $totalAddons = 0;
+                @endphp
+                @if(!empty($addons))
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Addon Name</th>
+                            <th>Price (RM)</th>
+                            <th>Quantity</th>
+                            <th>Total (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($addons as $addon)
+                            @php
+                                $subtotal = $addon['price'] * $addon['quantity'];
+                                $totalAddons += $subtotal;
+                            @endphp
                             <tr>
-                                <th>Addon Name</th>
-                                <th>Price (RM)</th>
-                                <th>Quantity</th>
-                                <th>Total (RM)</th>
+                                <td>{{ $addon['name'] }}</td>
+                                <td>RM {{ number_format($addon['price'], 2) }}</td>
+                                <td>{{ $addon['quantity'] }}</td>
+                                <td><strong>RM {{ number_format($subtotal, 2) }}</strong></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($addons as $addon)
-                                @php
-                                    $subtotal = $addon['price'] * $addon['quantity'];
-                                    $totalAddons += $subtotal;
-                                @endphp
-                                <tr>
-                                    <td>{{ $addon['name'] }}</td>
-                                    <td>RM {{ number_format($addon['price'], 2) }}</td>
-                                    <td>{{ $addon['quantity'] }}</td>
-                                    <td><strong>RM {{ number_format($subtotal, 2) }}</strong></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr class="table-warning">
-                                <th colspan="3" class="text-end">Total Add-ons</th>
-                                <th><strong>RM {{ number_format($totalAddons, 2) }}</strong></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p>No addons selected.</p>
+            @endif
                 </div>
             </div>
             @endif
