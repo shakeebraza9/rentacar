@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\DB;
 @section('css')
 
 <style>
-
+.btn-primary:hover {
+    color: black !important;
+    background-color: #d49c33 !important;
+    border-color: red !important; /* Optional for border consistency */
+}
 </style>
 
 @endsection
