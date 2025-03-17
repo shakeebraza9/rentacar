@@ -90,7 +90,7 @@ class BlogAdminController extends Controller
     ]);
 
     // ✅ Redirect with success message
-    return redirect()->route('blog.index')->with('success', 'Blog created successfully!');
+    return redirect()->route('blog.index.admin')->with('success', 'Blog created successfully!');
 }
 
 
@@ -126,7 +126,7 @@ public function update(Request $request, $id)
         'location' => $request->location,
     ]);
 
-    return redirect()->route('blog.index')->with('success', 'Blog updated successfully!');
+    return redirect()->route('blog.index.admin')->with('success', 'Blog updated successfully!');
 }
 
     public function destroy($id)

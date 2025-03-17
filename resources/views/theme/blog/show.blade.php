@@ -30,8 +30,8 @@
                                 <img src="{{ asset($blog->image->path) }}" class="mx-auto d-block" alt="{{ $blog->title }}">
                             </div>
                             <div class="row mt-4">
-                                <h2>{{ $blog->description }}</h2> <!-- Subtitle -->
-                                <p>{{ $blog->short_description }}</p> <!-- Blog Content -->
+                                <p>{!! $blog->description !!}</p> <!-- Subtit   le -->
+                                <p>{!! $blog->short_description !!}</p> <!-- Blog Content -->
                             </div>
                         </div>
                     </div>
