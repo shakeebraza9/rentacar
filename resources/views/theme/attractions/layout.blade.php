@@ -225,9 +225,10 @@ $attractions= MenuHelper::getsubAttractions(45);
                         @elseif ($item->target == 2)
 
                             <a href="{{ route($item->link) }}">{{ $item->title }}</a>
-                        @else
-
-                            <a href="{{ $item->link }}">{{ $item->title }}</a>
+                            @else
+                            
+                            <a href="{{ route($item->link) }}">{{ $item->title }}</a>
+                            {{--  <a href="{{ $item->link }}">{{ $item->title }}</a>  --}}
                         @endif
                     </li>
                 @endforeach

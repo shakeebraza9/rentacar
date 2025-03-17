@@ -215,10 +215,12 @@ $attractions= MenuHelper::getsubAttractions(45);
                                 <a href="{{ route('pages.show', ['slug' => $item->link]) }}">{{ $item->title }}</a>
                             @elseif ($item->target == 2)
 
-                                <a href="{{ route($item->link) }}">{{ $item->title }}</a>
+                            <a href="{{ route($item->link) }}">{{ $item->title }}</a>
+                            
                             @else
+                            <a href="{{ route($item->link) }}">{{ $item->title }}</a>
 
-                                <a href="{{ $item->link }}">{{ $item->title }}</a>
+                                {{--  <a href="{{ $item->link }}">{{ $item->title }}{{$item->target   }}</a>  --}}
                             @endif
                         </li>
 

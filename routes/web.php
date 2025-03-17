@@ -296,7 +296,7 @@ Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\Attract
 
     });
     Route::prefix('admin/blog')->group(function () {
-        Route::get('/index', [App\Http\Controllers\Admin\BlogAdminController::class, 'index'])->name('blog.index');
+        Route::get('/index', [App\Http\Controllers\Admin\BlogAdminController::class, 'index'])->name('blog.index.admin');
         Route::get('/create', [App\Http\Controllers\Admin\BlogAdminController::class, 'create'])->name('blog.create');
         Route::post('/store', [App\Http\Controllers\Admin\BlogAdminController::class, 'store'])->name('blog.store');
         Route::get('/edit/{id}', [App\Http\Controllers\Admin\BlogAdminController::class, 'edit'])->name('blog.edit');
