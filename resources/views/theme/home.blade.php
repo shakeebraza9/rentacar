@@ -19,11 +19,7 @@ use Illuminate\Support\Facades\DB;
 @section('css')
 
 <style>
-.btn-primary:hover {
-    color: black !important;
-    background-color: #d49c33 !important;
-    border-color: red !important; /* Optional for border consistency */
-}
+
 </style>
 
 @endsection
@@ -490,9 +486,12 @@ Launch demo modal
                             @foreach($vehicles as $product)
                                 <div class="col-md-3">
                                     <div class="card">
+                                        @if(!empty($product->discount_text))
                                         <div class="label-fleet-deals text-uppercase">
                                             {{ htmlspecialchars($product->discount_text) }}
                                         </div>
+                                        @endif
+
                                         <div class="card-img-top" style="background-color:#DEEBEA">
                                             @if($product->get_thumbnail)
                                                 <img src="{{ asset($product->get_thumbnail->path) }}"
@@ -530,7 +529,9 @@ Launch demo modal
                                                 </div>
                                                 <div class="col-md-auto my-auto btnBooking_area">
                                                     <div class="fw-bold text-danger text-end">
+                                                        @if(!empty($product->discount_text))
                                                         {{ $product->stock }} unit left!
+                                                        @endif
                                                     </div>
                                                     <div class="row">
                                                         @php
