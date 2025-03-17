@@ -304,6 +304,15 @@ Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\Attract
         Route::delete('/delete/{id}', [App\Http\Controllers\Admin\BlogAdminController::class, 'destroy'])->name('blog.delete');
         
     });
+    Route::prefix('admin/artical')->group(function (): void {
+        Route::get('/index', [App\Http\Controllers\Admin\ArticalController::class, 'index'])->name('artical.index');
+        Route::get('/create', [App\Http\Controllers\Admin\ArticalController::class, 'create'])->name('artical.create');
+        Route::post('/store', [App\Http\Controllers\Admin\ArticalController::class, 'store'])->name('artical.store');
+        Route::get('/edit/{id}', [App\Http\Controllers\Admin\ArticalController::class, 'edit'])->name('artical.edit');
+        Route::POST('/update/{id}', [App\Http\Controllers\Admin\ArticalController::class, 'update'])->name('artical.update');
+        Route::delete('/delete/{id}', [App\Http\Controllers\Admin\ArticalController::class, 'destroy'])->name('artical.delete');
+        
+    });
 
     
 

@@ -273,6 +273,14 @@
                                 <span class="hide-menu">Blog </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/artical/index')}}"
+                                aria-expanded="false">
+                                <i class="fa fa-book" aria-hidden="true"></i>
+
+
+                                <span class="hide-menu">Article </span></a>
+                            </li>
+                            <li><a class="waves-effect waves-dark"
                                 href="{{URL::to('admin/report/index')}}"aria-expanded="false"> <i class="mdi mdi-monitor"></i>
                                 <span class="hide-menu">Customer Queries</span></a>
                             </li>

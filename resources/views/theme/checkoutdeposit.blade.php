@@ -122,7 +122,7 @@
 
                                 <input type="radio" class="btn-check" name="payment_method" id="toyyibpay" value="toyyibpay" required>
                                 <label class="btn btn-outline-primary flex-fill py-2" for="toyyibpay">
-                                    <i class="bi bi-credit-card"></i> Toyyibpay
+                                    <i class="bi bi-credit-card"></i> FPX / Online Banking
                                 </label>
 
                                 <input type="radio" class="btn-check" name="payment_method" id="stripe" value="stripe" required>
