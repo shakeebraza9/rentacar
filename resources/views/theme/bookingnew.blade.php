@@ -1,3 +1,4 @@
+
 @extends('theme.layout')
 
 @php
@@ -20,6 +21,20 @@
 
 @endsection
 @section('content')
+@php
+use Carbon\Carbon;
+
+$pickupDateTime2 = Carbon::parse($pickupDateTime );
+$returnDateTime2 = Carbon::parse($returnDateTime);
+
+$totalHours = $pickupDateTime2->diffInHours($returnDateTime2);
+$extraHours = max(0, $totalHours - 24);
+$extraCharge = 0;
+$price = $product->price;
+$priceFinal = $product->selling_price;
+@endphp
+
+
 
 <div class="booking-main-container my-7">
     <div class="container my-4">
@@ -34,7 +49,7 @@
                     alt="MRR HOLIDAYS Car Rental in Langkawi Sedan Toyota Vios New Variant 1.5 (A)">
             </div>
             <div class="card-body">
-                <h5 class="text-center">{{ $product->get_title  }} </h5>
+                <h5 class="text-center">{{ $product->title  }}{{ $extraHours }} </h5>
                 <ul class="list-fleet-specs">
                     <?php foreach ($product->productDetails as $detail): ?>
                                                 <li>
@@ -43,15 +58,29 @@
                                                     </span>
                                                     <?= htmlspecialchars($detail->value) ?>
                                                 </li>
-                                            <?php endforeach; ?>
+                <?php endforeach; ?>
                 </ul>
                 <hr>
                 <div class="row">
                     <div class="col-md">
                         <span class="text-muted fw-bold d-block">From</span>
                         <span class="text-muted fw-bold">RM <h4 class="d-inline-block">
-                                <del>{{  $product->price }}</del></h4></span><br>
-                        <span class="text-danger fw-bold">RM <h4 class="d-inline-block">{{  $product->selling_price }}
+
+                            @php
+                            if ($extraHours > 0) {
+                                if ($extraHours >= 1 && $extraHours <= 5) {
+
+                                    $extraCharge = ($product->selling_price * ($extraHours * 10)) / 100;
+                                } elseif ($extraHours >= 6 && $extraHours <= 24) {
+
+                                    $extraCharge = $product->selling_price * 1;
+                                }
+                            }
+                            $priceFinal =$priceFinal + $extraCharge;
+                            $price =$price + $extraCharge;
+                            @endphp
+                                <del>{{  $price }}</del></h4></span><br>
+                        <span class="text-danger fw-bold">RM <h4 class="d-inline-block">{{ $priceFinal }}
                             </h4></span>
                     </div>
                     <div class="col-md-auto my-auto btnBooking_area">
@@ -93,10 +122,10 @@
                     <div class="card-img-top" style="background-color:#DEEBEA">
                         <img src="{{ asset( $similarProduct->get_thumbnail->path) }}"
                             class="img-fluid"
-                            alt="{{ $similarProduct->name }}">
+                            alt="{{ $similarProduct->title }}">
                     </div>
                     <div class="card-body">
-                        <h5 class="text-center">{{ $similarProduct->name }}</h5>
+                        <h5 class="text-center">{{ $similarProduct->title }}</h5>
                         <ul class="list-fleet-specs">
                             <?php foreach ($similarProduct->productDetails as $detail): ?>
                                                 <li>
@@ -108,16 +137,33 @@
                                             <?php endforeach; ?>
                         </ul>
                         <hr>
+
+                        @php
+                        $similarProductprice= $similarProduct->price;
+                        $similarProductselling_price= $similarProduct->selling_price;
+                        if ($extraHours > 0) {
+                            if ($extraHours >= 1 && $extraHours <= 5) {
+
+                                $extraCharge = ($product->selling_price * ($extraHours * 10)) / 100;
+                            } elseif ($extraHours >= 6 && $extraHours <= 24) {
+
+                                $extraCharge = $similarProduct->selling_price * 1;
+                            }
+                        }
+                        $similarProductprice =$similarProductprice + $extraCharge;
+                        $similarProductselling_price =$similarProductselling_price + $extraCharge;
+                        @endphp
+
                         <div class="row">
                             <div class="col-md">
                                 <span class="text-muted fw-bold d-block">From</span>
                                 <span class="text-muted fw-bold">RM
                                     <h4 class="d-inline-block">
-                                        <del>{{ number_format($similarProduct->price, 2) }}</del>
+                                        <del>{{ number_format($similarProductprice, 2) }}</del>
                                     </h4>
                                 </span><br>
                                 <span class="text-danger fw-bold">RM
-                                    <h4 class="d-inline-block">{{ number_format($similarProduct->selling_price, 2) }}</h4>
+                                    <h4 class="d-inline-block">{{ number_format($similarProductselling_price, 2) }}</h4>
                                 </span>
                             </div>
                             <div class="col-md-auto my-auto btnBooking_area">
