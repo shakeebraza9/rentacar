@@ -150,8 +150,8 @@
                     $session_extra_amount = 0; // Default
 
                     if ($global_d['season_enable'] == 1) {
-                        $sessionFrom = Carbon::parse($global_d['season_from_date']);
-                        $sessionTo = Carbon::parse($global_d['season_to_date']);
+                        $sessionFrom = Carbon::parse($global_d['season_end_date']);
+                        $sessionTo = Carbon::parse($global_d['season_start_date']);
 
                         // Check if booking date falls within the season
                         if ($from->between($sessionFrom, $sessionTo)) {
