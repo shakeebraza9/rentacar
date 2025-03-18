@@ -111,18 +111,7 @@
                     $productprice = $booking->selling_price ?? 0;
                     $bookingPrice = $booking->price ?? 0;
                     $rental =$productprice ?? 0;
-                    if($discountPercent <= 0){
-                        $discountAmount = $productprice * $bookingPrice; // This is your existing calc
 
-                        // Now percentage difference between $productPrice and $bookingPrice
-                        $difference = abs($productprice - $bookingPrice);
-                        $average = ($productprice + $bookingPrice) / 2;
-
-                        $discountAmount = ($difference / $average) * 100;
-                    }else{
-
-                        $discountAmount = ($productprice * $discountPercent) / 100;
-                    }
 
                     $from = Carbon::parse($from ?? now());
                     $today = Carbon::parse($today ?? now());
@@ -176,7 +165,7 @@
 
                     $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
                     if ($discountPercent > 0) {
-                        $total = max(0, $total - $discountAmount);
+                        $total = max(0, $total - $discountPercent);
                     }
 
                     $extraHourCharge = 0;
@@ -289,10 +278,13 @@
                                     <td>Add-ons</td>
                                     <td class="text-end"><span id="addon-price">0.00</span></td>
                                 </tr>
+                                @if($discountPercent > 0)
                                 <tr>
+
                                     <td>Discount</td>
-                                    <td class="text-end"><span id="addon-price">-{{ number_format($discountAmount, 2) }}</span></td>
+                                    <td class="text-end"><span id="addon-price">-{{ number_format($discountPercent, 2) }}</span></td>
                                 </tr>
+                                @endif
                                 {{--  <tr>
                                     <td>Total Without Discount,Extra Hour (0),Add-ons</td>
                                     <td class="text-end">{{ number_format($totalBeforeDiscount, 2) }} </td>
@@ -883,10 +875,13 @@
                                                             <td>Add-ons</td>
                                                             <td class="text-end">{{ number_format($addons, 2) }}</td>
                                                         </tr>
+                                                        @if($discountPercent > 0)
+
                                                         <tr class="text-end">
                                                             <td>Discount </td>
-                                                            <td class="fw-bold">-{{ number_format($discountAmount, 2) }}</td>
+                                                            <td class="fw-bold">-{{ number_format($discountPercent, 2) }}</td>
                                                         </tr>
+                                                        @endif
                                                         <tr class="text-end fw-bold">
                                                             <td>Total Amount</td>
                                                             <td class="text-primary">
