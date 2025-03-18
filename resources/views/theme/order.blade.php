@@ -306,7 +306,7 @@
                 </div>
 
                 <div class="col-md-7 mt-4 mt-md-0">
-                    <h3 class="text-primary" id="headingfrom">Add-ons</h3>
+                    <h3 class="text-primary" id="headingfrom" >Add-ons</h3>
                     <form method="post" action="{{ route('cusmoter.checkout')}}" id="checkoutForm">
                         @csrf
                         <div id="step1" class="stepfrom">
@@ -474,15 +474,15 @@
                                             <div class="mb-3">
                                                 <label for="country" class="form-label">Country of Origin</label>
                                                 <select class="form-select" name="country" required id="country">
+                                                    <option value="" selected>{!! "Select your country" !!}</option>
                                                     @php
-                                                    $allCountry = explode(',', getset('country')); // Split by comma
-                                                @endphp
-
-                                                @foreach($allCountry as $country)
-                                                    <option value="{{ trim($country) }}">{{ trim($country) }}</option>
-                                                @endforeach
-
+                                                        $allCountry = explode(',', getset('country')); // Split by comma
+                                                    @endphp
+                                                    @foreach($allCountry as $country)
+                                                        <option value="{{ trim($country) }}">{{ trim($country) }}</option>
+                                                    @endforeach
                                                 </select>
+
                                                 <div class="invalid-feedback">Please select a country.</div>
                                             </div>
                                         </div>
@@ -593,10 +593,13 @@
                                             <option value="1">Facebook</option>
                                             <option value="3">Google Search</option>
                                             <option value="4">Friends And Family</option>
-                                            <option value="5">LangkawiBook Customer</option>
+                                            <option value="5">Regular Customer</option>
                                             <option value="6">Google Maps</option>
                                             <option value="7">Blog &amp; Article</option>
+                                            <option value="8">Event</option>
+                                            <option value="9">Broker / Agent</option>
                                         </select>
+
                                         <div class="invalid-feedback">Please select an option.</div>
                                     </div>
 
@@ -875,7 +878,7 @@
                                                             <td>Add-ons</td>
                                                             <td class="text-end">{{ number_format($addons, 2) }}</td>
                                                         </tr>
-                                                        @if($discountPercent > 0)
+                                                        @if($discountPercent > 0    )
 
                                                         <tr class="text-end">
                                                             <td>Discount </td>
@@ -1030,6 +1033,7 @@ function showStep(step) {
     if (step === 2) {
         $('#rentalamount-sidebar').show();
         document.getElementById('rentalamount-heading').style.display = 'block';
+        document.getElementById('headingfrom').style.display = "none";
     }
 
     // Hide all step content sections
@@ -1065,11 +1069,7 @@ function showStep(step) {
     });
 
 
-    const currentStepIndex = step ;
-    const currentCaptionEl = document.querySelectorAll('.wizard-indicator li .caption')[currentStepIndex];
-    if (currentCaptionEl) {
-        document.getElementById('headingfrom').textContent = currentCaptionEl.textContent.trim();
-    }
+
 }
 
 

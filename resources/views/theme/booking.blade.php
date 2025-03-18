@@ -197,12 +197,14 @@
         let returnLocation = document.getElementById("input_return").value;
         let pickupDate = document.getElementById("pickup_date").value;
         let returnDate = document.getElementById("return_date").value;
+        let cartpeinput = document.getElementById("cartpeinput").value;
 
 
         let formData = {
             pickup_location: pickupLocation,
             return_location: returnLocation,
             pickup_date: pickupDate,
+            type: cartpeinput,
             pickup_time: convertTime("start-time"),
             return_date: returnDate,
             return_time: convertTime("end-time")

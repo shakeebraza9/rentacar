@@ -31,7 +31,7 @@ class BookingController extends Controller
 
             $product = Product::where('slug', $slug)->firstOrFail();
 
-            // Check if the product is already booked in the selected range
+
             $isBooked = Order::where('pro_id', $product->id)
                 ->where(function ($query) use ($today, $from) {
                     $query->whereDate('from_date', '<=', $from)
@@ -39,7 +39,7 @@ class BookingController extends Controller
                 })
                 ->exists();
 
-            // Fetch similar products that are NOT booked within the date range
+
             $similarProducts = Product::where('subcategory_id', $product->subcategory_id)
                 ->where('id', '!=', $product->id)
                 ->whereDoesntHave('orders', function ($query) use ($today, $from) {
@@ -67,6 +67,7 @@ class BookingController extends Controller
             $returnDate = $decodedData['return_date'] ?? null;
             $pickup_time = $decodedData['pickup_time'] ?? null;
             $return_time = $decodedData['return_time'] ?? null;
+            $type = $decodedData['type'] ?? null;
 
             $pickupDateTime = Carbon::now()->format('Y-m-d H:i:s'); // Default now
             $returnDateTime = Carbon::now()->addDay()->format('Y-m-d H:i:s'); // Default next day
@@ -92,7 +93,9 @@ class BookingController extends Controller
                           ->whereRaw('DATE(orders.to_date) >= ?', [date('Y-m-d', strtotime($pickupDateTime))]);
                     });
             });
-
+            if (!empty($type)) {
+                $productsQuery->where('type', $type);
+            }
 
             $numberOfRecords = $productsQuery->count();
 

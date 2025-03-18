@@ -213,6 +213,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="cartpeinput" name="cartpeinput" value="{{ $product->type }}">
     <div class="col-md-auto">
         <button class="btn btn-primary h-100 w-100 px-3"><i
                 class="fa fa-search"></i></button>
