@@ -183,8 +183,8 @@
                         if ($extraHours > 0) {
                             if ($extraHours >= 1 && $extraHours <= 5) {
                                 // Per hour charge: 10% * hours
-                               // $extraHourCharge = ($total * ($extraHours * $extra_hour)) / 100;
-                               $extraHourCharge = ($total * $extra_hour) / 100;
+                               $extraHourCharge = ($total * ($extraHours * $extra_hour)) / 100;
+                               //$extraHourCharge = ($total * $extra_hour) / 100;
                             } else {
                                 // Calculate total rental days (base 1 day + extra blocks)
                                 $extraFullDays = ceil($extraHours / 24);
