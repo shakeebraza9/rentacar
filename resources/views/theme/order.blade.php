@@ -100,11 +100,111 @@
                     @endphp
 
 
+                    @php
+
+
+                    $extra_hour = $global_d['extra_hour'] ?? 0;
+                    $pickup_fee = $global_d['pickup_fee'] ?? 0;
+                    $return_fee = $global_d['return_fee'] ?? 0;
+                    $addons = $global_d['add-ons'] ?? 0;
+                    $discountPercent = $global_d['discount'] ?? 0;
+                    $productprice = $booking->selling_price ?? 0;
+                    $bookingPrice = $booking->price ?? 0;
+                    $rental =$productprice ?? 0;
+                    if($discountPercent <= 0){
+                        $discountAmount = $productprice * $bookingPrice; // This is your existing calc
+
+                        // Now percentage difference between $productPrice and $bookingPrice
+                        $difference = abs($productprice - $bookingPrice);
+                        $average = ($productprice + $bookingPrice) / 2;
+
+                        $discountAmount = ($difference / $average) * 100;
+                    }else{
+
+                        $discountAmount = ($productprice * $discountPercent) / 100;
+                    }
+
+                    $from = Carbon::parse($from ?? now());
+                    $today = Carbon::parse($today ?? now());
+
+
+
+
+
+
+
+                    $totalHours = $today->diffInHours($from);
+                    $extraHours = max(0, $totalHours - 24);
+                    $extraHourCharge = 0;
+
+
+
+
+
+
+
+
+
+
+
+                    $session_extra_amount = 0;
+
+                    if ($global_d['season_enable'] == 1) {
+                        $sessionFrom = Carbon::parse($global_d['season_start_date']);
+                        $sessionTo = Carbon::parse($global_d['season_end_date']);
+
+                        // Swap if season dates are in wrong order
+                        if ($sessionFrom->gt($sessionTo)) {
+                            [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom];
+                        }
+
+                        // Check if booking range overlaps with season range
+                        $bookingStartsInSeason = $from->between($sessionFrom, $sessionTo);
+                        $bookingEndsInSeason = $today->between($sessionFrom, $sessionTo);
+
+                        // Check if booking starts before season but ends after it starts
+                        $bookingCrossesSeason = $from->lt($sessionFrom) && $today->gt($sessionFrom);
+
+                        if ($bookingStartsInSeason || $bookingEndsInSeason || $bookingCrossesSeason) {
+                            $carType = getCarTypeBySlug($booking->type);
+                            $session_extra_amount = $carType->amount ?? 0;
+                            $rental += $session_extra_amount;
+                        }
+                    }
+
+
+
+                    $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
+                    if($discountPercent > 0){
+                        $total = max(0, $total - $discountAmount);
+                    }
+
+                    if ($extra_hour > 0) {
+                        if ($extraHours > 0) {
+                            if ($extraHours >= 1 && $extraHours <= 5) {
+                                // Per hour charge: 10% * hours
+                               // $extraHourCharge = ($total * ($extraHours * $extra_hour)) / 100;
+                               $extraHourCharge = ($total * $extra_hour) / 100;
+                            } else {
+                                // Calculate total rental days (base 1 day + extra blocks)
+                                $extraFullDays = ceil($extraHours / 24);
+                                $extraHourCharge = $total * $extraFullDays;
+                                $rental = $rental + $extraHourCharge;
+                            }
+                        }
+                    } else {
+                        $extraHourCharge = 0;
+                    }
+
+                    $total = $total + $extraHourCharge;
+                @endphp
+
+
                     <div class="card"  >
                         <div class="card-body">
                             <h5 class="text-primary">Rental Amount</h5>
                             <h3 class="d-inline-block">
-                                RM <b>{{ number_format($booking->selling_price, 2) }}</b>
+                                RM <b>{{ number_format($total , 2) }}</b>
                             </h3>
                             <i> for {{ $bookingDuration  }}</i>
                             <hr>
@@ -136,103 +236,7 @@
 
 
 
-                                    @php
 
-
-                                    $extra_hour = $global_d['extra_hour'] ?? 0;
-                                    $pickup_fee = $global_d['pickup_fee'] ?? 0;
-                                    $return_fee = $global_d['return_fee'] ?? 0;
-                                    $addons = $global_d['add-ons'] ?? 0;
-                                    $discountPercent = $global_d['discount'] ?? 0;
-                                    $productprice = $booking->selling_price ?? 0;
-                                    $bookingPrice = $booking->price ?? 0;
-                                    $rental =$productprice ?? 0;
-                                    if($discountPercent <= 0){
-                                        $discountAmount = $productprice * $bookingPrice; // This is your existing calc
-
-                                        // Now percentage difference between $productPrice and $bookingPrice
-                                        $difference = abs($productprice - $bookingPrice);
-                                        $average = ($productprice + $bookingPrice) / 2;
-
-                                        $discountAmount = ($difference / $average) * 100;
-                                    }else{
-
-                                        $discountAmount = ($productprice * $discountPercent) / 100;
-                                    }
-
-                                    $from = Carbon::parse($from ?? now());
-                                    $today = Carbon::parse($today ?? now());
-
-
-
-
-
-
-
-                                    $totalHours = $today->diffInHours($from);
-                                    $extraHours = max(0, $totalHours - 24);
-                                    $extraHourCharge = 0;
-
-
-
-
-
-
-
-
-
-
-
-                                    $session_extra_amount = 0;
-
-                                    if ($global_d['season_enable'] == 1) {
-                                        $sessionFrom = Carbon::parse($global_d['season_start_date']);
-                                        $sessionTo = Carbon::parse($global_d['season_end_date']);
-
-                                        // Swap if season dates are in wrong order
-                                        if ($sessionFrom->gt($sessionTo)) {
-                                            [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom];
-                                        }
-
-                                        // Check if booking range overlaps with season range
-                                        $bookingStartsInSeason = $from->between($sessionFrom, $sessionTo);
-                                        $bookingEndsInSeason = $today->between($sessionFrom, $sessionTo);
-
-                                        // Check if booking starts before season but ends after it starts
-                                        $bookingCrossesSeason = $from->lt($sessionFrom) && $today->gt($sessionFrom);
-
-                                        if ($bookingStartsInSeason || $bookingEndsInSeason || $bookingCrossesSeason) {
-                                            $carType = getCarTypeBySlug($booking->type);
-                                            $session_extra_amount = $carType->amount ?? 0;
-                                            $rental += $session_extra_amount;
-                                        }
-                                    }
-
-
-
-                                    $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
-                                    if($discountPercent > 0){
-                                        $total = max(0, $total - $discountAmount);
-                                    }
-
-                                    if ($extra_hour > 0) {
-                                        if ($extraHours > 0) {
-                                            if ($extraHours >= 1 && $extraHours <= 5) {
-                                                // Per hour charge: 10% * hours
-                                               // $extraHourCharge = ($total * ($extraHours * $extra_hour)) / 100;
-                                               $extraHourCharge = ($total * $extra_hour) / 100;
-                                            } else {
-                                                // Calculate total rental days (base 1 day + extra blocks)
-                                                $extraFullDays = ceil($extraHours / 24);
-                                                $extraHourCharge = $total * $extraFullDays;
-                                            }
-                                        }
-                                    } else {
-                                        $extraHourCharge = 0;
-                                    }
-
-                                    $total = $total + $extraHourCharge;
-                                @endphp
 
 
                                 <tr>
@@ -240,8 +244,13 @@
                                     <td class="text-end">{{ number_format($rental, 2) }}</td>
                                 </tr>
                                 <tr>
+                                    @if ($extraHours > 0 && $extraHours < 6)
                                     <td>Extra Hour ({{ $extraHours ?? 0 }})</td>
                                     <td class="text-end" style="color:#690C0B;">{{ number_format($extraHourCharge, 2) }} </td>
+                                    @elseif ($extraHours >= 6)
+                                    <td>Extra Hour (0)</td>
+                                    <td class="text-end" style="color:#690C0B;"> 0 </td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <td>Pickup Fee</td>
