@@ -117,7 +117,7 @@
                                     </h4>
                                 </span><br>
                                 <span class="text-danger fw-bold">RM
-                                    <h4 class="d-inline-block">{{ number_format($similarProduct->discounted_price, 2) }}</h4>
+                                    <h4 class="d-inline-block">{{ number_format($similarProduct->selling_price, 2) }}</h4>
                                 </span>
                             </div>
                             <div class="col-md-auto my-auto btnBooking_area">

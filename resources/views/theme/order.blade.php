@@ -147,19 +147,24 @@
 
 
 
-                    $session_extra_amount = 0; // Default
+                    $session_extra_amount = 0;
 
                     if ($global_d['season_enable'] == 1) {
-                        $sessionFrom = Carbon::parse($global_d['season_end_date']);
-                        $sessionTo = Carbon::parse($global_d['season_start_date']);
+                        $sessionFrom = Carbon::parse($global_d['season_start_date']);
+                        $sessionTo = Carbon::parse($global_d['season_end_date']);
 
-                        // Check if booking date falls within the season
+                        if ($sessionFrom->gt($sessionTo)) {
+                            [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom]; // Swap
+                        }
+
                         if ($from->between($sessionFrom, $sessionTo)) {
                             $carType = getCarTypeBySlug($booking->type);
                             $session_extra_amount = $carType->amount ?? 0;
-                            $rental = $rental + $session_extra_amount;
+                            $rental += $session_extra_amount;
                         }
                     }
+
+
 
                     $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
                     if($discountPercent > 0){
