@@ -189,11 +189,12 @@
                         $dayCharge = $total * ($fullDays - 1);
                         $extraHourCharge += $dayCharge;
 
-
+                        if(isset($remainingHours)){
                         if ($remainingHours >= 1 && $remainingHours <= 5) {
                             $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
                             $extraHourCharge += $hourlyCharge;
                         }
+                    }
                     }
 
                     $total += $extraHourCharge;
@@ -217,7 +218,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <h5 class="text-primary">Rental Location</h5>
-                                    {{ $booking->pickup_location }}
+                                    {{ request("pickup_location") }}
                                     <div class="text-muted">{{ date('h:i A, d M Y', strtotime($today)) }}</div>
                                 </div>
                                 <div class="col-md-2 my-auto">
@@ -225,7 +226,7 @@
                                 </div>
                                 <div class="col-md-5">
                                     <h5 class="text-primary">Drop-off Location</h5>
-                                    {{ $booking->dropoff_location }}
+                                    {{ request("return_location") }}
                                     <div class="text-muted">{{ date('h:i A, d M Y', strtotime($from)) }}</div>
                                 </div>
                             </div>
@@ -249,10 +250,10 @@
                                     <td class="text-end">{{ number_format($rental, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    @if ($remainingHours >= 1 && $remainingHours <= 5)
+                                    @if (isset($remainingHours) && $remainingHours >= 1 && $remainingHours <= 5)
                                     <td>Extra Hour ({{ $remainingHours ?? 0 }})</td>
                                     <td class="text-end" style="color:#690C0B;">{{ number_format($hourlyCharge, 2) }} </td>
-                                    @elseif ($extraHours >= 6)
+                                    @else
                                     <td>Extra Hour (0)</td>
                                     <td class="text-end" style="color:#690C0B;"> 0 </td>
                                     @endif
