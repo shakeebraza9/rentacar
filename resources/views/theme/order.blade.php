@@ -188,15 +188,20 @@
 
                         $dayCharge = $total * ($fullDays - 1);
                         $extraHourCharge += $dayCharge;
-                        $rental += $extraHourCharge;
+                        //$rental += $extraHourCharge;
+
+
                         if(isset($remainingHours)){
                         if ($remainingHours >= 1 && $remainingHours <= 5) {
                             $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
                             $extraHourCharge += $hourlyCharge;
                         }
+
                         if($remainingHours > 5){
-                            $dayCharge = $total * ($fullDays - 1);
+
+                        $dayCharge = $total * ($fullDays - 1);
                         $extraHourCharge += $dayCharge;
+                        $rental += $extraHourCharge;
                         }
                     }
                     }
