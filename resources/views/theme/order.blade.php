@@ -194,6 +194,10 @@
                             $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
                             $extraHourCharge += $hourlyCharge;
                         }
+                        if($remainingHours >= 5){
+                            $dayCharge = $total * ($fullDays - 1);
+                        $extraHourCharge += $dayCharge;
+                        }
                     }
                     }
 
