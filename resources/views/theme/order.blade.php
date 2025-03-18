@@ -188,7 +188,7 @@
 
                         $dayCharge = $total * ($fullDays - 1);
                         $extraHourCharge += $dayCharge;
-
+                        $rental += $extraHourCharge;
                         if(isset($remainingHours)){
                         if ($remainingHours >= 1 && $remainingHours <= 5) {
                             $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
@@ -198,7 +198,7 @@
                     }
 
                     $total += $extraHourCharge;
-                    $rental += $extraHourCharge;
+
 
 
 
@@ -210,7 +210,7 @@
                         <div class="card-body">
                             <h5 class="text-primary">Rental Amount</h5>
                             <h3 class="d-inline-block">
-                                RM <b>{{ number_format($total , 2) }}</b>
+                                RM <b>{{ number_format($rental , 2) }}</b>
                             </h3>
                             <i> for {{ $bookingDuration  }}</i>
                             <hr>
