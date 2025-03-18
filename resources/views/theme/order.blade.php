@@ -175,28 +175,33 @@
 
 
                     $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
-                    if($discountPercent > 0){
+                    if ($discountPercent > 0) {
                         $total = max(0, $total - $discountAmount);
                     }
 
-                    if ($extra_hour > 0) {
-                        if ($extraHours > 0) {
-                            if ($extraHours >= 1 && $extraHours <= 5) {
-                                // Per hour charge: 10% * hours
-                               $extraHourCharge = ($total * ($extraHours * $extra_hour)) / 100;
-                               //$extraHourCharge = ($total * $extra_hour) / 100;
-                            } else {
-                                // Calculate total rental days (base 1 day + extra blocks)
-                                $extraFullDays = ceil($extraHours / 24);
-                                $extraHourCharge = $total * $extraFullDays;
-                                $rental = $rental + $extraHourCharge;
-                            }
+                    $extraHourCharge = 0;
+
+                    if ($extra_hour > 0 && $totalHours > 24) {
+                        $fullDays = floor($totalHours / 24);
+                        $remainingHours = $totalHours % 24;
+
+
+                        $dayCharge = $total * ($fullDays - 1);
+                        $extraHourCharge += $dayCharge;
+
+
+                        if ($remainingHours >= 1 && $remainingHours <= 5) {
+                            $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
+                            $extraHourCharge += $hourlyCharge;
                         }
-                    } else {
-                        $extraHourCharge = 0;
                     }
 
-                    $total = $total + $extraHourCharge;
+                    $total += $extraHourCharge;
+                    $rental += $extraHourCharge;
+
+
+
+
                 @endphp
 
 
@@ -244,9 +249,9 @@
                                     <td class="text-end">{{ number_format($rental, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    @if ($extraHours > 0 && $extraHours < 6)
-                                    <td>Extra Hour ({{ $extraHours ?? 0 }})</td>
-                                    <td class="text-end" style="color:#690C0B;">{{ number_format($extraHourCharge, 2) }} </td>
+                                    @if ($remainingHours >= 1 && $remainingHours <= 5)
+                                    <td>Extra Hour ({{ $remainingHours ?? 0 }})</td>
+                                    <td class="text-end" style="color:#690C0B;">{{ number_format($hourlyCharge, 2) }} </td>
                                     @elseif ($extraHours >= 6)
                                     <td>Extra Hour (0)</td>
                                     <td class="text-end" style="color:#690C0B;"> 0 </td>
