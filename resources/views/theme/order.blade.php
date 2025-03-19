@@ -147,34 +147,13 @@
 
 
 
-                    $session_extra_amount = 0;
-
-                    if ($global_d['season_enable'] == 1) {
-                    $sessionFrom = Carbon::parse($global_d['season_start_date']);
-                    $sessionTo = Carbon::parse($global_d['season_end_date']);
-
-                    // Swap if season dates are in wrong order
-                    if ($sessionFrom->gt($sessionTo)) {
-                    [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom];
-                    }
-
-                    // Check if booking range overlaps with season range
-                    $bookingStartsInSeason = $from->between($sessionFrom, $sessionTo);
-                    $bookingEndsInSeason = $today->between($sessionFrom, $sessionTo);
-
-                    // Check if booking starts before season but ends after it starts
-                    $bookingCrossesSeason = $from->lt($sessionFrom) && $today->gt($sessionFrom);
-
-                    if ($bookingStartsInSeason || $bookingEndsInSeason || $bookingCrossesSeason) {
-                    $carType = getCarTypeBySlug($booking->type);
-                    $session_extra_amount = $carType->amount ?? 0;
-                    $rental += $session_extra_amount;
-                    }
-                    }
 
 
 
-                    $total = $pickup_fee + $return_fee + $addons + $productprice +$session_extra_amount ;
+
+
+
+                    $total = $pickup_fee + $return_fee + $addons + $productprice ;
                     if ($discountPercent > 0) {
                     $total = max(0, $total - $discountPercent);
                     }
@@ -185,23 +164,44 @@
                         $fullDays = floor($totalHours / 24);
                         $remainingHours = $totalHours % 24;
 
-                        $extraHourCharge += $total * ($fullDays - 1);  // Charge for extra full days
+                        $extraHourCharge += $total * ($fullDays - 1);
 
                         if ($remainingHours >= 1 && $remainingHours <= 5) {
-                            // 10% per hour
+
                             $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
                             $extraHourCharge += $hourlyCharge;
                         } elseif ($remainingHours > 5) {
-                            // Add one more full day charge for >5 hours
+
                             $extraHourCharge += $total;
                         }
                     }
 
                     $rental += $extraHourCharge;
 
+                    $total += $extraHourCharge;
 
-                        $total += $extraHourCharge;
 
+                    $session_extra_amount = 0;
+
+                    if (getset('season_enable') == 1) {
+                        $seasonStart = Carbon::parse($global_d['season_start_date']);
+                        $seasonEnd = Carbon::parse($global_d['season_end_date']);
+
+                        // Swap dates if season start > end
+                        if ($seasonStart->gt($seasonEnd)) {
+                            [$seasonStart, $seasonEnd] = [$seasonEnd, $seasonStart];
+                        }
+
+                        // Check if booking (today → from) overlaps with season (seasonStart → seasonEnd)
+                        if ($today <= $seasonEnd && $from >= $seasonStart) {
+                            $carType = getCarTypeBySlug($booking->type);
+                            $session_extra_amount = $carType->amount ?? 0;
+
+                        }
+                    }
+
+                    $rental += $session_extra_amount;
+                    $total += $session_extra_amount;
 
 
 
