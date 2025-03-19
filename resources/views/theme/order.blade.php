@@ -182,24 +182,23 @@
                     $extraHourCharge = 0;
 
                     if ($extra_hour > 0 && $totalHours > 24) {
-                    $fullDays = floor($totalHours / 24);
-                    $remainingHours = $totalHours % 24;
+                        $fullDays = floor($totalHours / 24);
+                        $remainingHours = $totalHours % 24;
 
+                        $extraHourCharge += $total * ($fullDays - 1);  // Charge for extra full days
 
-                    $dayCharge = $total * ($fullDays - 1);
-                    $extraHourCharge += $dayCharge;
-
-
-                    if(isset($remainingHours)){
-                    if ($remainingHours >= 1 && $remainingHours <= 5) { $hourlyCharge=($total * ($remainingHours * $extra_hour)) / 100; $extraHourCharge +=$hourlyCharge; } if($remainingHours> 5){
-
-                        $dayCharge = $total * ($fullDays - 1);
-                        $extraHourCharge += $dayCharge;
-
+                        if ($remainingHours >= 1 && $remainingHours <= 5) {
+                            // 10% per hour
+                            $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
+                            $extraHourCharge += $hourlyCharge;
+                        } elseif ($remainingHours > 5) {
+                            // Add one more full day charge for >5 hours
+                            $extraHourCharge += $total;
                         }
-                        }
-                        $rental += $extraHourCharge;
-                        }
+                    }
+
+                    $rental += $extraHourCharge;
+
 
                         $total += $extraHourCharge;
 
@@ -696,7 +695,7 @@
                                                     <input class="form-control phone" type="tel" id="phone" name="driver_mobile_number" placeholder="e.g. +92 123 456789" />
                                                     <div class="invalid-feedback">Please provide a valid phone number.</div>
                                                     <!-- <input class="form-control" type="text" name="driver_mobile_number" placeholder="e.g. +92 123 456789" id="get-driver-mobile-number" disabled>
-                                                  
+
                                                     <div class="invalid-feedback">Please provide a valid mobile number.
                                                     </div> -->
                                                 </div>

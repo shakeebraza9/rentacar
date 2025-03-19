@@ -75,21 +75,19 @@ $extra_hour = $global_d['extra_hour'] ?? 0;
                                 $fullDays = floor($totalHours / 24);
                                 $remainingHours = $totalHours % 24;
 
-
-                                $dayCharge = $sellingPrice * ($fullDays - 1);
-                                $extraCharge += $dayCharge;
+                                $extraCharge = $sellingPrice * ($fullDays - 1); // Base day included, extra days charged
 
                                 if ($remainingHours >= 1 && $remainingHours <= 5) {
                                     $hourlyCharge = ($sellingPrice * ($remainingHours * $extra_hour)) / 100;
                                     $extraCharge += $hourlyCharge;
-                                }
-                                if($remainingHours > 5){
-                                    $dayCharge = $sellingPrice * ($fullDays - 1);
-                                    $extraCharge += $dayCharge;
+                                } elseif ($remainingHours > 5) {
+                                    $extraCharge += $sellingPrice; // Add one more day charge
                                 }
                             }
-                            $sellingPrice =$sellingPrice  + $extraCharge;
-                            $price =$price + $extraCharge;
+
+                            $sellingPrice += $extraCharge;
+                            $price += $extraCharge;
+
                             @endphp
                                 <del>{{  $price }}</del></h4></span><br>
                         <span class="text-danger fw-bold">RM <h4 class="d-inline-block">{{ $sellingPrice }}
@@ -154,25 +152,25 @@ $extra_hour = $global_d['extra_hour'] ?? 0;
                         $similarProductBasePrice = $similarProduct->price;
                         $similarProductSellingPrice = $similarProduct->selling_price;
                         $extraCharge = 0;
+                        $extraCharge = 0;
 
                         if ($totalHours > 24) {
                             $fullDays = floor($totalHours / 24);
                             $remainingHours = $totalHours % 24;
 
-                            // Full day charges (base 1 day included)
-                            $dayCharge = $similarProductSellingPrice * ($fullDays - 1);
-                            $extraCharge = $dayCharge;
+                            // Base full day charges (excluding first day)
+                            $extraCharge += $similarProductSellingPrice * ($fullDays - 1);
 
-                            // Extra per hour charge (1–5 hrs only)
                             if ($remainingHours >= 1 && $remainingHours <= 5) {
+                                // 10% per hour for 1–5 hrs
                                 $hourlyCharge = ($similarProductSellingPrice * ($remainingHours * $extra_hour)) / 100;
                                 $extraCharge += $hourlyCharge;
-                            }
-                            if($remainingHours > 5){
-                                $dayCharge = $similarProductSellingPrice * ($fullDays - 1);
-                                $extraCharge = $dayCharge;
+                            } elseif ($remainingHours > 5) {
+                                // Add 1 extra day charge for >5 hrs
+                                $extraCharge += $similarProductSellingPrice;
                             }
                         }
+
 
                         // Final calculated prices
                         $similarProductFinalPrice = $similarProductBasePrice + $extraCharge;
