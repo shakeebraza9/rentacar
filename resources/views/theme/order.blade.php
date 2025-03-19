@@ -1,7 +1,7 @@
 @extends('theme.layout')
 
 @php
-    //dd($users);
+//dd($users);
 @endphp
 
 @section('metatags')
@@ -17,7 +17,6 @@
 
         justify-content: center;
     }
-
 </style>
 
 @endsection
@@ -51,18 +50,17 @@
             <div class="row gx-5">
                 <div class="col-md-5">
                     <div class="card mb-4">
-                        <img src="{{ asset($booking->get_thumbnail->path) }}" class="card-img-top img-fluid"
-                            alt="{{ $booking->slug }}">
+                        <img src="{{ asset($booking->get_thumbnail->path) }}" class="card-img-top img-fluid" alt="{{ $booking->slug }}">
                         <div class="card-body">
                             <ul class="list-fleet-specs">
-                                <?php foreach ($booking->productDetails as $detail): ?>
-                                <li>
-                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="<?= htmlspecialchars(ucwords(str_replace('_', ' ', htmlspecialchars($detail->key_title))) ) ?>" class="icon">
-                                        <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}" class="img-fluid" alt="">
-                                    </span>
-                                    <?= htmlspecialchars($detail->value) ?>
-                                </li>
-                            <?php endforeach; ?>
+                                <?php foreach ($booking->productDetails as $detail) : ?>
+                                    <li>
+                                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="<?= htmlspecialchars(ucwords(str_replace('_', ' ', htmlspecialchars($detail->key_title)))) ?>" class="icon">
+                                            <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}" class="img-fluid" alt="">
+                                        </span>
+                                        <?= htmlspecialchars($detail->value) ?>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                     </div>
@@ -82,19 +80,19 @@
                     $bookingDuration = '';
 
                     if ($durationDays > 0) {
-                        $bookingDuration .= $durationDays . ' day' . ($durationDays > 1 ? 's' : '');
+                    $bookingDuration .= $durationDays . ' day' . ($durationDays > 1 ? 's' : '');
                     }
                     if ($durationHours > 0) {
-                        if ($bookingDuration !== '') {
-                            $bookingDuration .= ' ';
-                        }
-                        $bookingDuration .= $durationHours . ' hour' . ($durationHours > 1 ? 's' : '');
+                    if ($bookingDuration !== '') {
+                    $bookingDuration .= ' ';
+                    }
+                    $bookingDuration .= $durationHours . ' hour' . ($durationHours > 1 ? 's' : '');
                     }
                     if ($durationMinutes > 0) {
-                        if ($bookingDuration !== '') {
-                            $bookingDuration .= ' ';
-                        }
-                        $bookingDuration .= $durationMinutes . ' min' . ($durationMinutes > 1 ? 's' : '');
+                    if ($bookingDuration !== '') {
+                    $bookingDuration .= ' ';
+                    }
+                    $bookingDuration .= $durationMinutes . ' min' . ($durationMinutes > 1 ? 's' : '');
                     }
 
                     @endphp
@@ -139,102 +137,97 @@
                     $session_extra_amount = 0;
 
                     if ($global_d['season_enable'] == 1) {
-                        $sessionFrom = Carbon::parse($global_d['season_start_date']);
-                        $sessionTo = Carbon::parse($global_d['season_end_date']);
+                    $sessionFrom = Carbon::parse($global_d['season_start_date']);
+                    $sessionTo = Carbon::parse($global_d['season_end_date']);
 
-                        // Swap if season dates are in wrong order
-                        if ($sessionFrom->gt($sessionTo)) {
-                            [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom];
-                        }
+                    // Swap if season dates are in wrong order
+                    if ($sessionFrom->gt($sessionTo)) {
+                    [$sessionFrom, $sessionTo] = [$sessionTo, $sessionFrom];
+                    }
 
-                        // Check if booking range overlaps with season range
-                        $bookingStartsInSeason = $from->between($sessionFrom, $sessionTo);
-                        $bookingEndsInSeason = $today->between($sessionFrom, $sessionTo);
+                    // Check if booking range overlaps with season range
+                    $bookingStartsInSeason = $from->between($sessionFrom, $sessionTo);
+                    $bookingEndsInSeason = $today->between($sessionFrom, $sessionTo);
 
-                        // Check if booking starts before season but ends after it starts
-                        $bookingCrossesSeason = $from->lt($sessionFrom) && $today->gt($sessionFrom);
+                    // Check if booking starts before season but ends after it starts
+                    $bookingCrossesSeason = $from->lt($sessionFrom) && $today->gt($sessionFrom);
 
-                        if ($bookingStartsInSeason || $bookingEndsInSeason || $bookingCrossesSeason) {
-                            $carType = getCarTypeBySlug($booking->type);
-                            $session_extra_amount = $carType->amount ?? 0;
-                            $rental += $session_extra_amount;
-                        }
+                    if ($bookingStartsInSeason || $bookingEndsInSeason || $bookingCrossesSeason) {
+                    $carType = getCarTypeBySlug($booking->type);
+                    $session_extra_amount = $carType->amount ?? 0;
+                    $rental += $session_extra_amount;
+                    }
                     }
 
 
 
-                    $total = $pickup_fee + $return_fee + $addons + $productprice   +$session_extra_amount ;
+                    $total = $pickup_fee + $return_fee + $addons + $productprice +$session_extra_amount ;
                     if ($discountPercent > 0) {
-                        $total = max(0, $total - $discountPercent);
+                    $total = max(0, $total - $discountPercent);
                     }
 
                     $extraHourCharge = 0;
 
                     if ($extra_hour > 0 && $totalHours > 24) {
-                        $fullDays = floor($totalHours / 24);
-                        $remainingHours = $totalHours % 24;
+                    $fullDays = floor($totalHours / 24);
+                    $remainingHours = $totalHours % 24;
 
 
-                        $dayCharge = $total * ($fullDays - 1);
-                        $extraHourCharge += $dayCharge;
+                    $dayCharge = $total * ($fullDays - 1);
+                    $extraHourCharge += $dayCharge;
 
 
-                        if(isset($remainingHours)){
-                        if ($remainingHours >= 1 && $remainingHours <= 5) {
-                            $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
-                            $extraHourCharge += $hourlyCharge;
-                        }
-
-                        if($remainingHours > 5){
+                    if(isset($remainingHours)){
+                    if ($remainingHours >= 1 && $remainingHours <= 5) { $hourlyCharge=($total * ($remainingHours * $extra_hour)) / 100; $extraHourCharge +=$hourlyCharge; } if($remainingHours> 5){
 
                         $dayCharge = $total * ($fullDays - 1);
                         $extraHourCharge += $dayCharge;
 
                         }
-                    }
-                    $rental += $extraHourCharge;
-                    }
+                        }
+                        $rental += $extraHourCharge;
+                        }
 
-                    $total += $extraHourCharge;
-
-
+                        $total += $extraHourCharge;
 
 
 
-                @endphp
 
 
-                    <div class="card"  >
-                        <div class="card-body">
-                            <h5 class="text-primary">Rental Amount</h5>
-                            <h3 class="d-inline-block">
-                                RM <b>{{ number_format($rental , 2) }}</b>
-                            </h3>
-                            <i> for {{ $bookingDuration  }}</i>
-                            <hr>
+                        @endphp
 
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <h5 class="text-primary">Rental Location</h5>
-                                    {{ request("pickup_location") }}
-                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($today)) }}</div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="text-primary">Rental Amount</h5>
+                                <h3 class="d-inline-block">
+                                    RM <b>{{ number_format($rental , 2) }}</b>
+                                </h3>
+                                <i> for {{ $bookingDuration  }}</i>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h5 class="text-primary">Rental Location</h5>
+                                        {{ request("pickup_location") }}
+                                        <div class="text-muted">{{ date('h:i A, d M Y', strtotime($today)) }}</div>
+                                    </div>
+                                    <div class="col-md-2 my-auto">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5 class="text-primary">Drop-off Location</h5>
+                                        {{ request("return_location") }}
+                                        <div class="text-muted">{{ date('h:i A, d M Y', strtotime($from)) }}</div>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 my-auto">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                                <div class="col-md-5">
-                                    <h5 class="text-primary">Drop-off Location</h5>
-                                    {{ request("return_location") }}
-                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($from)) }}</div>
-                                </div>
-                            </div>
 
-                            <hr>
+                                <hr>
 
-                            <h5 class="text-primary" id="rentalamount-heading">Summary of Charges</h5>
+                                <h5 class="text-primary" id="rentalamount-heading">Summary of Charges</h5>
 
-                            <table class="table" id="rentalamount-sidebar" >
-                                <tbody>
+                                <table class="table" id="rentalamount-sidebar">
+                                    <tbody>
 
 
 
@@ -243,74 +236,73 @@
 
 
 
-                                <tr>
-                                    <td>Rental </td>
-                                    <td class="text-end">{{ number_format($rental, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    @if (isset($remainingHours) && $remainingHours >= 1 && $remainingHours <= 5)
-                                    <td>Extra Hour ({{ $remainingHours ?? 0 }})</td>
-                                    <td class="text-end" style="color:#690C0B;">{{ number_format($hourlyCharge, 2) }} </td>
-                                    @else
-                                    <td>Extra Hour (0)</td>
-                                    <td class="text-end" style="color:#690C0B;"> 0 </td>
-                                    @endif
-                                </tr>
-                                <tr>
-                                    <td>Pickup Fee</td>
-                                    <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
-                                </tr>
+                                        <tr>
+                                            <td>Rental </td>
+                                            <td class="text-end">{{ number_format($rental, 2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            @if (isset($remainingHours) && $remainingHours >= 1 && $remainingHours <= 5) <td>Extra Hour ({{ $remainingHours ?? 0 }})</td>
+                                                <td class="text-end" style="color:#690C0B;">{{ number_format($hourlyCharge, 2) }} </td>
+                                                @else
+                                                <td>Extra Hour (0)</td>
+                                                <td class="text-end" style="color:#690C0B;"> 0 </td>
+                                                @endif
+                                        </tr>
+                                        <tr>
+                                            <td>Pickup Fee</td>
+                                            <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
+                                        </tr>
 
-                                {{--  @if($global_d['session_enable'] == 1)  --}}
+                                        {{-- @if($global_d['session_enable'] == 1)  --}}
 
 
-                                {{--  <tr>
+                                        {{-- <tr>
                                     <td>{{ $global_d['session_name'] }} - Charges</td>
-                                    <td class="text-end">{{ number_format($session_extra_amount, 2) }}</td>
-                                </tr>  --}}
+                                        <td class="text-end">{{ number_format($session_extra_amount, 2) }}</td>
+                                        </tr> --}}
 
-                                {{--  @endif  --}}
-                                <tr>
-                                    <td>Return Fee</td>
-                                    <td class="text-end">{{ number_format($return_fee, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Add-ons</td>
-                                    <td class="text-end"><span id="addon-price">0.00</span></td>
-                                </tr>
-                                @if($discountPercent > 0)
-                                <tr>
+                                        {{-- @endif  --}}
+                                        <tr>
+                                            <td>Return Fee</td>
+                                            <td class="text-end">{{ number_format($return_fee, 2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Add-ons</td>
+                                            <td class="text-end"><span id="addon-price">0.00</span></td>
+                                        </tr>
+                                        @if($discountPercent > 0)
+                                        <tr>
 
-                                    <td>Discount</td>
-                                    <td class="text-end"><span id="addon-price">-{{ number_format($discountPercent, 2) }}</span></td>
-                                </tr>
-                                @endif
-                                {{--  <tr>
+                                            <td>Discount</td>
+                                            <td class="text-end"><span id="addon-price">-{{ number_format($discountPercent, 2) }}</span></td>
+                                        </tr>
+                                        @endif
+                                        {{-- <tr>
                                     <td>Total Without Discount,Extra Hour (0),Add-ons</td>
                                     <td class="text-end">{{ number_format($totalBeforeDiscount, 2) }} </td>
-                                </tr>  --}}
+                                        </tr> --}}
 
-                                <tr class="text-end fw-bold">
-                                    <td>Total Amount</td>
-                                    <td class="text-primary">
-                                        RM <span id="total-amount" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
-                                    </td>
-                                </tr>
+                                        <tr class="text-end fw-bold">
+                                            <td>Total Amount</td>
+                                            <td class="text-primary">
+                                                RM <span id="total-amount" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
+                                            </td>
+                                        </tr>
 
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
                 </div>
 
                 <div class="col-md-7 mt-4 mt-md-0">
-                    <h3 class="text-primary" id="headingfrom" >Add-ons</h3>
+                    <h3 class="text-primary" id="headingfrom">Add-ons</h3>
                     <form method="post" action="{{ route('cusmoter.checkout')}}" id="checkoutForm">
                         @csrf
                         <div id="step1" class="stepfrom">
-                            {{--  <h3>Step 1: Select Add-ons</h3>  --}}
+                            {{-- <h3>Step 1: Select Add-ons</h3>  --}}
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -331,8 +323,7 @@
                                         <td>
                                             20.00 </td>
                                         <td class="col-md-2">
-                                            <select name="addons[1]" id="1" class="form-control input_price_selector"
-                                                data-price="20.00">
+                                            <select name="addons[1]" id="1" class="form-control input_price_selector" data-price="20.00">
                                                 <option value="0">0</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -356,8 +347,7 @@
                                         <td>
                                             20.00 </td>
                                         <td class="col-md-2">
-                                            <select name="addons[2]" id="2" class="form-control input_price_selector"
-                                                data-price="20.00">
+                                            <select name="addons[2]" id="2" class="form-control input_price_selector" data-price="20.00">
                                                 <option value="0">0</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -376,8 +366,7 @@
                                         <td>
                                             30.00 </td>
                                         <td class="col-md-2">
-                                            <select name="addons[39]" id="39" class="form-control input_price_selector"
-                                                data-price="30.00">
+                                            <select name="addons[39]" id="39" class="form-control input_price_selector" data-price="30.00">
                                                 <option value="0">0</option>
                                                 <option value="1">1</option>
                                             </select>
@@ -393,8 +382,7 @@
                                         <td>
                                             20.00 </td>
                                         <td class="col-md-2">
-                                            <select name="addons[41]" id="41" class="form-control input_price_selector"
-                                                data-price="20.00">
+                                            <select name="addons[41]" id="41" class="form-control input_price_selector" data-price="20.00">
                                                 <option value="0">0</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -413,8 +401,8 @@
                         </div>
                         <input type="hidden" name="selected_addons" id="selected-addons">
                         <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
-                        {{--  <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}">  --}}
-                        {{--  <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}">  --}}
+                        {{-- <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}"> --}}
+                        {{-- <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}"> --}}
                         <input type="hidden" name="depositeamount" value="{{ $price }}">
 
                         <div id="step2" class="stepfrom d-none">
@@ -425,8 +413,7 @@
                                     <!-- Name -->
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input class="form-control" type="text" name="name" required
-                                            placeholder="Full Name as ID / Passport" id="name">
+                                        <input class="form-control" type="text" name="name" required placeholder="Full Name as ID / Passport" id="name">
                                         <input type="hidden" name="today" value="{{ $today }}">
                                         <input type="hidden" name="from" value="{{ $from }}">
                                         <div class="invalid-feedback">Please provide a valid name.</div>
@@ -438,15 +425,14 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Email</label>
-                                                <input class="form-control" type="email" name="email" required
-                                                    placeholder="e.g. john_doe@mail.com" id="email">
+                                                <input class="form-control" type="email" name="email" required placeholder="e.g. john_doe@mail.com" id="email">
                                                 <div class="invalid-feedback">Please provide a valid email.</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="phone-number" class="form-label">Phone Number</label>
-                                                {{--  <div class="input-group" style="display: flex; align-items: center;">
+                                                {{-- <div class="input-group" style="display: flex; align-items: center;">
                                                     <select class="form-select" name="country_code" id="country-code"
                                                         required style="width: auto; min-width: 100px; flex-shrink: 0;">
                                                         <option value="+1">+1 (USA)</option>
@@ -476,10 +462,10 @@
                                                 <select class="form-select" name="country" required id="country">
                                                     <option value="" selected>{!! "Select your country" !!}</option>
                                                     @php
-                                                        $allCountry = explode(',', getset('country')); // Split by comma
+                                                    $allCountry = explode(',', getset('country')); // Split by comma
                                                     @endphp
                                                     @foreach($allCountry as $country)
-                                                        <option value="{{ trim($country) }}">{{ trim($country) }}</option>
+                                                    <option value="{{ trim($country) }}">{{ trim($country) }}</option>
                                                     @endforeach
                                                 </select>
 
@@ -493,8 +479,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="user-passport" class="form-label">ID/Passport Number</label>
-                                                <input class="form-control" type="text" name="user_passport" required
-                                                    placeholder="e.g. 543210987654" id="user-passport">
+                                                <input class="form-control" type="text" name="user_passport" required placeholder="e.g. 543210987654" id="user-passport">
                                                 <div class="invalid-feedback">Please provide a valid ID/Passport number.
                                                 </div>
                                             </div>
@@ -502,8 +487,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="user-license" class="form-label">License Number</label>
-                                                <input class="form-control" type="text" name="user_license"
-                                                    placeholder="e.g. 543210987654" id="user-license">
+                                                <input class="form-control" type="text" name="user_license" placeholder="e.g. 543210987654" id="user-license">
                                                 <div class="invalid-feedback">Please provide a valid license number.
                                                 </div>
                                             </div>
@@ -573,8 +557,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="gender" class="form-label">Gender <span
-                                                        class="text-muted small fst-italic">(Optional)</span></label>
+                                                <label for="gender" class="form-label">Gender <span class="text-muted small fst-italic">(Optional)</span></label>
                                                 <select class="form-select" name="gender" id="gender">
                                                     <option value="">Select Gender</option>
                                                     <option value="M">Male</option>
@@ -606,8 +589,7 @@
                                     <!-- Invoice Section -->
                                     <div class="mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="invoice" value="1"
-                                                id="invoice">
+                                            <input class="form-check-input" type="checkbox" name="invoice" value="1" id="invoice">
                                             <label for="invoice" class="form-check-label">I want to invoice this rental
                                                 using different information.</label>
                                         </div>
@@ -617,12 +599,15 @@
                                     <div id="invoice-area" class="" style="display:none;">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="mb-3"><label for="invoice-name">Name</label><input class=" form-control " type="text" name="invoice_name" placeholder="e.g. John Doe" id="invoice-name" aria-required="true"><span class="help-block text-muted"> </span><div class="invalid-feedback"></div></div>                            </div>
+                                                <div class="mb-3"><label for="invoice-name">Name</label><input class=" form-control " type="text" name="invoice_name" placeholder="e.g. John Doe" id="invoice-name" aria-required="true"><span class="help-block text-muted"> </span>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="phone-number" class="form-label">Phone Number</label>
                                                     <div class="input-group" style="display: flex; align-items: center;">
-                                                        {{--  <select class="form-select" name="country_code" id="country-code"  style="width: auto; min-width: 100px; flex-shrink: 0;">
+                                                        {{-- <select class="form-select" name="country_code" id="country-code"  style="width: auto; min-width: 100px; flex-shrink: 0;">
                                                             <option value="+1">+1 (USA)</option>
                                                             <option value="+44">+44 (UK)</option>
                                                             <option value="+60">+60 (Malaysia)</option>
@@ -632,23 +617,23 @@
                                                         </select>
                                                         <input class="form-control" type="tel" name="phone_number2"  placeholder="e.g. 1234567890" id="phone-number" style="flex-grow: 1; max-width: 250px;">
                                                           --}}
-                                                          <input class="form-control phone" type="tel" id="phone2" name="phone_number2" />
-                                                          <div class="invalid-feedback">Please provide a valid phone number.</div>
+                                                        <input class="form-control phone" type="tel" id="phone2" name="phone_number2" />
+                                                        <div class="invalid-feedback">Please provide a valid phone number.</div>
 
                                                     </div>
                                                     <div class="invalid-feedback">Please provide a valid phone number.</div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-3"><label for="invoice-address">Invoice Address</label><textarea class="form-control " type="" name="invoice_address" placeholder="e.g. Taman Bukit Katil Baiduri, Ayer Keroh, Melaka" id="invoice-address" aria-required="true" rows="5"></textarea><span class="help"> </span></div>                    </div>
+                                        <div class="mb-3"><label for="invoice-address">Invoice Address</label><textarea class="form-control " type="" name="invoice_address" placeholder="e.g. Taman Bukit Katil Baiduri, Ayer Keroh, Melaka" id="invoice-address" aria-required="true" rows="5"></textarea><span class="help"> </span></div>
+                                    </div>
 
                                     <hr>
 
                                     <!-- Other Driver Section -->
                                     <div class="mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="other_driver"
-                                                value="1" id="other-driver">
+                                            <input class="form-check-input" type="checkbox" name="other_driver" value="1" id="other-driver">
                                             <label for="other-driver" class="form-check-label">I am not a driver for
                                                 this vehicle. I am making this reservation for someone else.</label>
                                         </div>
@@ -658,8 +643,7 @@
                                     <div id="area_driver" class="d-none">
                                         <div class="mb-3">
                                             <label for="driver-name" class="form-label">Driver Name</label>
-                                            <input class="form-control" type="text" name="driver_name"
-                                                placeholder="e.g. John Doe" id="driver-name" disabled>
+                                            <input class="form-control" type="text" name="driver_name" placeholder="e.g. John Doe" id="driver-name" disabled>
                                             <div class="invalid-feedback">Please provide a valid name.</div>
                                         </div>
                                         <div class="row">
@@ -667,8 +651,7 @@
                                                 <div class="mb-3">
                                                     <label for="driver-ic-number" class="form-label">Driver ID/Passport
                                                         Number</label>
-                                                    <input class="form-control" type="number" name="driver_ic_number"
-                                                        placeholder="e.g. 543210987654" id="driver-ic-number" disabled>
+                                                    <input class="form-control" type="number" name="driver_ic_number" placeholder="e.g. 543210987654" id="driver-ic-number" disabled>
                                                     <div class="invalid-feedback">Please provide a valid ID/Passport
                                                         number.</div>
                                                 </div>
@@ -677,9 +660,7 @@
                                                 <div class="mb-3">
                                                     <label for="driver-license-number" class="form-label">Driver License
                                                         Number</label>
-                                                    <input class="form-control" type="number"
-                                                        name="driver_license_number" placeholder="e.g. 543210987654"
-                                                        id="driver-license-number" disabled>
+                                                    <input class="form-control" type="number" name="driver_license_number" placeholder="e.g. 543210987654" id="driver-license-number" disabled>
                                                     <div class="invalid-feedback">Please provide a valid license number.
                                                     </div>
                                                 </div>
@@ -689,8 +670,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="driver-age" class="form-label">Driver Age</label>
-                                                    <select class="form-select" name="driver_age" id="driver-age"
-                                                        disabled>
+                                                    <select class="form-select" name="driver_age" id="driver-age" disabled>
                                                         <option value="">Select Driver Age</option>
                                                         <!-- Add age options here -->
                                                     </select>
@@ -699,13 +679,13 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="get-driver-mobile-number" class="form-label">Driver
-                                                        Mobile Number</label>
-                                                    <input class="form-control" type="text" name="driver_mobile_number"
-                                                        placeholder="e.g. +92 123 456789" id="get-driver-mobile-number"
-                                                        disabled>
+                                                    <label for="get-driver-mobile-number" class="form-label">Driver Mobile Number</label>
+                                                    <input class="form-control phone" type="tel" id="phone" name="driver_mobile_number" placeholder="e.g. +92 123 456789" />
+                                                    <div class="invalid-feedback">Please provide a valid phone number.</div>
+                                                    <!-- <input class="form-control" type="text" name="driver_mobile_number" placeholder="e.g. +92 123 456789" id="get-driver-mobile-number" disabled>
+                                                  
                                                     <div class="invalid-feedback">Please provide a valid mobile number.
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -716,15 +696,13 @@
                                         <span class="help-block text-muted">
                                         </span>
                                         <div class="invalid-feedback">
-                                            </div>
                                         </div>
+                                    </div>
 
                                     <!-- Note -->
                                     <div class="mb-3">
                                         <label for="note" class="form-label">Note</label>
-                                        <textarea class="form-control" name="note"
-                                            placeholder="e.g. I will reach 30 minutes earlier." id="note"
-                                            rows="5"></textarea>
+                                        <textarea class="form-control" name="note" placeholder="e.g. I will reach 30 minutes earlier." id="note" rows="5"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -766,7 +744,8 @@
                                             </div>
                                             <div class="col-md-6 mt-4 mt-md-0">
                                                 <h6>Driver Mobile Number</h6>
-                                                <div class="border-bottom pb-2" id="summary-driver-phone">---</div>
+                                                <div class="border-bottom pb-2" id="summary-driver-phone"></div>
+
                                             </div>
                                         </div>
                                         <div class="row mb-4">
@@ -800,108 +779,106 @@
                                 </div>
 
 
-                                    <div class="card mb-4" style="display: true">
-                                        <div class="card-header">
-                                            <h4 class="text-primary">Promo Code</h4>
+                                <div class="card mb-4" style="display: true">
+                                    <div class="card-header">
+                                        <h4 class="text-primary">Promo Code</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <div class="mb-3"><label for="promo_code">Enter Code</label><input class=" form-control " type="text" name="code" id="promo_code"><span class="help-block text-muted"> </span>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-auto" style="padding-top:20px;">
+                                                <button class="btn btn-primary" id="apply">
+                                                    Apply </button>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h4 class="text-primary">Total Amount</h4>
+                                    </div>
+                                    <div class="card">
                                         <div class="card-body">
+                                            <h5 class="text-primary">Rental Amount</h5>
+                                            <h3 class="d-inline-block">
+                                                RM <b>{{ number_format($booking->selling_price, 2) }}</b>
+                                            </h3>
+                                            <i> for {{ $booking->duration }}</i>
+                                            <hr>
+
                                             <div class="row">
-                                                <div class="col-md">
-                                                    <div class="mb-3"><label for="promo_code">Enter Code</label><input
-                                                            class=" form-control " type="text" name="code"
-                                                            id="promo_code"><span class="help-block text-muted"> </span>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
+                                                <div class="col-md-5">
+                                                    <h5 class="text-primary">Rental Location</h5>
+                                                    {{ request('pickup_location') ?? $booking->pickup_location }}
+
+                                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->pickup_time)) }}</div>
                                                 </div>
-                                                <div class="col-md-auto" style="padding-top:20px;">
-                                                    <button class="btn btn-primary" id="apply">
-                                                        Apply </button>
+                                                <div class="col-md-2 my-auto">
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <h5 class="text-primary">Drop-off Location</h5>
+                                                    {{ request('return_location') ??  $booking->dropoff_location }}
+                                                    <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->dropoff_time)) }}</div>
                                                 </div>
                                             </div>
+
+                                            <hr>
+
+                                            <h5 class="text-primary">Summary of Charges</h5>
+
+                                            <table class="table">
+                                                <tbody>
+
+
+                                                    <tr>
+                                                        <td>Rental</td>
+                                                        <td class="text-end">{{ number_format($rental, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Extra Hour ({{ $booking->extra_hours ?? 0 }})</td>
+                                                        <td class="text-end">{{ number_format($extra_hour, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pickup Fee</td>
+                                                        <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Return Fee</td>
+                                                        <td class="text-end">{{ number_format($return_fee, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Add-ons</td>
+                                                        <td class="text-end">{{ number_format($addons, 2) }}</td>
+                                                    </tr>
+                                                    @if($discountPercent > 0 )
+
+                                                    <tr class="text-end">
+                                                        <td>Discount </td>
+                                                        <td class="fw-bold">-{{ number_format($discountPercent, 2) }}</td>
+                                                    </tr>
+                                                    @endif
+                                                    <tr class="text-end fw-bold">
+                                                        <td>Total Amount</td>
+                                                        <td class="text-primary">
+                                                            RM <span id="total-amount2" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h4 class="text-primary">Total Amount</h4>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="text-primary">Rental Amount</h5>
-                                                <h3 class="d-inline-block">
-                                                    RM <b>{{ number_format($booking->selling_price, 2) }}</b>
-                                                </h3>
-                                                <i> for {{ $booking->duration }}</i>
-                                                <hr>
 
-                                                <div class="row">
-                                                    <div class="col-md-5">
-                                                        <h5 class="text-primary">Rental Location</h5>
-                                                        {{ request('pickup_location') ?? $booking->pickup_location }}
-
-                                                        <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->pickup_time)) }}</div>
-                                                    </div>
-                                                    <div class="col-md-2 my-auto">
-                                                        <i class="fas fa-arrow-right"></i>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <h5 class="text-primary">Drop-off Location</h5>
-                                                        {{ request('return_location') ??  $booking->dropoff_location }}
-                                                        <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->dropoff_time)) }}</div>
-                                                    </div>
-                                                </div>
-
-                                                <hr>
-
-                                                <h5 class="text-primary">Summary of Charges</h5>
-
-                                                <table class="table">
-                                                    <tbody>
+                                </div>
 
 
-                                                        <tr>
-                                                            <td>Rental</td>
-                                                            <td class="text-end">{{ number_format($rental, 2) }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Extra Hour ({{ $booking->extra_hours ?? 0 }})</td>
-                                                            <td class="text-end">{{ number_format($extra_hour, 2) }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pickup Fee</td>
-                                                            <td class="text-end">{{ number_format($pickup_fee, 2) }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Return Fee</td>
-                                                            <td class="text-end">{{ number_format($return_fee, 2) }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Add-ons</td>
-                                                            <td class="text-end">{{ number_format($addons, 2) }}</td>
-                                                        </tr>
-                                                        @if($discountPercent > 0    )
+                                <!-- initiate razer payment method selection -->
 
-                                                        <tr class="text-end">
-                                                            <td>Discount </td>
-                                                            <td class="fw-bold">-{{ number_format($discountPercent, 2) }}</td>
-                                                        </tr>
-                                                        @endif
-                                                        <tr class="text-end fw-bold">
-                                                            <td>Total Amount</td>
-                                                            <td class="text-primary">
-                                                                RM <span id="total-amount2" data-base-total="{{ $total }}">{{ number_format($total, 2) }}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- initiate razer payment method selection -->
-
-                                    <input type="hidden" id="paymentType" name="payment_type" value="full">
+                                <input type="hidden" id="paymentType" name="payment_type" value="full">
 
 
 
@@ -909,67 +886,66 @@
 
 
 
-                                {{--  <div class="row gx-md-8 mt-5">
+                                {{-- <div class="row gx-md-8 mt-5">
                                     <div class="col-md border-end">
                                         <div class="row align-items-center">
                                             <div class="col">
                                                 <div class="text-muted mb-2"><i class="fas fa-hand-holding-usd"></i>
                                                     Place Deposit</div>
                                                 <h2 class="text-primary">RM {{ $price }}</h2>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button class="btn btn-primary price-selector" data-value="0" value="0"
-                                                    id="btn_deposit">
-                                                    Place Deposit </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>  --}}
                             </div>
-
-                            <div class="container" style="max-width: 100%; margin: 0 auto;">
-                                <div class="row" style="background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                                    <div class="col-md-6" style="border-right: 1px solid #eee; padding-right: 20px;">
-                                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                            <i class="fas fa-money-bill-wave" style="color: #6c757d; margin-right: 10px;"></i>
-                                            <span style="color: #6c757d; font-size: 14px;">Place Deposit</span>
-                                        </div>
-                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ $price }}</div>
-                                        <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit"> Place Deposit </button>
-                                    </div>
-
-                                    <div class="col-md-6" style="padding-left: 20px;">
-                                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                            <i class="fas fa-credit-card" style="color: #6c757d; margin-right: 10px;"></i>
-                                            <span style="color: #6c757d; font-size: 14px;">Pay Full</span>
-                                        </div>
-                                        <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;" id="totalwithaddons">RM {{ number_format($total, 2) }}</div>
-                                        <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Full</button>
-                                    </div>
-                                </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit">
+                                    Place Deposit </button>
                             </div>
-                            <button type="button" class="btn btn-secondary" onclick="showStep(2)">Previous</button>
-                         {{--  <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>  --}}
-
-
                         </div>
-                    </form>
+                </div>
 
+            </div> --}}
+        </div>
+
+        <div class="container" style="max-width: 100%; margin: 0 auto;">
+            <div class="row" style="background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div class="col-md-6" style="border-right: 1px solid #eee; padding-right: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <i class="fas fa-money-bill-wave" style="color: #6c757d; margin-right: 10px;"></i>
+                        <span style="color: #6c757d; font-size: 14px;">Place Deposit</span>
+                    </div>
+                    <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ $price }}</div>
+                    <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit"> Place Deposit </button>
+                </div>
+
+                <div class="col-md-6" style="padding-left: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <i class="fas fa-credit-card" style="color: #6c757d; margin-right: 10px;"></i>
+                        <span style="color: #6c757d; font-size: 14px;">Pay Full</span>
+                    </div>
+                    <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;" id="totalwithaddons">RM {{ number_format($total, 2) }}</div>
+                    <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Full</button>
                 </div>
             </div>
         </div>
+        <button type="button" class="btn btn-secondary" onclick="showStep(2)">Previous</button>
+        {{-- <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>  --}}
+
+
+    </div>
+    </form>
+
+    </div>
+    </div>
+    </div>
     </div>
 </main>
 
 @endsection
 @section('js')
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const invoiceCheckbox = document.getElementById("invoice");
         const invoiceArea = document.getElementById("invoice-area");
 
-        invoiceCheckbox.addEventListener("change", function () {
+        invoiceCheckbox.addEventListener("change", function() {
             if (this.checked) {
                 invoiceArea.style.display = "block";
             } else {
@@ -977,11 +953,11 @@
             }
         });
     });
-    </script>
+</script>
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const inputs = document.querySelectorAll(".phone");
         if (window.intlTelInput) {
             inputs.forEach(function(input) {
@@ -996,95 +972,93 @@
             console.error("intlTelInput not loaded");
         }
     });
-
-
 </script>
 
 <script>
     function validateStep2() {
-    const step2 = document.getElementById('step2');
-    const inputs = step2.querySelectorAll('input[required], select[required], textarea[required]');
-    let isValid = true;
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.classList.add('is-invalid');
-            isValid = false;
-        } else {
-            input.classList.remove('is-invalid');
-        }
-    });
+        const step2 = document.getElementById('step2');
+        const inputs = step2.querySelectorAll('input[required], select[required], textarea[required]');
+        let isValid = true;
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
 
-    return isValid;
-}
-
-function showStep(step) {
-
-    if (step === 3) {
-        const isStep2Valid = validateStep2();
-        $('#rentalamount-sidebar').hide();
-        document.getElementById('rentalamount-heading').style.display = 'none';
-
-        if (!isStep2Valid) {
-            alert('Please fill out all required fields in Step 2.');
-            return;
-        }
+        return isValid;
     }
 
-    if (step === 2) {
-        $('#rentalamount-sidebar').show();
-        document.getElementById('rentalamount-heading').style.display = 'block';
-        document.getElementById('headingfrom').style.display = "none";
+    function showStep(step) {
+
+        if (step === 3) {
+            const isStep2Valid = validateStep2();
+            $('#rentalamount-sidebar').hide();
+            document.getElementById('rentalamount-heading').style.display = 'none';
+
+            if (!isStep2Valid) {
+                alert('Please fill out all required fields in Step 2.');
+                return;
+            }
+        }
+
+        if (step === 2) {
+            $('#rentalamount-sidebar').show();
+            document.getElementById('rentalamount-heading').style.display = 'block';
+            document.getElementById('headingfrom').style.display = "none";
+        }
+
+        // Hide all step content sections
+        document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
+        document.getElementById('step' + step).classList.remove('d-none');
+
+        // Update wizard steps indicator visuals
+        const firstStepEl = document.querySelector('.wizard-indicator li.sepfist');
+        const firstStepDiv = firstStepEl.querySelector('.step');
+        firstStepEl.classList.add('complete');
+        firstStepDiv.innerHTML = '<span class="fa fa-check"></span>';
+
+        const wizardSteps = document.querySelectorAll('.wizard-indicator li');
+
+        wizardSteps.forEach((stepLi, index) => {
+            if (index === 0) return;
+
+            const stepNumber = index + 1;
+            const stepDiv = stepLi.querySelector('.step');
+
+            if (stepNumber < step) {
+                stepLi.classList.remove('active');
+                stepLi.classList.add('complete');
+                stepDiv.innerHTML = '<span class="fa fa-check"></span>';
+            } else if (stepNumber === step) {
+                stepLi.classList.remove('active');
+                stepLi.classList.add('complete');
+                stepDiv.innerHTML = '<span class="fa fa-check"></span>';
+            } else {
+                stepLi.classList.remove('complete', 'active');
+                stepDiv.textContent = stepNumber;
+            }
+        });
+
+
+
     }
 
-    // Hide all step content sections
-    document.querySelectorAll('.stepfrom').forEach(stepDiv => stepDiv.classList.add('d-none'));
-    document.getElementById('step' + step).classList.remove('d-none');
-
-    // Update wizard steps indicator visuals
-    const firstStepEl = document.querySelector('.wizard-indicator li.sepfist');
-    const firstStepDiv = firstStepEl.querySelector('.step');
-    firstStepEl.classList.add('complete');
-    firstStepDiv.innerHTML = '<span class="fa fa-check"></span>';
-
-    const wizardSteps = document.querySelectorAll('.wizard-indicator li');
-
-    wizardSteps.forEach((stepLi, index) => {
-        if (index === 0) return;
-
-        const stepNumber = index + 1;
-        const stepDiv = stepLi.querySelector('.step');
-
-        if (stepNumber < step) {
-            stepLi.classList.remove('active');
-            stepLi.classList.add('complete');
-            stepDiv.innerHTML = '<span class="fa fa-check"></span>';
-        } else if (stepNumber === step) {
-            stepLi.classList.remove('active');
-            stepLi.classList.add('complete');
-            stepDiv.innerHTML = '<span class="fa fa-check"></span>';
-        } else {
-            stepLi.classList.remove('complete', 'active');
-            stepDiv.textContent = stepNumber;
-        }
-    });
-
-
-
-}
 
 
 
 
-
-showStep(1);
-
+    showStep(1);
 
 
-        function toggleSection(checkboxId, sectionId) {
+
+    function toggleSection(checkboxId, sectionId) {
         const checkbox = document.getElementById(checkboxId);
         const section = document.getElementById(sectionId);
 
-        checkbox.addEventListener("change", function () {
+        checkbox.addEventListener("change", function() {
             if (this.checked) {
                 section.classList.remove("d-none");
                 section.querySelectorAll("input, textarea, select").forEach(el => el.removeAttribute("disabled"));
@@ -1117,7 +1091,7 @@ showStep(1);
         document.getElementById("checkoutForm").submit();
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         function updateAddonTotal() {
             let addonsTotal = 0;
             let selectedAddons = [];
@@ -1169,21 +1143,19 @@ showStep(1);
 
         updateAddonTotal();
     });
-
-
 </script>
 
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         // Function to update summary fields
         function updateSummary() {
             document.getElementById("summary-name").textContent = document.getElementById("name").value || "---";
             document.getElementById("summary-email").textContent = document.getElementById("email").value || "---";
             document.getElementById("summary-country").textContent = document.getElementById("country").value || "---";
             document.getElementById("summary-phone").textContent =
-             (document.getElementById("phone").value || "---");
+                (document.getElementById("phone").value || "---");
 
             document.getElementById("summary-driver-name").textContent = document.getElementById("driver-name").value || "---";
             document.getElementById("summary-driver-phone").textContent = document.getElementById("get-driver-mobile-number").value || "---";
@@ -1201,11 +1173,13 @@ showStep(1);
         });
 
         // Also update summary when country code changes
-        {{--  document.getElementById("country-code").addEventListener("change", updateSummary);  --}}
+        {
+            {
+                --document.getElementById("country-code").addEventListener("change", updateSummary);
+                --
+            }
+        }
     });
-
-
-
-    </script>
+</script>
 
 @endsection

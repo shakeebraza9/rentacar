@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 @endphp
 
 @section('metatags')
-    <title>{{$global_d['site_title']}}</title>
+<title>{{$global_d['site_title']}}</title>
 @endsection
 
 @section('css')
@@ -40,30 +40,26 @@ Launch demo modal
                 <div class="modal-content">
                     <div class="modal-header border-0 pb-0">
                         <h4 class="modal-title" id="PromoModalLabel">Welcome!</h4>
-                        <button type="button" class="btn-close btn-promo-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-promo-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pb-4">
                         <div class="text-center">
                             <div id="PromoCaptions" class="carousel slide slider-promo" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#PromoCaptions" data-bs-slide-to="0"
-                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#PromoCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                                 </div>
                                 <div class="carousel-inner">
                                     @if (!empty(getset('popup_image')))
-                                        <div class="carousel-item active">
-                                            <img src="{{ asset(getset('popup_image')) }}" class="img-fluid" alt="">
-                                        </div>
+                                    <div class="carousel-item active">
+                                        <img src="{{ asset(getset('popup_image')) }}" class="img-fluid" alt="">
+                                    </div>
                                     @endif
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#PromoCaptions"
-                                    data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#PromoCaptions" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#PromoCaptions"
-                                    data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#PromoCaptions" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -93,57 +89,42 @@ Launch demo modal
                 </div>
 
                 <div>
-                    <link rel="stylesheet"
-                        href="../cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-                    <script
-                        src="../cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-                    <link href="../cdn.jsdelivr.net/npm/select2%404.1.0-rc.0/dist/css/select2.min.css"
-                        rel="stylesheet" />
+                    <link rel="stylesheet" href="../cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+                    <script src="../cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+                    <link href="../cdn.jsdelivr.net/npm/select2%404.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
                     <script src="../cdn.jsdelivr.net/npm/select2%404.1.0-rc.0/dist/js/select2.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
                     <div class="wrap-search-form">
                         <div class="search-form">
-                            <ul class="nav nav-tabs nav-justified pt-3 px-md-3 mb-2 mb-md-0" id="searchTab"
-                                role="tablist">
+                            <ul class="nav nav-tabs nav-justified pt-3 px-md-3 mb-2 mb-md-0" id="searchTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{ route('home') }}"><button class="nav-link btn active" id="car-rental-tab"
-                                            type="button" role="tab" aria-controls="car-rental"
-                                            aria-selected="false"><span class="icon-circle"><i
-                                                    class="fa fa-car"></i></span>
+                                    <a href="{{ route('home') }}"><button class="nav-link btn active" id="car-rental-tab" type="button" role="tab" aria-controls="car-rental" aria-selected="false"><span class="icon-circle"><i class="fa fa-car"></i></span>
                                             <div>Car Rental</div>
                                         </button></a>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{ route('attractions') }}"><button class="nav-link btn " id="experience-tab"
-                                            type="button" role="tab" aria-controls="experience"
-                                            aria-selected="false"><span class="icon-circle"><i
-                                                    class="fa fa-umbrella-beach"></i></span>
+                                    <a href="{{ route('attractions') }}"><button class="nav-link btn " id="experience-tab" type="button" role="tab" aria-controls="experience" aria-selected="false"><span class="icon-circle"><i class="fa fa-umbrella-beach"></i></span>
                                             <div>Attractions</div>
                                         </button></a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link btn disabled " id="hotel-tab" type="button" role="tab"
-                                        aria-controls="hotel" aria-selected="false">
+                                    <button class="nav-link btn disabled " id="hotel-tab" type="button" role="tab" aria-controls="hotel" aria-selected="false">
                                         <span class="icon-circle">
                                             <span class="soon">COMING SOON</span><i class="fa fa-hotel"></i></span>
                                         <div>Hotel</div>
                                     </button></a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link btn disabled" id="chauffeur-tab" data-bs-toggle="tab"
-                                        data-bs-target="#chauffeur" type="button" role="tab"
-                                        aria-controls="chauffeur" aria-selected="false"><span class="icon-circle">
-                                            <span class="soon">COMING SOON</span><i
-                                                class="fa fa-user-tie"></i></span>
+                                    <button class="nav-link btn disabled" id="chauffeur-tab" data-bs-toggle="tab" data-bs-target="#chauffeur" type="button" role="tab" aria-controls="chauffeur" aria-selected="false"><span class="icon-circle">
+                                            <span class="soon">COMING SOON</span><i class="fa fa-user-tie"></i></span>
                                         <div>Chauffeur</div>
                                     </button>
                                 </li>
                             </ul>
                             <div class="tab-content p-3" id="searchTabContent">
-                                <div class="tab-pane fade show active" id="car-rental" role="tabpanel"
-                                    aria-labelledby="car-rental-tab">
+                                <div class="tab-pane fade show active" id="car-rental" role="tabpanel" aria-labelledby="car-rental-tab">
 
                                     <form method="get" accept-charset="utf-8" id="bookingForm">
                                         <div class="row gx-1 gy-2 gy-md-0">
@@ -151,33 +132,26 @@ Launch demo modal
                                                 <div class="wrapper-location">
                                                     <div id="pickup_col">
                                                         <div class="input-group select2-floating position-relative">
-                                                            <span
-                                                                class="icon position-absolute top-50 start-0 translate-middle-y"><i
-                                                                style="font-size: 20px;
+                                                            <span class="icon position-absolute top-50 start-0 translate-middle-y"><i style="font-size: 20px;
                                                                 margin-left: 35px;" class="fa fa-map-marker-alt text-primary"></i></span>
                                                             <label class="small">Select Pickup Locations</label>
-                                                            <select class="form-control input-group border-0"
-                                                            name="custom_pickup_location" id="input_pickup"
-                                                            required>
-                                                        @foreach(explode(',', getset('location')) as $location)
-                                                            <option value="{{ trim($location) }}">{{ trim($location) }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                            <select class="form-control input-group border-0" name="custom_pickup_location" id="input_pickup" required>
+                                                                @foreach(explode(',', getset('location')) as $location)
+                                                                <option value="{{ trim($location) }}">{{ trim($location) }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="d-none mt-2 mt-md-0" id="return_col">
                                                         <div class="input-group select2-floating position-relative">
-                                                            <span style="font-size: 20px;margin-left: 16px;"
-                                                                class="icon position-absolute top-50 start-0 translate-middle-y"><i
-                                                                    class="fa fa-map-marker-alt text-primary"></i></span>
+                                                            <span style="font-size: 20px;margin-left: 16px;" class="icon position-absolute top-50 start-0 translate-middle-y"><i class="fa fa-map-marker-alt text-primary"></i></span>
                                                             <label class="small">Select Return</label>
-                                                            <select class="form-control input-group border-0"
-                                                            name="custom_pickup_location" id="input_return">
-                                                            <option value="" selected>Select return location</option>
-                                                        @foreach(explode(',', getset('location')) as $location)
-                                                            <option value="{{ trim($location) }}">{{ trim($location) }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                            <select class="form-control input-group border-0" name="custom_pickup_location" id="input_return">
+                                                                <option value="" selected>Select return location</option>
+                                                                @foreach(explode(',', getset('location')) as $location)
+                                                                <option value="{{ trim($location) }}">{{ trim($location) }}</option>
+                                                                @endforeach
+                                                            </select>
 
                                                         </div>
                                                     </div>
@@ -191,21 +165,16 @@ Launch demo modal
                                                 <div class="row gx-1 gy-2 gy-md-0 input-group-2-col">
                                                     <div class="col-6 col-md pe-md-0">
                                                         <div class="form-floating input-group">
-                                                            <span class="input-group-text"><i
-                                                                    class="far fa-calendar-alt text-primary"></i></span>
-                                                            <input type="text" name="start_date"
-                                                                class="form-control pe-0" placeholder="29 Apr 2021"
-                                                                id="pickup_date">
+                                                            <span class="input-group-text"><i class="far fa-calendar-alt text-primary"></i></span>
+                                                            <input type="text" name="start_date" class="form-control pe-0" placeholder="29 Apr 2021" id="pickup_date">
                                                             <label class="small">Pickup Date</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 col-md ps-md-0">
                                                         <div class="form-floating input-group">
-                                                            <span class="input-group-text"><i
-                                                                    class="far fa-clock text-primary"></i></span>
+                                                            <span class="input-group-text"><i class="far fa-clock text-primary"></i></span>
                                                             <!-- <input type="text" name="start_time" class="form-control pe-0" placeholder="10:00 AM" value="10:00 AM" id="pickup_time"> -->
-                                                            <select name="start_time" class="form-control pe-0"
-                                                                id="start-time">
+                                                            <select name="start_time" class="form-control pe-0" id="start-time">
                                                                 <option value="6:00 AM">6:00 AM</option>
                                                                 <option value="6:15 AM">6:15 AM</option>
                                                                 <option value="6:30 AM">6:30 AM</option>
@@ -281,21 +250,16 @@ Launch demo modal
                                                     </div>
                                                     <div class="col-6 col-md pe-md-0">
                                                         <div class="form-floating input-group">
-                                                            <span class="input-group-text"><i
-                                                                    class="far fa-calendar-alt text-primary"></i></span>
-                                                            <input type="text" name="end_date"
-                                                                class="form-control pe-0" placeholder="29 Apr 2021"
-                                                                id="return_date">
+                                                            <span class="input-group-text"><i class="far fa-calendar-alt text-primary"></i></span>
+                                                            <input type="text" name="end_date" class="form-control pe-0" placeholder="29 Apr 2021" id="return_date">
                                                             <label class="small">Return Date</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 col-md ps-md-0">
                                                         <div class="form-floating input-group">
-                                                            <span class="input-group-text"><i
-                                                                    class="far fa-clock text-primary"></i></span>
+                                                            <span class="input-group-text"><i class="far fa-clock text-primary"></i></span>
                                                             <!-- <input type="text" name="end_time" class="form-control pe-0" placeholder="10:00 AM" value="10:00 AM" id="return_time"> -->
-                                                            <select name="end_time" class="form-control pe-0"
-                                                                id="end-time">
+                                                            <select name="end_time" class="form-control pe-0" id="end-time">
                                                                 <option value="6:00 AM">6:00 AM</option>
                                                                 <option value="6:15 AM">6:15 AM</option>
                                                                 <option value="6:30 AM">6:30 AM</option>
@@ -372,14 +336,12 @@ Launch demo modal
                                                 </div>
                                             </div>
                                             <div class="col-md-auto">
-                                                <button class="btn btn-primary h-100 w-100 px-3"><i
-                                                        class="fa fa-search"></i></button>
+                                                <button class="btn btn-primary h-100 w-100 px-3"><i class="fa fa-search"></i></button>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-md-auto">
-                                                <input type="checkbox" name="use_different_return_location"
-                                                    id="diff_loc" value="1">
+                                                <input type="checkbox" name="use_different_return_location" id="diff_loc" value="1">
                                                 <label for="diff_loc">Return to another location</label>
                                             </div>
                                         </div>
@@ -440,33 +402,26 @@ Launch demo modal
                 <h2 class="text-center text-primary p-3">Our Vehicles</h2>
 
                 @php
-                    // Clean and normalize type before grouping
-                    $products = $products->map(function ($product) {
-                        $product->type = strtolower(trim($product->type)); // Normalize type
-                        return $product;
-                    });
+                // Clean and normalize type before grouping
+                $products = $products->map(function ($product) {
+                $product->type = strtolower(trim($product->type)); // Normalize type
+                return $product;
+                });
 
-                    $vehicleTypes = $products->groupBy('type'); // Group by cleaned type
+                $vehicleTypes = $products->groupBy('type'); // Group by cleaned type
                 @endphp
 
                 <!-- Tab Navigation -->
                 <ul class="nav nav-tabs" id="vehicleTabs" role="tablist">
                     @foreach($vehicleTypes as $type => $vehicles)
-                        @php
-                            $typeSlug = Str::slug($type);
-                        @endphp
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link @if ($loop->first) active @endif"
-                                    id="tab-{{ $typeSlug }}"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#content-{{ $typeSlug }}"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="content-{{ $typeSlug }}"
-                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                {{ Str::title(str_replace('_', ' ', $type)) }}
-                            </button>
-                        </li>
+                    @php
+                    $typeSlug = Str::slug($type);
+                    @endphp
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @if ($loop->first) active @endif" id="tab-{{ $typeSlug }}" data-bs-toggle="tab" data-bs-target="#content-{{ $typeSlug }}" type="button" role="tab" aria-controls="content-{{ $typeSlug }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                            {{ Str::title(str_replace('_', ' ', $type)) }}
+                        </button>
+                    </li>
                     @endforeach
                 </ul>
             </div>
@@ -474,151 +429,136 @@ Launch demo modal
 
         <div class="tab-content" id="vehicleTabContent">
             @foreach($vehicleTypes as $type => $vehicles)
-                @php
-                    $typeSlug = Str::slug($type);
-                @endphp
-                <div class="tab-pane fade @if ($loop->first) show active @endif mb-5"
-                     id="content-{{ $typeSlug }}"
-                     role="tabpanel"
-                     aria-labelledby="tab-{{ $typeSlug }}">
-                    <div class="container mt-3">
-                        <div class="row gy-4">
-                            @foreach($vehicles as $product)
-                                <div class="col-md-3">
-                                    <div class="card">
-                                        @if(!empty($product->discount_text))
-                                        <div class="label-fleet-deals text-uppercase">
-                                            {{ htmlspecialchars($product->discount_text) }}
-                                        </div>
-                                        @endif
+            @php
+            $typeSlug = Str::slug($type);
+            @endphp
+            <div class="tab-pane fade @if ($loop->first) show active @endif mb-5" id="content-{{ $typeSlug }}" role="tabpanel" aria-labelledby="tab-{{ $typeSlug }}">
+                <div class="container mt-3">
+                    <div class="row gy-4">
+                        @foreach($vehicles as $product)
+                        <div class="col-md-3">
+                            <div class="card">
+                                @if(!empty($product->discount_text))
+                                <div class="label-fleet-deals text-uppercase">
+                                    {{ htmlspecialchars($product->discount_text) }}
+                                </div>
+                                @endif
 
-                                        <div class="card-img-top" style="background-color:#DEEBEA">
-                                            @if($product->get_thumbnail)
-                                                <img src="{{ asset($product->get_thumbnail->path) }}"
-                                                     alt="{{ htmlspecialchars($product->title) }}"
-                                                     class="img-fluid">
-                                            @endif
+                                <div class="card-img-top" style="background-color:#DEEBEA">
+                                    @if($product->get_thumbnail)
+                                    <img src="{{ asset($product->get_thumbnail->path) }}" alt="{{ htmlspecialchars($product->title) }}" class="img-fluid">
+                                    @endif
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="text-center">{{ htmlspecialchars($product->title) }}</h5>
+                                    <ul class="list-fleet-specs">
+                                        @foreach ($product->productDetails as $detail)
+                                        <li>
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ htmlspecialchars(ucwords(str_replace('_', ' ', $detail->key_title))) }}" class="icon">
+                                                <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}" class="img-fluid" alt="">
+                                            </span>
+                                            {{ htmlspecialchars($detail->value) }}
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <span class="text-muted fw-bold d-block">From</span>
+                                            <span class="text-muted fw-bold">RM
+                                                <h4 class="d-inline-block">
+                                                    <del>{{ number_format($product->price, 2) }}</del>
+                                                </h4>
+                                            </span><br>
+                                            <span class="text-danger fw-bold">RM
+                                                <h4 class="d-inline-block">{{ number_format($product->selling_price, 2) }}</h4>
+                                            </span>
                                         </div>
-                                        <div class="card-body">
-                                            <h5 class="text-center">{{ htmlspecialchars($product->title) }}</h5>
-                                            <ul class="list-fleet-specs">
-                                                @foreach ($product->productDetails as $detail)
-                                                    <li>
-                                                        <span data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              title="{{ htmlspecialchars(ucwords(str_replace('_', ' ', $detail->key_title))) }}"
-                                                              class="icon">
-                                                            <img src="{{ asset('theme/asset/img/icon/' . $detail->key_title . '.svg') }}"
-                                                                 class="img-fluid" alt="">
-                                                        </span>
-                                                        {{ htmlspecialchars($detail->value) }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                            <hr>
+                                        <div class="col-md-auto my-auto btnBooking_area">
+                                            <div class="fw-bold text-danger text-end">
+                                                @if(!empty($product->discount_text))
+                                                {{ $product->stock }} unit left!
+                                                @endif
+                                            </div>
                                             <div class="row">
-                                                <div class="col-md">
-                                                    <span class="text-muted fw-bold d-block">From</span>
-                                                    <span class="text-muted fw-bold">RM
-                                                        <h4 class="d-inline-block">
-                                                            <del>{{ number_format($product->price, 2) }}</del>
-                                                        </h4>
-                                                    </span><br>
-                                                    <span class="text-danger fw-bold">RM
-                                                        <h4 class="d-inline-block">{{ number_format($product->selling_price, 2) }}</h4>
-                                                    </span>
-                                                </div>
-                                                <div class="col-md-auto my-auto btnBooking_area">
-                                                    <div class="fw-bold text-danger text-end">
-                                                        @if(!empty($product->discount_text))
-                                                        {{ $product->stock }} unit left!
-                                                        @endif
-                                                    </div>
-                                                    <div class="row">
-                                                        @php
-                                                            $today = now()->format('Y-m-d H:i:s');
-                                                            $nextDay = now()->addDay()->format('Y-m-d H:i:s');
-                                                        @endphp
-                                                        <a href="{{ route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) }}"
-                                                           class="btn btn-primary">
-                                                            Book Now
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                                @php
+                                                $today = now()->format('Y-m-d H:i:s');
+                                                $nextDay = now()->addDay()->format('Y-m-d H:i:s');
+                                                @endphp
+                                                <a href="{{ route('booking', ['slug' => $product->slug, 'today' => $today, 'from' => $nextDay]) }}" class="btn btn-primary">
+                                                    Book Now
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
 
 
 
 
-<section class="mt-5 bg-light py-4">
-    <h2 class="text-center text-primary mt-3">Our Reviews</h2>
-    <div class="slider-review">
-        @foreach($reviews as $review)
-        <div class="m-3">
-            <div class="card rounded-3 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <!-- Product Image -->
-                            <img src="{{ asset( $review->image_path) }}"
-                                 class="img-fluid w-100"
-                                 alt="{{ $review->product->title }}"
-                                 loading="lazy">
-                            <div class="text-center mt-3">
-                                <div class="stars">
-                                    <!-- Display Star Rating -->
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fas fa-star fa-1x {{ $i <= $review->star ? 'text-primary' : 'text-muted' }}"></i>
-                                    @endfor
+        <section class="mt-5 bg-light py-4">
+            <h2 class="text-center text-primary mt-3">Our Reviews</h2>
+            <div class="slider-review">
+                @foreach($reviews as $review)
+                <div class="m-3">
+                    <div class="card rounded-3 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <!-- Product Image -->
+                                    <img src="{{ asset( $review->image_path) }}" class="img-fluid w-100" alt="{{ $review->product->title }}" loading="lazy">
+                                    <div class="text-center mt-3">
+                                        <div class="stars">
+                                            <!-- Display Star Rating -->
+                                            @for ($i = 1; $i <= 5; $i++) <i class="fas fa-star fa-1x {{ $i <= $review->star ? 'text-primary' : 'text-muted' }}"></i>
+                                                @endfor
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 position-relative">
+                                    <div class="mb-7">
+                                        <!-- Review Text -->
+                                        <p class="" id="review-{{ $review->id }}">
+                                            {{ Str::limit($review->review, 100) }}
+                                        </p>
+                                        @if(strlen($review->review) > 100)
+                                        <button class="btn btn-sm btn-light btn-toggle-collapse mt-3" data-id="{{ $review->id }}" data-value="{{ $review->review }}">
+                                            Show more
+                                        </button>
+                                        @endif
+                                    </div>
+                                    <!-- Reviewer Information -->
+                                    <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
+                                        By {{ $review->user->name }}
+                                        @if (!empty($review->user->country_code))
+                                        <span class="flag-icon flag-icon-{{ strtolower($review->user->country_code) }}"></span>
+                                        @endif
+                                        <br>
+                                        <span class="small text-dark">{{ $review->created_at->diffForHumans() }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-7 position-relative">
-                            <div class="mb-7">
-                                <!-- Review Text -->
-                                <p class="" id="review-{{ $review->id }}">
-                                    {{ Str::limit($review->review, 100) }}
-                                </p>
-                                @if(strlen($review->review) > 100)
-                                <button class="btn btn-sm btn-light btn-toggle-collapse mt-3"
-                                        data-id="{{ $review->id }}"
-                                        data-value="{{ $review->review }}">
-                                    Show more
-                                </button>
-                                @endif
-                            </div>
-                            <!-- Reviewer Information -->
-                            <div class="fst-italic text-muted position-absolute bottom-0 end-0 p-3">
-                                By {{ $review->user->name }}
-                                @if (!empty($review->user->country_code))
-                                <span class="flag-icon flag-icon-{{ strtolower($review->user->country_code) }}"></span>
-                                @endif
-                                <br>
-                                <span class="small text-dark">{{ $review->created_at->diffForHumans() }}</span>
-                            </div>
+                        <!-- Product Name -->
+                        <div class="card-footer text-center">
+                            {{ $review->product->title }}
                         </div>
                     </div>
                 </div>
-                <!-- Product Name -->
-                <div class="card-footer text-center">
-                    {{ $review->product->title }}
-                </div>
+                @endforeach
             </div>
-        </div>
-        @endforeach
-    </div>
-</section>
+        </section>
 
 
-       <section class="my-5">
+        <section class="my-5">
             <div class="container">
                 <h2 class="text-center text-primary mt-3">News & Promotions</h2>
 
@@ -647,23 +587,23 @@ Launch demo modal
 
                         {{-- Small Images --}}
                         <div class="col-md-6 mt-4 mt-md-0 d-flex flex-column gap-4 order-md-1">
-                            <?php foreach ($blogs as $blog): ?>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="<?php echo $blog->image_path; ?>" style="height: 120px; width: 100%; object-fit: cover;" class="img-fluid" alt="">
-                                </div>
-                                <div class="col-md">
-                                    <h5 class="mt-3 mt-md-0">
-                                        <a href="blogs/<?php echo $blog->slug; ?>" class="link-dark"><?php echo $blog->title; ?></a>
-                                    </h5>
-                                    <div class="mb-1">
-                                        <a href="blogs/<?php echo $blog->slug; ?>" class="text-dark">
-                                            <?php echo substr($blog->description, 0, 100); ?>...
-                                        </a>
+                            <?php foreach ($blogs as $blog) : ?>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="<?php echo $blog->image_path; ?>" class="img-fluid" alt="">
                                     </div>
-                                    <a href="blogs/<?php echo $blog->slug; ?>" class="btn btn-light btn-sm">Read more</a>
+                                    <div class="col-md">
+                                        <h5 class="mt-3 mt-md-0">
+                                            <a href="blogs/<?php echo $blog->slug; ?>" class="link-dark"><?php echo $blog->title; ?></a>
+                                        </h5>
+                                        <div class="mb-1">
+                                            <a href="blogs/<?php echo $blog->slug; ?>" class="text-dark">
+                                                <?php echo substr($blog->description, 0, 100); ?>...
+                                            </a>
+                                        </div>
+                                        <a href="blogs/<?php echo $blog->slug; ?>" class="btn btn-light btn-sm">Read more</a>
+                                    </div>
                                 </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -687,9 +627,6 @@ Launch demo modal
             </div>
         </section>
         <script>
-
-
-
             document.getElementById("bookingForm").addEventListener("submit", function(event) {
                 event.preventDefault(); // Form ka default submit behavior rokna
                 let pickupLocation = document.getElementById("input_pickup").value;
