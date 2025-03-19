@@ -151,11 +151,9 @@
 
 
 
-
-
                     $total = $pickup_fee + $return_fee + $addons + $productprice ;
                     if ($discountPercent > 0) {
-                    $total = max(0, $total - $discountPercent);
+                        $total = max(0, $total - $discountPercent);
                     }
 
                     $extraHourCharge = 0;
@@ -164,22 +162,16 @@
                         $fullDays = floor($totalHours / 24);
                         $remainingHours = $totalHours % 24;
 
-                        $extraHourCharge += $total * ($fullDays - 1);
+                        $extraHourCharge += $total * ($fullDays - 1); // Charge for extra full days
 
-                        if ($remainingHours >= 1 && $remainingHours <= 5) {
-
-                            $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
-                            $extraHourCharge += $hourlyCharge;
-                        } elseif ($remainingHours > 5) {
-
-                            $extraHourCharge += $total;
+                        if ($remainingHours >= 1 && $remainingHours <= 5) { // 10% per hour $hourlyCharge=($total * ($remainingHours * $extra_hour)) / 100; $extraHourCharge +=$hourlyCharge; } elseif ($remainingHours> 5) {
+                        // Add one more full day charge for >5 hours
+                        $extraHourCharge += $total;
                         }
                     }
 
                     $rental += $extraHourCharge;
-
                     $total += $extraHourCharge;
-
 
                     $session_extra_amount = 0;
 
@@ -196,12 +188,13 @@
                         if ($today <= $seasonEnd && $from >= $seasonStart) {
                             $carType = getCarTypeBySlug($booking->type);
                             $session_extra_amount = $carType->amount ?? 0;
-
+                            $rental += $session_extra_amount;
                         }
                     }
 
-                    $rental += $session_extra_amount;
+
                     $total += $session_extra_amount;
+
 
 
 
@@ -937,6 +930,8 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
         <button type="button" class="btn btn-secondary" onclick="showStep(2)">Previous</button>
         {{-- <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>  --}}
 
