@@ -182,22 +182,18 @@
                     $extraHourCharge = 0;
 
                     if ($extra_hour > 0 && $totalHours > 24) {
-                        $fullDays = floor($totalHours / 24);
-                        $remainingHours = $totalHours % 24;
+                    $fullDays = floor($totalHours / 24);
+                    $remainingHours = $totalHours % 24;
 
-                        $extraHourCharge += $total * ($fullDays - 1);  // Charge for extra full days
+                    $extraHourCharge += $total * ($fullDays - 1); // Charge for extra full days
 
-                        if ($remainingHours >= 1 && $remainingHours <= 5) {
-                            // 10% per hour
-                            $hourlyCharge = ($total * ($remainingHours * $extra_hour)) / 100;
-                            $extraHourCharge += $hourlyCharge;
-                        } elseif ($remainingHours > 5) {
-                            // Add one more full day charge for >5 hours
-                            $extraHourCharge += $total;
+                    if ($remainingHours >= 1 && $remainingHours <= 5) { // 10% per hour $hourlyCharge=($total * ($remainingHours * $extra_hour)) / 100; $extraHourCharge +=$hourlyCharge; } elseif ($remainingHours> 5) {
+                        // Add one more full day charge for >5 hours
+                        $extraHourCharge += $total;
                         }
-                    }
+                        }
 
-                    $rental += $extraHourCharge;
+                        $rental += $extraHourCharge;
 
 
                         $total += $extraHourCharge;
@@ -937,6 +933,8 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
         <button type="button" class="btn btn-secondary" onclick="showStep(2)">Previous</button>
         {{-- <button type="submit" class="btn btn-success" onclick="proceedToCheckout()">Pay Now</button>  --}}
 
