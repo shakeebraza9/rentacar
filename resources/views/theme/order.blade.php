@@ -10,12 +10,25 @@
 
 @section('css')
 
-
-
 <style>
     .row {
 
         justify-content: center;
+    }
+
+
+    /* Responsive adjustments for mobile screens */
+    @media (max-width: 767.98px) {
+        .custom-deposit-section {
+            border-right: none;
+            padding-right: 0;
+            margin-bottom: 20px;
+        }
+
+        .custom-payfull-section {
+            text-align: left;
+            padding-left: 0;
+        }
     }
 </style>
 
@@ -799,18 +812,18 @@
                                 </div>
                                 <div class="card mb-4">
                                     <div class="card-header">
-                                        <h4 class="text-primary">Total Amount</h4>
+                                        <!-- <h4 class="text-primary">Total Amount</h4> -->
                                     </div>
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="text-primary">Rental Amount</h5>
+                                            <!-- <h5 class="text-primary">Rental Amount</h5>
                                             <h3 class="d-inline-block">
                                                 RM <b>{{ number_format($booking->selling_price, 2) }}</b>
                                             </h3>
                                             <i> for {{ $booking->duration }}</i>
-                                            <hr>
+                                            <hr> -->
 
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-5">
                                                     <h5 class="text-primary">Rental Location</h5>
                                                     {{ request('pickup_location') ?? $booking->pickup_location }}
@@ -825,9 +838,9 @@
                                                     {{ request('return_location') ??  $booking->dropoff_location }}
                                                     <div class="text-muted">{{ date('h:i A, d M Y', strtotime($booking->dropoff_time)) }}</div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
-                                            <hr>
+                                            <!-- <hr> -->
 
                                             <h5 class="text-primary">Summary of Charges</h5>
 
@@ -904,19 +917,19 @@
             </div> --}}
         </div>
 
-        <div class="container" style="max-width: 100%; margin: 0 auto;">
-            <div class="row" style="background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                <div class="col-md-6" style="border-right: 1px solid #eee; padding-right: 20px;">
-                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+        <div>
+            <div class="row custom-payment-card" style="background-color: white; border-radius: 10px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div class="col-md-6 col-12 custom-deposit-section" style="border-right: 1px solid #eee; padding-right: 20px;">
+                    <div class="d-flex align-items-center mb-3">
                         <i class="fas fa-money-bill-wave" style="color: #6c757d; margin-right: 10px;"></i>
                         <span style="color: #6c757d; font-size: 14px;">Place Deposit</span>
                     </div>
                     <div style="font-size: 24px; font-weight: bold; color: #00c853; margin-bottom: 15px;">RM {{ $price }}</div>
-                    <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit"> Place Deposit </button>
+                    <button class="btn btn-primary price-selector" data-value="0" value="0" id="btn_deposit">Place Deposit</button>
                 </div>
 
-                <div class="col-md-6" style="padding-left: 20px;">
-                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div class="col-md-6 col-12 custom-payfull-section" style="padding-left: 20px;">
+                    <div class="d-flex align-items-center mb-3">
                         <i class="fas fa-credit-card" style="color: #6c757d; margin-right: 10px;"></i>
                         <span style="color: #6c757d; font-size: 14px;">Pay Full</span>
                     </div>
@@ -1078,6 +1091,38 @@
         document.getElementById("paymentType").value = "deposit"; // Set deposit type
         document.getElementById("checkoutForm").submit(); // Submit form
     });
+
+
+
+    function uniqueUpdateCustomerSummary() {
+        // Retrieve values from the input fields (make sure these classes match your actual input elements)
+        var uniqueName = document.querySelector('.unique-customer-name') ? document.querySelector('.unique-customer-name').value : '';
+        var uniqueEmail = document.querySelector('.unique-customer-email') ? document.querySelector('.unique-customer-email').value : '';
+        var uniqueCountry = document.querySelector('.unique-customer-country') ? document.querySelector('.unique-customer-country').value : '';
+        var uniquePhone = document.querySelector('.unique-customer-phone') ? document.querySelector('.unique-customer-phone').value : '';
+        var uniqueDriverName = document.querySelector('.unique-driver-name') ? document.querySelector('.unique-driver-name').value : '';
+        var uniqueDriverPhone = document.querySelector('.unique-driver-phone') ? document.querySelector('.unique-driver-phone').value : '';
+        var uniqueDriverId = document.querySelector('.unique-driver-id') ? document.querySelector('.unique-driver-id').value : '';
+        var uniqueDriverLic = document.querySelector('.unique-driver-license') ? document.querySelector('.unique-driver-license').value : '';
+        var uniqueAge = document.querySelector('.unique-customer-age') ? document.querySelector('.unique-customer-age').value : '';
+        var uniqueHeardFrom = document.querySelector('.unique-heard-from') ? document.querySelector('.unique-heard-from').value : '';
+        var uniqueNote = document.querySelector('.unique-customer-note') ? document.querySelector('.unique-customer-note').value : '';
+
+        // Update the summary HTML fields
+        document.getElementById('summary-name').textContent = uniqueName || '---';
+        document.getElementById('summary-email').textContent = uniqueEmail || '---';
+        document.getElementById('summary-country').textContent = uniqueCountry || '---';
+        document.getElementById('summary-phone').textContent = uniquePhone || '---';
+        document.getElementById('summary-driver-name').textContent = uniqueDriverName || '---';
+        document.getElementById('summary-driver-phone').textContent = uniqueDriverPhone || '---';
+        document.getElementById('summary-driver-id').textContent = uniqueDriverId || '---';
+        document.getElementById('summary-driver-license').textContent = uniqueDriverLic || '---';
+        document.getElementById('summary-age').textContent = uniqueAge || '---';
+        document.getElementById('summary-heard-from').textContent = uniqueHeardFrom || '---';
+        document.getElementById('summary-note').textContent = uniqueNote || '---';
+    }
+
+
 
     function proceedToCheckout() {
         const isStep2Valid = validateStep2();
