@@ -162,11 +162,13 @@
                         $fullDays = floor($totalHours / 24);
                         $remainingHours = $totalHours % 24;
 
-                        $extraHourCharge += $total * ($fullDays - 1); // Charge for extra full days
+                        $extraHourCharge += $productprice * ($fullDays - 1); // Charge for extra full days
 
-                        if ($remainingHours >= 1 && $remainingHours <= 5) { // 10% per hour $hourlyCharge=($total * ($remainingHours * $extra_hour)) / 100; $extraHourCharge +=$hourlyCharge; } elseif ($remainingHours> 5) {
-                        // Add one more full day charge for >5 hours
-                        $extraHourCharge += $total;
+                        if ($remainingHours >= 1 && $remainingHours <= 5) {
+                        $extraHourCharge += $productprice;
+                        }
+                        elseif ($remainingHours > 5) {
+                            $extraHourCharge += $productprice;
                         }
                     }
 
@@ -204,7 +206,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="text-primary">Rental Amount</h5>
+                                <h5 class="text-primary">Rental Amount{{ $extraHourCharge }}</h5>
                                 <h3 class="d-inline-block">
                                     RM <b>{{ number_format($rental , 2) }}</b>
                                 </h3>
