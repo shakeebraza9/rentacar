@@ -99,7 +99,7 @@ class AttractionsController extends Controller
                            <input data-id="' . Crypt::encryptString($value->id) . '" ' . $is_enable . ' type="checkbox" class="is_enable js-switch" data-color="#009efb"/>
                        </div>';
 
-    
+
 
             $data[] = [
                 $action,
@@ -109,7 +109,7 @@ class AttractionsController extends Controller
                 $value->slug,
                 $value->selling_price,
                 $status,
-            
+
             ];
         }
 
@@ -188,7 +188,7 @@ class AttractionsController extends Controller
         if($product == false){
             return back()->with('error','Record Not Found');
          }
-         
+
          $filemanager = Filemanager::where('is_enable',1)->get();
 
 
@@ -214,6 +214,36 @@ class AttractionsController extends Controller
     }
 
 
+    public function removeGalleryImage(Request $request)
+    {
+
+        $productId = $request->input('product_id');
+        $imageId = $request->input('image_id');
+
+        $product = Attraction::find($productId);
+
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Product not found']);
+        }
+
+        if (empty($product->gallery_id)) {
+            return response()->json(['success' => false, 'message' => 'No gallery images found']);
+        }
+
+        $galleryArray = explode(',', $product->gallery_id);
+        $updatedGallery = array_filter($galleryArray, function ($id) use ($imageId) {
+            return trim($id) != trim($imageId);
+        });
+
+        $product->gallery_id = implode(',', $updatedGallery);
+        $product->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
+
+
      /**
      * Create a new controller instance.
      *
@@ -222,7 +252,7 @@ class AttractionsController extends Controller
     public function update(Request $request, $id)
     {
         $id = Crypt::decryptString($id);
-    
+
         $validator = Validator::make($request->all(), [
             "title" => 'required|max:255',
             "description" => 'nullable|max:9000',
@@ -233,42 +263,42 @@ class AttractionsController extends Controller
             ],
 
         ]);
-    
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput();
         }
-    
+
         // Find the product
         $product = Attraction::find($id);
         if (!$product) {
             return back()->with('error', 'Record Not Found');
         }
-    
+
         // Update product fields
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
         $product->selling_price = $request->selling_price;
         $product->discount_price = $request->price;
-    
+
         // Update thumbnail
         if ($request->has('image')) {
             $product->image_id = $request->image;
         }
-    
+
         // Update gallery images
         if ($request->has('gallery')) {
             $product->gallery_id = implode(',', $request->gallery); // Save as a comma-separated string
         }
-    
+
         // Save the product
         $product->save();
-    
+
         return back()->with('success', 'Record Updated Successfully');
     }
-    
+
 
 
      /**

@@ -155,7 +155,7 @@ class WebAuthController extends Controller
 
     public function dashboard()
     {
-        return view('theme.dashboard');
+        return redirect(route('weblogin'));
     }
 
     public function weblogout()
@@ -200,6 +200,7 @@ class WebAuthController extends Controller
     // ✅ Handle Password Reset
     public function resetPassword(Request $request)
     {
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed',
@@ -211,12 +212,11 @@ class WebAuthController extends Controller
             return back()->with('error', 'Invalid or expired reset token.');
         }
 
-        // Reset password
+
         $user = User::where('email', $request->email)->first();
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Delete the reset token
         DB::table('password_resets')->where('email', $request->email)->delete();
 
         return redirect()->route('weblogin')->with('success', 'Your password has been reset successfully.');

@@ -31,6 +31,13 @@
     z-index: 1124!important;
    }
 
+   .gallery-item .delete-gallery-img {
+    display: none;
+}
+.gallery-item:hover .delete-gallery-img {
+    display: block;
+}
+
 </style>
 <?php
 // dd()
@@ -140,10 +147,16 @@
                                 <label class="form-label" for="">Current Gallery Images:</label>
                                 <div class="row">
                                     @foreach($product->get_images() as $key => $item)
-                                        <div class="col-md-3 text-center mb-3">
-                                            <img src="{{ asset($item->path) }}" alt="Gallery Image" class="img-fluid img-thumbnail" />
-                                            <p class="mt-2">{{ $item->title }}</p>
-                                        </div>
+                                    <div class="col-md-3 text-center mb-3 position-relative gallery-item" data-id="{{ $item->id }}">
+                                        <img src="{{ asset($item->path) }}" alt="Gallery Image" class="img-fluid img-thumbnail" />
+                                        <p class="mt-2">{{ $item->title }}</p>
+
+                                        <!-- Delete Button -->
+                                        <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 delete-gallery-img" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+
                                     @endforeach
                                 </div>
                             </div>
@@ -153,14 +166,19 @@
                             <!-- Add New Gallery Images -->
                             <div class="form-group my-2">
                                 <label class="form-label" for="gallery-selector">Add Images to Gallery:</label>
+                                @php
+                                $selectedGalleryIds = explode(',', $product->gallery_id ?? '');
+                                @endphp
                                 <select name="gallery[]" id="gallery-selector" class="form-control select2" multiple>
-                                    <option value="">Select Images</option>
                                     @foreach($filemanager as $file)
-                                        <option value="{{ $file->id }}" data-image="{{ asset($file->path) }}">
+                                        <option value="{{ $file->id }}"
+                                            data-image="{{ asset($file->path) }}"
+                                            {{ in_array($file->id, $selectedGalleryIds) ? 'selected' : '' }}>
                                             {{ $file->title }}
                                         </option>
                                     @endforeach
                                 </select>
+
                             </div>
                         </div>
                     </section>
@@ -362,6 +380,34 @@
                         <span>${state.text}</span>
                     </div>`;
         }
+    });
+
+
+
+    $('.delete-gallery-img').on('click', function () {
+        const galleryItem = $(this).closest('.gallery-item');
+        const imageId = galleryItem.data('id');
+        const productId = "{{ $product->id }}"; // Pass product ID
+
+        $.ajax({
+            url: "{{ route('admin.galleryattractions.remove') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                product_id: productId,
+                image_id: imageId
+            },
+            success: function (response) {
+                if (response.success) {
+                    galleryItem.remove(); // Remove from DOM
+                } else {
+                    alert('Failed to remove image.');
+                }
+            },
+            error: function () {
+                alert('Error occurred during deletion.');
+            }
+        });
     });
 
 
