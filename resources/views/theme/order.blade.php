@@ -165,9 +165,11 @@
                         $extraHourCharge += $productprice * ($fullDays - 1); // Charge for extra full days
 
                         if ($remainingHours >= 1 && $remainingHours <= 5) {
-                        $extraHourCharge += $productprice;
+                            $hourlyCharge = ($productprice * ($remainingHours * $extra_hour)) / 100;
+                            $extraHourCharge += $hourlyCharge;
                         }
                         elseif ($remainingHours > 5) {
+                            $hourlyCharge = 0;
                             $extraHourCharge += $productprice;
                         }
                     }
