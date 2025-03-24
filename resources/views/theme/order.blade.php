@@ -393,6 +393,7 @@
                         </div>
                         <input type="hidden" name="selected_addons" id="selected-addons">
                         <input type="hidden" name="extracharge" value="{{ $extraHourCharge }}">
+                        <input type="hidden" name="peakseasonprice" value="{{ $peakseasonprice }}">
                         {{-- <input type="hidden" name="extraChargepeek" value="{{ $extraCharge }}"> --}}
                         {{-- <input type="hidden" name="session_extra_amount" value="{{ $session_extra_amount }}"> --}}
                         <input type="hidden" name="depositeamount" value="{{ $price }}">
@@ -1121,13 +1122,15 @@
         function updateAddonTotal() {
             let addonsTotal = 0;
             let selectedAddons = [];
+
+            // Loop through all the select inputs and calculate the total
             document.querySelectorAll(".input_price_selector").forEach(select => {
                 let price = parseFloat(select.dataset.price) || 0;
                 let quantity = parseInt(select.value) || 0;
                 let addonName = select.closest("tr").querySelector("td b").textContent.trim();
 
                 if (quantity > 0) {
-                    addonsTotal += price * quantity;
+                    addonsTotal += price * quantity;  // Add to total
                     selectedAddons.push({
                         name: addonName,
                         quantity: quantity,
@@ -1137,19 +1140,24 @@
                 }
             });
 
-            document.getElementById("addon-price").textContent = addonsTotal.toFixed(2);
+            // Update the displayed addon price
+            document.getElementById("addon-price-value").textContent = addonsTotal.toFixed(2);
 
+            // If total-amount is available, update the overall total
             let totalAmountElement = document.getElementById("total-amount");
             let totalAmountElement2 = document.getElementById("total-amount2");
+
             if (totalAmountElement) {
                 let baseTotal = parseFloat(totalAmountElement.dataset.baseTotal) || 0;
                 totalAmountElement.textContent = (baseTotal + addonsTotal).toFixed(2);
             }
+
             if (totalAmountElement2) {
                 let baseTotal = parseFloat(totalAmountElement2.dataset.baseTotal) || 0;
                 totalAmountElement2.textContent = (baseTotal + addonsTotal).toFixed(2);
             }
 
+            // Update total with addons
             let totalWithAddonsElement = document.getElementById("totalwithaddons");
             if (totalWithAddonsElement) {
                 let currentText = totalWithAddonsElement.textContent.replace(/[^\d.]/g, '');
@@ -1158,10 +1166,9 @@
                 totalWithAddonsElement.textContent = 'RM ' + totalWithAddons.toFixed(2);
             }
 
+            // Store the selected addons as a JSON string (useful for backend submission)
             document.getElementById("selected-addons").value = JSON.stringify(selectedAddons);
         }
-
-
         document.querySelectorAll(".input_price_selector").forEach(select => {
             select.addEventListener("change", updateAddonTotal);
         });

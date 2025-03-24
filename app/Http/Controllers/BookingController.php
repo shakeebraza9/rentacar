@@ -215,6 +215,8 @@ public function checkout(Request $request)
 
 
     $paymentType = $request->input('payment_type');
+    $peakseasonprice = $request->input('peakseasonprice');
+    $total += $peakseasonprice;
 
     if ($paymentType === 'deposit') {
         $depositeamount = $request->input('depositeamount');
