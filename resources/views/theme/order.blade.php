@@ -179,6 +179,7 @@
                     $total += $extraHourCharge;
 
                     $peakseasonprice = PeakSeasonHelper::getPrice($booking->type, $today->format('Y-m-d'), $from->format('Y-m-d'));
+                    $rental += $peakseasonprice;
                     $total += $peakseasonprice;
 
 
