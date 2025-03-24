@@ -211,6 +211,16 @@ Route::get('/admin/cartype/edit/{id}', [App\Http\Controllers\Admin\CarTypeContro
 Route::post('/admin/cartype/update/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'update'])->name('admin.cartype.update');
 
 Route::delete('/admin/cartype/delete/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'destroy'])->name('admin.cartype.delete');
+Route::get('/admin/cartype/peakseason', [App\Http\Controllers\Admin\CarTypeController::class, 'peakseason'])->name('admin.peakseason.create');
+Route::post('/admin/peakseason/store', [App\Http\Controllers\Admin\CarTypeController::class, 'peakseasonstore'])->name('admin.peakseason.store');
+Route::get('/admin/cartype/fetach', [App\Http\Controllers\Admin\CarTypeController::class, 'getCarTypes'])->name('admin.fetach.cartpe');
+Route::post('/admin/peakseason/updatestatus', [App\Http\Controllers\Admin\CarTypeController::class, 'peakseasonupdatestatus'])->name('admin.peakseasonupdatestatus.store');
+Route::post('/admin/peakseason/delete-season', [App\Http\Controllers\Admin\CarTypeController::class, 'deleteSeason'])->name('delete.season');
+Route::get('/admin/peakseason/edit/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'peakseasonedit'])->name('admin.peakseason.edit');
+Route::put('/admin/peakseason/update-season/{id}', [App\Http\Controllers\Admin\CarTypeController::class, 'updateSeason'])->name('admin.peakseason.update');
+
+
+
 
 
 //Attractions

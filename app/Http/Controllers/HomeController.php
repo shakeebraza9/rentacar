@@ -263,13 +263,8 @@ class HomeController extends Controller
         return view('theme.page', compact('page'));
     }
     public function test(){
-        Mail::send('theme.emails.order-confirmation-email',[], function($message){
+        return view('theme.test');
 
-            $message->to("supermanman0300@gmail.com");
-            $message->subject('Order Receipt - ' . '[ID]');
-            $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
-
-        });
 
     }
     public function reviews()

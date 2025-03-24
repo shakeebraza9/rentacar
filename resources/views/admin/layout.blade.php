@@ -134,7 +134,7 @@
                                 <a href="javascript:void(0)" class="dropdown-item" onclick="openPasswordPopup()">
                                     <i class="ti-wallet"></i> Change Password
                                 </a>
-                                
+
 
                                 {{--  <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a>  --}}
 
@@ -242,6 +242,7 @@
                                     <li><a href="{{URL::to('admin/products/create')}}">Add New Car</a></li>
                                     <li><a href="{{URL::to('admin/products/index')}}">All Cars</a></li>
                                     <li><a href="{{URL::to('admin/cartype/index')}}">Cars Type</a></li>
+                                    <li><a href="{{URL::to('admin/cartype/peakseason')}}">Peak Season</a></li>
                                     <li><a href="{{URL::to('admin/orders/index')}}">All Orders</a></li>
                                 </ul>
                             </li>

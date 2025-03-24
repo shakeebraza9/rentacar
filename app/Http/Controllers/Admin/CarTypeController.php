@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarType;
+use App\Models\PeakSeason;
 
 use App\Models\Product;
 use App\Models\ProductCollection;
@@ -141,5 +142,136 @@ public function destroy($id)
         return response()->json(['error' => 'Car Type deletion failed.'], 500);
     }
 }
+
+
+public function peakseason()
+{
+
+    $cartypes = CarType::all();
+    $seasons = PeakSeason::all();
+
+    return view('admin.cartype.peakseason', compact('cartypes', 'seasons'));
+}
+
+public function getCarTypes()
+{
+    $cartypes = CarType::all();  // Fetch car types from database
+    return response()->json(['cartypes' => $cartypes]);
+}
+
+public function peakseasonstore(Request $request)
+{
+    $request->validate([
+        'seasons' => 'required|array',
+        'seasons.*.season_name' => 'required|string|max:255',
+        'seasons.*.season_start_date' => 'required|date',
+        'seasons.*.season_end_date' => 'required|date',
+        'seasons.*.prices' => 'required|array',
+        'seasons.*.prices.*.price' => 'required|numeric|min:0',
+    ]);
+
+    foreach ($request->seasons as $season) {
+        $seasonData = [
+            'title' => $season['season_name'],
+            'value' => json_encode($season['prices']),
+            'start_date' => $season['season_start_date'],
+            'end_date' => $season['season_end_date'],
+            'enable' => 1,
+        ];
+
+        PeakSeason::create($seasonData);
+    }
+
+    // Return a JSON response indicating success
+    return response()->json([
+        'success' => true,
+        'message' => 'Peak Season created successfully.',
+    ]);
+}
+
+
+public function peakseasonupdatestatus(Request $request)
+{
+    $season = PeakSeason::findOrFail($request->id);
+    $season->enable = $request->enable;
+    $season->save();
+
+    return response()->json(['success' => true]);
+}
+
+public function deleteSeason(Request $request)
+{
+    $season = PeakSeason::find($request->id);
+
+    if ($season) {
+        $season->delete();
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Season not found']);
+}
+
+
+public function peakseasonedit($id)
+{
+
+    $season = PeakSeason::findOrFail($id);
+    $carTypesWithPrices = json_decode($season->value, true);
+    return view('admin.cartype.editpeakseason', compact('season', 'carTypesWithPrices'));
+}
+
+
+
+public function updateSeason(Request $request, $id)
+{
+    // Validate incoming data
+    $request->validate([
+        'peak_season_name' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
+        'prices' => 'required|array',  // Ensure that prices is an array
+        'prices.*' => 'required|numeric|min:0',  // Ensure that each price is numeric and greater than or equal to 0
+    ]);
+
+    // Find the season by ID
+    $season = PeakSeason::findOrFail($id);
+
+    // Prepare the updated data for the season
+    $season->title = $request->peak_season_name;
+    $season->start_date = $request->start_date;
+    $season->end_date = $request->end_date;
+
+    // Decode the current value field (JSON) to update the prices
+    $currentValues = json_decode($season->value, true) ?? [];
+
+    // Convert current values to an associative array for easy updating
+    $pricesArray = [];
+    foreach ($currentValues as $priceData) {
+        $pricesArray[$priceData['car_type_slug']] = $priceData;
+    }
+
+    // Loop through submitted prices and update/add them
+    foreach ($request->prices as $slug => $price) {
+        if (isset($pricesArray[$slug])) {
+            // Update existing slug price
+            $pricesArray[$slug]['price'] = $price;
+        } else {
+            // Add new slug price
+            $pricesArray[$slug] = [
+                'car_type_slug' => $slug,
+                'car_type_title' => ucfirst(str_replace('-', ' ', $slug)), // Auto generate title
+                'price' => $price,
+            ];
+        }
+    }
+
+    // Save the updated JSON back into the value field
+    $season->value = json_encode(array_values($pricesArray)); // Re-index the array
+    $season->save();
+
+    return redirect()->route('admin.peakseason.create')->with('success', 'Peak Season updated successfully.');
+}
+
+
 
 }
