@@ -244,22 +244,16 @@
                                                                         <div class="col">
                                                                             <div class="input-group">
                                                                                 <div class="input-group-prepend">
-                                                                                    <button class="btn btn-decrement btn-light btn-circle btn-minus"
-                                                                                            type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>"
-                                                                                            data-type="<?= $variation['type'] ?>"><strong>−</strong></button>
+                                                                                    <button class="btn btn-decrement btn-light btn-circle btn-minuss" type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>" data-type="<?= $variation['type'] ?>"><strong>−</strong></button>
                                                                                 </div>
-                                                                                <input type="text" id="<?= $variation['type'] ?>-<?= $ticket->id ?><?= $variation['id'] ?>"
-                                                                                       name="no_of_<?= $variation['type'] ?>"
-                                                                                       value="0" data-min="0"
-                                                                                       class="form-control text-center qty mx-2">
-                                                                                       <input type="hidden" data-varid="<?= $variation['id'] ?>">
+                                                                                <input type="text" id="<?= $variation['type'] ?>-<?= $ticket->id ?><?= $variation['id'] ?>" name="no_of_<?= $variation['type'] ?>" value="0" data-min="0" class="form-control text-center qty mx-2">
+                                                                                <input type="hidden" data-varid="<?= $variation['id'] ?>">
                                                                                 <div class="input-group-append">
-                                                                                    <button class="btn btn-increment btn-light btn-circle btn-plus"
-                                                                                            type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>"
-                                                                                            data-type="<?= $variation['type'] ?>"><strong>+</strong></button>
+                                                                                    <button class="btn btn-increment btn-light btn-circle btn-plus" type="button" data-id="<?= $ticket->id ?>" data-varictionid="<?= $variation['id'] ?>" data-type="<?= $variation['type'] ?>"><strong>+</strong></button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
                                                                     </div>
                                                                     <hr class="dropdown-divider">
                                                                 <?php endforeach; ?>
@@ -563,37 +557,34 @@
     <script>
 
 $(document).ready(function () {
-
     $(".btn-plus").click(function (e) {
         e.stopPropagation();
 
         var type = $(this).data("type");
         var id = $(this).data("id");
         var varictionid = $(this).data("varictionid");
-        var inputField = $("#" + type + "-" + id+varictionid);
-        var dropdownMenu = $(this).closest(".dropdown-menu");
+        var inputField = $("#" + type + "-" + id + varictionid);
 
         var currentValue = parseInt(inputField.val()) || 0;
-        inputField.val(currentValue + 1);
-
-        dropdownMenu.css("display", "block");
+        inputField.val(currentValue + 1); // Increment by 1
     });
 
-    $(".btn-minus").click(function (e) {
+    $(".btn-minuss").click(function (e) {
+
         e.stopPropagation();
 
         var type = $(this).data("type");
         var id = $(this).data("id");
-        var inputField = $("#" + type + "-" + id);
-        var dropdownMenu = $(this).closest(".dropdown-menu");
+        var varictionid = $(this).data("varictionid");
+        var inputField = $("#" + type + "-" + id + varictionid);
 
         var currentValue = parseInt(inputField.val()) || 0;
         if (currentValue > 0) {
-            inputField.val(currentValue - 1);
+            inputField.val(currentValue - 1); // Decrement by 1
         }
-
-        dropdownMenu.css("display", "block");
     });
+
+
 
 
     $(".dropdown-menu").click(function (e) {
