@@ -1,7 +1,7 @@
 @extends('theme.layout')
 
 @php
-//dd($users);
+
 @endphp
 
 @section('metatags')
@@ -79,6 +79,7 @@
                     </div>
                     @php
                     use Carbon\Carbon;
+                    use App\Helpers\PeakSeasonHelper;
                     $bookingStart = Carbon::parse($today ?? now());
                     $bookingEnd = Carbon::parse($from ?? now());
 
@@ -177,27 +178,8 @@
                     $rental += $extraHourCharge;
                     $total += $extraHourCharge;
 
-                    $session_extra_amount = 0;
-
-                    if (getset('season_enable') == 1) {
-                        $seasonStart = Carbon::parse($global_d['season_start_date']);
-                        $seasonEnd = Carbon::parse($global_d['season_end_date']);
-
-                        // Swap dates if season start > end
-                        if ($seasonStart->gt($seasonEnd)) {
-                            [$seasonStart, $seasonEnd] = [$seasonEnd, $seasonStart];
-                        }
-
-                        // Check if booking (today → from) overlaps with season (seasonStart → seasonEnd)
-                        if ($today <= $seasonEnd && $from >= $seasonStart) {
-                            $carType = getCarTypeBySlug($booking->type);
-                            $session_extra_amount = $carType->amount ?? 0;
-                            $rental += $session_extra_amount;
-                        }
-                    }
-
-
-                    $total += $session_extra_amount;
+                    $peakseasonprice = PeakSeasonHelper::getPrice($booking->type, $today->format('Y-m-d'), $from->format('Y-m-d'));
+                    $total += $peakseasonprice;
 
 
 
@@ -208,7 +190,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="text-primary">Rental Amount{{ $extraHourCharge }}</h5>
+                                <h5 class="text-primary">Rental Amount</h5>
                                 <h3 class="d-inline-block">
                                     RM <b>{{ number_format($rental , 2) }}</b>
                                 </h3>

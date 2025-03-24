@@ -23,7 +23,7 @@
 @section('content')
 @php
 use Carbon\Carbon;
-
+use App\Helpers\PeakSeasonHelper;
 
 $pickupDateTime2 = Carbon::parse($pickupDateTime);
 $returnDateTime2 = Carbon::parse($returnDateTime);
@@ -87,7 +87,9 @@ $extra_hour = $global_d['extra_hour'] ?? 0;
 
                             $sellingPrice += $extraCharge;
                             $price += $extraCharge;
-
+                            $peakseasonprice = PeakSeasonHelper::getPrice($product->type, $pickupDateTime2->format('Y-m-d'), $returnDateTime2->format('Y-m-d'));
+                            $price += $peakseasonprice;
+                            $sellingPrice += $peakseasonprice;
                             @endphp
                                 <del>{{  $price }}</del></h4></span><br>
                         <span class="text-danger fw-bold">RM <h4 class="d-inline-block">{{ $sellingPrice }}
@@ -175,6 +177,10 @@ $extra_hour = $global_d['extra_hour'] ?? 0;
                         // Final calculated prices
                         $similarProductFinalPrice = $similarProductBasePrice + $extraCharge;
                         $similarProductFinalSellingPrice = $similarProductSellingPrice + $extraCharge;
+
+                        $peakseasonpricemul = PeakSeasonHelper::getPrice($similarProduct->type, $pickupDateTime2->format('Y-m-d'), $returnDateTime2->format('Y-m-d'));
+                        $similarProductFinalPrice += $peakseasonpricemul;
+                        $similarProductFinalSellingPrice += $peakseasonpricemul;
 
                         @endphp
 
