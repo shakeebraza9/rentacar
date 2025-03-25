@@ -59,13 +59,16 @@ class SettingController extends Controller
                 // Allowed field types
                 $allowedTypes = ['text', 'textarea', 'keywords', 'image', 'date', 'time', 'enable', 'code'];
 
-                // Allowed SMTP fields
-                $allowedSMTPFields = [
+                // Allowed fields to update in .env
+                $allowedEnvFields = [
                     'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
-                    'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS', 'MAIL_FROM_NAME'
+                    'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS', 'MAIL_FROM_NAME',
+                    'TOYYIBPAY_USER_ID', 'TOYYIBPAY_SECRET',
+                    'PAYPAL_CLIENT_ID', 'PAYPAL_SECRET', 'PAYPAL_MODE', 'PAYPAL_CURRENCY',
+                    'STRIPE_KEY', 'STRIPE_SECRET'
                 ];
 
-                if (in_array($value['type'], $allowedTypes) || in_array($key, $allowedSMTPFields)) {
+                if (in_array($value['type'], $allowedTypes) || in_array($key, $allowedEnvFields)) {
                     $updatedValue = $value['value'];
 
                     // Convert time fields to 12-hour format with AM/PM
@@ -75,8 +78,8 @@ class SettingController extends Controller
 
                     Setting::where('field', $key)->update(["value" => $updatedValue]);
 
-                    // Update .env file for SMTP fields
-                    if (in_array($key, $allowedSMTPFields)) {
+                    // Update .env file for allowed fields
+                    if (in_array($key, $allowedEnvFields)) {
                         $this->updateEnv($key, $updatedValue);
                     }
                 }
@@ -86,6 +89,7 @@ class SettingController extends Controller
         return back()->with('success', 'Settings Updated Successfully!');
     }
 
+
     /**
      * Update .env file dynamically
      */
@@ -94,9 +98,10 @@ class SettingController extends Controller
         $envPath = base_path('.env');
         $envContent = file_get_contents($envPath);
 
-        // Ensure password is properly formatted
-        if ($key === 'MAIL_PASSWORD') {
-            $value = '"' . addslashes($value) . '"'; // Encapsulate password in quotes
+        // Password یا Secret فیلڈز کے لیے quotes لگانا ضروری ہے
+        $secureKeys = ['MAIL_PASSWORD', 'TOYYIBPAY_SECRET', 'PAYPAL_SECRET', 'STRIPE_SECRET'];
+        if (in_array($key, $secureKeys)) {
+            $value = '"' . addslashes($value) . '"';
         }
 
         // Check if key exists in .env
@@ -109,11 +114,8 @@ class SettingController extends Controller
         }
 
         file_put_contents($envPath, $envContent);
-
-        // Refresh Laravel config
-        // Artisan::call('config:clear');
-        // Artisan::call('config:cache');
     }
+
 
 
 
