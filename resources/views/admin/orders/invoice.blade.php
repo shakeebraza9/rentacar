@@ -100,12 +100,12 @@
         <p>Buyer: {{ $order->buyer_name }}</p>
         <p>Email: {{ $order->buyer_email }}</p>
         <p>Phone: {{ $order->buyer_phone_number }}</p>
-        <p>Date: {{ date('d-m-Y h:i A', strtotime($order->from_date)) }} to {{ date('d-m-Y h:i A', strtotime($order->to_date)) }}</p>
+        <p>Date: {{ date('d-m-Y h:i A', strtotime($order->to_date)) }} to {{ date('d-m-Y h:i A', strtotime($order->from_date)) }}</p>
     </div>
 
     <!-- Car Rental Period Section -->
     <h3>Car Rental Period</h3>
-    <p>From: {{ date('d-m-Y h:i A', strtotime($order->from_date)) }} <strong>to</strong> {{ date('d-m-Y h:i A', strtotime($order->to_date)) }}</p>
+    <p>From: {{ date('d-m-Y h:i A', strtotime($order->to_date)) }} <strong>to</strong> {{ date('d-m-Y h:i A', strtotime($order->from_date)) }}</p>
 
     <!-- Pickup and Dropoff Locations Section -->
     <h3>Pickup and Dropoff Locations</h3>
