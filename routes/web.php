@@ -249,6 +249,7 @@ Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\Attract
         Route::get('/send-confirmation/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'sendConfirmation'])->name('sendConfirmation');
         Route::get('/download-invoice/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'downloadInvoice'])->name('downloadInvoice');
     });
+
     Route::delete('/admin/ordersticket/delete/{id}', [App\Http\Controllers\Admin\TicketOrderController::class, 'delete'])
     ->name('admin.ordersticket.delete');
 
@@ -262,7 +263,8 @@ Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\Attract
     Route::post('/admin/orders/update-pickup-deliver/{id}', [App\Http\Controllers\Admin\OrderController::class, 'updatePickupDeliver'])->name('admin.orders.updatePickupDeliver');
     Route::get('/admin/orders/get-total-time/{id}', [App\Http\Controllers\Admin\OrderController::class, 'getTotalTime'])->name('admin.orders.getTotalTime');
     Route::post('/admin/send-extra-payment-email/{id}', [App\Http\Controllers\Admin\OrderController::class, 'sendExtraPaymentEmail'])->name('send.extra.payment.email');
-
+    Route::get('/admin/orders/download-invoice/{id}', [App\Http\Controllers\Admin\OrderController::class, 'downloadInvoice'])
+    ->name('admin.orders.download-invoice');
 
     Route::delete('/admin/orders/delete/{id}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('orders.delete');
 
@@ -276,6 +278,14 @@ Route::get('/admin/attractions/delete/{id}', [App\Http\Controllers\Admin\Attract
     Route::get('admin/review/edit/{id}', [App\Http\Controllers\ReviewController::class, 'edit'])->name('admin.review.edit');
     Route::post('admin/review/update/{id}', [App\Http\Controllers\ReviewController::class, 'update'])->name('admin.review.update');
     Route::delete('admin/review/destroy/{id}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('admin.review.destroy');
+
+
+
+    // Email Settings
+    Route::get('admin/email/index', [App\Http\Controllers\Admin\EmailSettingController::class, 'index'])->name("admin.email.index");
+    Route::get('admin/email/edit/{id}', [App\Http\Controllers\Admin\EmailSettingController::class, 'edit'])->name('admin.email_templates.edit');
+    Route::put('admin/email/update/{id}', [App\Http\Controllers\Admin\EmailSettingController::class, 'update'])->name('admin.email.update');
+
 
     // client Report
     Route::get('/admin/reports/clients/index', [App\Http\Controllers\Admin\ReportsController::class, 'clientIndex']);

@@ -258,6 +258,11 @@
                                 <span class="hide-menu"> Review </span></a>
                             </li>
                             <li><a class="waves-effect waves-dark"
+                                href="{{URL::to('admin/email/index')}}"
+                                aria-expanded="false"><i class="fa fa-envelope"></i>
+                                <span class="hide-menu"> Email Settings </span></a>
+                            </li>
+                            <li><a class="waves-effect waves-dark"
                                 href="{{URL::to('admin/team/index')}}"
                                 aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i>
 

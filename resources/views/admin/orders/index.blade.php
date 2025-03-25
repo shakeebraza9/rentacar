@@ -127,6 +127,30 @@ href="{{asset('public/admin/assets/node_modules/datatables.net-bs4/css/responsiv
 
 
        <script>
+        $(document).ready(function() {
+            $(document).on('click', '.download-invoice', function() {
+                var orderId = $(this).data('id'); // Get encrypted order ID
+                var button = $(this); // Store button reference
+                console.log('Downloading invoice for Order ID:', orderId);
+
+                // Change button text & disable it (showing loader)
+                button.html('<i class="spinner-border spinner-border-sm"></i> Downloading...').prop('disabled', true);
+
+                // Delay to show loader before starting the download
+                setTimeout(function() {
+                    window.location.href = '/admin/orders/download-invoice/' + orderId;
+
+                    // Reset button after download starts
+                    setTimeout(function() {
+                        button.html('<i class="bi bi-file-earmark-pdf"></i> Download Invoice').prop('disabled', false);
+                    }, 5000); // Adjust delay if needed
+                }, 1000);
+            });
+        });
+
+
+
+
         $(function () {
             var application_table = $('.mydatatable').DataTable({
                 processing: true,

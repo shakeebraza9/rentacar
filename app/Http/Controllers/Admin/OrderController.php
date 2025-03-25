@@ -27,7 +27,7 @@ use Laravel\Ui\Presets\React;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-
+use mPDF;
 class OrderController extends Controller
 {
     /*
@@ -48,51 +48,51 @@ class OrderController extends Controller
      * @return void
      */
     public function index(Request $request)
-{
-    if ($request->ajax()) {
-        $query = Order::query();
+    {
+        if ($request->ajax()) {
+            $query = Order::query();
 
-        if ($request->id) {
-            $query->where('id', $request->id);
-        }
-        if ($request->buyer_name) {
-            $query->where('buyer_name', 'like', '%' . $request->buyer_name . '%');
-        }
-        if ($request->buyer_email) {
-            $query->where('buyer_email', 'like', '%' . $request->buyer_email . '%');
-        }
-        if ($request->buyer_phone_number) {
-            $query->where('buyer_phone_number', 'like', '%' . $request->buyer_phone_number . '%');
-        }
-        if ($request->from_date) {
-            $query->whereDate('from_date', '>=', $request->from_date);
-        }
-        if ($request->to_date) {
-            $query->whereDate('to_date', '<=', $request->to_date);
-        }
-        if ($request->payment_status) {
-            $query->where('payment_status', $request->payment_status);
-        }
-        if ($request->status) {
-            $query->where('status', $request->status);
-        }
+            if ($request->id) {
+                $query->where('id', $request->id);
+            }
+            if ($request->buyer_name) {
+                $query->where('buyer_name', 'like', '%' . $request->buyer_name . '%');
+            }
+            if ($request->buyer_email) {
+                $query->where('buyer_email', 'like', '%' . $request->buyer_email . '%');
+            }
+            if ($request->buyer_phone_number) {
+                $query->where('buyer_phone_number', 'like', '%' . $request->buyer_phone_number . '%');
+            }
+            if ($request->from_date) {
+                $query->whereDate('from_date', '>=', $request->from_date);
+            }
+            if ($request->to_date) {
+                $query->whereDate('to_date', '<=', $request->to_date);
+            }
+            if ($request->payment_status) {
+                $query->where('payment_status', $request->payment_status);
+            }
+            if ($request->status) {
+                $query->where('status', $request->status);
+            }
 
-        $count = $query->count();
-        $records = $query->skip($request->start)
-            ->take($request->length)
-            ->orderBy('id', 'desc')
-            ->get();
+            $count = $query->count();
+            $records = $query->skip($request->start)
+                ->take($request->length)
+                ->orderBy('id', 'desc')
+                ->get();
 
+            $data = [];
+            foreach ($records as $key => $value) {
+                $payment_status_label = $value->payment_status == 1
+                    ? '<span style="color: green; font-weight: bold;">Paid</span>'
+                    : '<span style="color: red; font-weight: bold;">Unpaid</span>';
 
-        $data = [];
-        foreach ($records as $key => $value) {
-            $payment_status_label = $value->payment_status == 1
-                ? '<span style="color: green; font-weight: bold;">Paid</span>'
-                : '<span style="color: red; font-weight: bold;">Unpaid</span>';
+                $deposit_status_label = $value->deposit_status == 1
+                    ? '<span style="color: green; font-weight: bold;">Paid</span>'
+                    : '<span style="color: red; font-weight: bold;">Unpaid</span>';
 
-            $deposit_status_label = $value->deposit_status == 1
-                ? '<span style="color: green; font-weight: bold;">Paid</span>'
-                : '<span style="color: red; font-weight: bold;">Unpaid</span>';
                 $data[] = [
                     'id' => '
                         <a href="'.URL::to('admin/orders/edit/'.Crypt::encryptString($value->id)).'" class="btn btn-sm btn-primary">
@@ -101,6 +101,10 @@ class OrderController extends Controller
                         <button class="btn btn-sm btn-danger delete-order" data-id="'.Crypt::encryptString($value->id).'">
                             <i class="bi bi-trash"></i> Delete
                         </button>
+                   <button  class="btn btn-sm btn-info download-invoice" data-id="'.Crypt::encryptString($value->id).'">
+                        <i class="bi bi-file-earmark-pdf"></i> Download Invoice
+                    </button>
+
                     ', // ID (Action)
                     'buyer_name' => $value->buyer_name,
                     'buyer_email' => $value->buyer_email,
@@ -112,24 +116,60 @@ class OrderController extends Controller
                     'amount' => 'RM ' . $value->amount,
                     'status' => $value->status,
                 ];
+            }
 
-
+            return response()->json([
+                "draw" => $request->draw,
+                "recordsTotal" => $count,
+                "recordsFiltered" => $count,
+                'data' => $data,
+            ]);
         }
 
-
-
-
-        return response()->json([
-            "draw" => $request->draw,
-            "recordsTotal" => $count,
-            "recordsFiltered" => $count,
-            'data' => $data,
-        ]);
+        $category = Category::all();
+        return view('admin.orders.index', compact('category'));
     }
 
-    $category = Category::all();
-    return view('admin.orders.index', compact('category'));
-}
+
+
+    public function downloadInvoice($id)
+    {
+        $order = Order::findOrFail(Crypt::decryptString($id));
+        $product = $order->product;
+
+
+        $imagePath = public_path($product->get_thumbnail ? $product->get_thumbnail->path : '');
+        $imageData = file_get_contents($imagePath);
+        $base64Image = base64_encode($imageData);
+        $imageSrc = 'data:image/jpeg;base64,' . $base64Image;
+
+
+        $data = [
+            'order' => $order,
+            'product' => $product,
+            'payment_status' => $order->payment_status == 1 ? 'Paid' : 'Unpaid',
+            'deposit_status' => $order->deposit_status == 1 ? 'Paid' : 'Unpaid',
+            'image' => $imageSrc,
+        ];
+
+        $html = view('admin.orders.invoice', $data)->render();
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($html);
+
+        return response()->stream(
+            function () use ($mpdf) {
+                $mpdf->Output();
+            },
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="invoice.pdf"',
+            ]
+        );
+    }
+
+
 
 
      /**
