@@ -494,11 +494,9 @@
             <section class="my-7">
                 <div class="container">
                     <h2 class="text-primary mt-3">Other Attractions You May Like</h2>
-                    <div id="slider-attractions" class="splide splide-primary mb-4 mb-md-5 mt-4" role="region"
-                        aria-roledescription="carousel">
+                    <div id="slider-attractions" class="splide splide-primary mb-4 mb-md-5 mt-4" role="region" aria-roledescription="carousel">
                         <div class="splide__track" id="slider-attractions-track" aria-live="polite" aria-atomic="true">
                             <ul class="splide__list" id="slider-attractions-list">
-
                                 @foreach ($allAttractions as $attraction)
                                     <li class="splide__slide">
                                         <div class="card mx-3">
@@ -512,8 +510,7 @@
                                                 alt="{{ $attraction->title }}" class="card-img-top img-fluid object-fit-lg">
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <a href="{{ route('attractions.detail', $attraction->slug) }}"
-                                                        class="text-dark">
+                                                    <a href="{{ route('attractions.detail', $attraction->slug) }}" class="text-dark">
                                                         {{ $attraction->title }}
                                                     </a>
                                                 </h5>
@@ -526,8 +523,7 @@
                                                                     </span></p>
                                                             @endif
                                                             <div class="text-danger">
-                                                                <span class="text-muted">From</span> RM <span
-                                                                    class="fs-3 fw-bold">
+                                                                <span class="text-muted">From</span> RM <span class="fs-3 fw-bold">
                                                                     {{ number_format($attraction->discount_price ?? $attraction->selling_price, 2) }}
                                                                 </span>
                                                             </div>
@@ -537,7 +533,6 @@
                                                         <a href="{{ route('attractions.detail', ['slug' => $attraction->slug]) }}"
                                                             class="btn btn-primary">Book Now</a>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -550,10 +545,42 @@
             </section>
 
 
+
         </div>
     </main>
 @endsection
 @section('js')
+
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.5.6/dist/js/splide.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Splide for the attraction slider
+        var splide = new Splide('#slider-attractions', {
+            type       : 'loop',
+            perPage    : 4, // Adjust this based on the number of items you want per page
+            gap        : '1rem', // Adjust gap between the items
+            focus      : 'center',
+            breakpoints: {
+                1024: {
+                    perPage: 3,
+                },
+                768: {
+                    perPage: 2,
+                },
+                480: {
+                    perPage: 1,
+                },
+            },
+            pagination: false, // Disable pagination
+            arrows     : true, // Enable arrows for navigation
+        });
+
+        splide.mount();
+    });
+</script>
+
     <script>
 
 $(document).ready(function () {

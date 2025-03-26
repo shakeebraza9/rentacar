@@ -76,7 +76,7 @@ class AttractionsController extends Controller
 
 
         // Pass data to the view
-        return view('theme.attractions.detail', compact('attraction', 'allAttractions', 'tickets','reviews'));
+        return view('theme.attractions.detail', compact('attraction', 'allAttractions', 'tickets', 'reviews'));
     }
 
 }

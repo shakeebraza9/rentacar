@@ -226,7 +226,7 @@ $attractions= MenuHelper::getsubAttractions(45);
 
                             <a href="{{ route($item->link) }}">{{ $item->title }}</a>
                             @else
-                            
+
                             <a href="{{ route($item->link) }}">{{ $item->title }}</a>
                             {{--  <a href="{{ $item->link }}">{{ $item->title }}</a>  --}}
                         @endif
@@ -270,17 +270,25 @@ $attractions= MenuHelper::getsubAttractions(45);
                 <h6 class="mb-3 text-uppercase">Social Media</h6>
                 <ul class="list-footer-socmed">
                     <li>
-                        <a href="{!! nl2br(getset('facebook_link')) !!}" target="_blank"><i class="fab fa-facebook"></i></a>                    </li>
-
+                        <a href="{!! nl2br(getset('facebook_link')) !!}" target="_blank"><i class="fab fa-facebook"></i></a>
+                    </li>
                     <li>
-                        <a href="{!! nl2br(getset('instagram_link')) !!}" target="_blank"><i class="fab fa-instagram"></i></a>                    </li>
+                        <a href="{!! nl2br(getset('instagram_link')) !!}" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </li>
                     <li>
-                        <a href="{!! nl2br(getset('whatsaap_link')) !!}" target="_blank"><i class="fab fa-whatsapp"></i></a>                    </li>
+                        <a href="{!! nl2br(getset('whatsaap_link')) !!}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </li>
+                    <!-- Added YouTube and TikTok Links -->
+                    <li>
+                        <a href="{!! nl2br(getset('tiktok_link')) !!}" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </li>
+                    <li>
+                        <a href="{!! nl2br(getset('tiktok_link')) !!}" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    </li>
                 </ul>
                 <h6 class="mt-5 text-uppercase">Hotline</h6>
                 <span><i class="fa fa-phone"></i><a href="tel:{!! nl2br(getset('phone_number')) !!}"> {!! nl2br(getset('phone_number')) !!}</a></span>
             </div>
-
         </div>
     </div>
     <div class="bg-white text-dark p-4 mt-5">
