@@ -38,6 +38,7 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
         'c71260c1cf084f756474d36b60f4fe08' => __DIR__ . '/../..' . '/app/Helpers/MenuHelper.php',
         '33c5517e3eb159ab5a0bfd876d5b8e64' => __DIR__ . '/../..' . '/app/Helpers/GlobalHelper.php',
+        '14f5c1f7ff75dfb48c2ad8f5675d50d3' => __DIR__ . '/../..' . '/app/Helpers/EmailHelper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -193,6 +194,7 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'A' => 
         array (
             'Asm89\\Stack\\' => 12,
+            'App\\Helpers\\' => 12,
             'App\\' => 4,
         ),
     );
@@ -598,6 +600,10 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         array (
             0 => __DIR__ . '/..' . '/asm89/stack-cors/src',
         ),
+        'App\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Helpers',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -608,11 +614,18 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Helpers\\MenuHelper' => __DIR__ . '/../..' . '/app/Helpers/MenuHelper.php',
+        'App\\Helpers\\PeakSeasonHelper' => __DIR__ . '/../..' . '/app/Helpers/PeakSeasonHelper.php',
+        'App\\Http\\Controllers\\Admin\\ArticalController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ArticalController.php',
         'App\\Http\\Controllers\\Admin\\AttractionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AttractionsController.php',
         'App\\Http\\Controllers\\Admin\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AuthController.php',
+        'App\\Http\\Controllers\\Admin\\BlogAdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BlogAdminController.php',
+        'App\\Http\\Controllers\\Admin\\CarTypeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CarTypeController.php',
         'App\\Http\\Controllers\\Admin\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CategoryController.php',
+        'App\\Http\\Controllers\\Admin\\ClientReportsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ClientReportsController.php',
         'App\\Http\\Controllers\\Admin\\CollectionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CollectionController.php',
         'App\\Http\\Controllers\\Admin\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/DashboardController.php',
+        'App\\Http\\Controllers\\Admin\\EmailSettingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/EmailSettingController.php',
+        'App\\Http\\Controllers\\Admin\\FaqTestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/FaqTestController.php',
         'App\\Http\\Controllers\\Admin\\FilemanagerController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/FilemanagerController.php',
         'App\\Http\\Controllers\\Admin\\MenuController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/MenuController.php',
         'App\\Http\\Controllers\\Admin\\MenuItemController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/MenuItemController.php',
@@ -623,6 +636,7 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Http\\Controllers\\Admin\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/RoleController.php',
         'App\\Http\\Controllers\\Admin\\SettingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SettingController.php',
         'App\\Http\\Controllers\\Admin\\SliderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SliderController.php',
+        'App\\Http\\Controllers\\Admin\\TeamController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/TeamController.php',
         'App\\Http\\Controllers\\Admin\\TicketController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/TicketController.php',
         'App\\Http\\Controllers\\Admin\\TicketOrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/TicketOrderController.php',
         'App\\Http\\Controllers\\Admin\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/UserController.php',
@@ -633,10 +647,13 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Http\\Controllers\\CheckoutController' => __DIR__ . '/../..' . '/app/Http/Controllers/CheckoutController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/app/Http/Controllers/CustomerController.php',
+        'App\\Http\\Controllers\\DepositePaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/DepositePaymentController.php',
         'App\\Http\\Controllers\\HelpController' => __DIR__ . '/../..' . '/app/Http/Controllers/HelpController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\OurTeamController' => __DIR__ . '/../..' . '/app/Http/Controllers/OurTeamController.php',
         'App\\Http\\Controllers\\PaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/PaymentController.php',
         'App\\Http\\Controllers\\PaymentTicketController' => __DIR__ . '/../..' . '/app/Http/Controllers/PaymentTicketController.php',
+        'App\\Http\\Controllers\\ReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportController.php',
         'App\\Http\\Controllers\\ReviewController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReviewController.php',
         'App\\Http\\Controllers\\TicketController' => __DIR__ . '/../..' . '/app/Http/Controllers/TicketController.php',
         'App\\Http\\Controllers\\WebAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/WebAuthController.php',
@@ -644,6 +661,7 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Http\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminMiddleware.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
+        'App\\Http\\Middleware\\Localization' => __DIR__ . '/../..' . '/app/Http/Middleware/Localization.php',
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
@@ -658,9 +676,12 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Models\\Attribute' => __DIR__ . '/../..' . '/app/Models/Attribute.php',
         'App\\Models\\Blog' => __DIR__ . '/../..' . '/app/Models/Blog.php',
         'App\\Models\\Brand' => __DIR__ . '/../..' . '/app/Models/Brand.php',
+        'App\\Models\\CarType' => __DIR__ . '/../..' . '/app/Models/CarType.php',
         'App\\Models\\Cart' => __DIR__ . '/../..' . '/app/Models/Cart.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Collection' => __DIR__ . '/../..' . '/app/Models/Collection.php',
+        'App\\Models\\EmailTemplate' => __DIR__ . '/../..' . '/app/Models/EmailTemplate.php',
+        'App\\Models\\Faq' => __DIR__ . '/../..' . '/app/Models/Faq.php',
         'App\\Models\\Filemanager' => __DIR__ . '/../..' . '/app/Models/Filemanager.php',
         'App\\Models\\Help' => __DIR__ . '/../..' . '/app/Models/Help.php',
         'App\\Models\\Menu' => __DIR__ . '/../..' . '/app/Models/Menu.php',
@@ -668,11 +689,14 @@ class ComposerStaticInit22ccc522ec6b815918c7fd4b249b5c68
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderItem' => __DIR__ . '/../..' . '/app/Models/OrderItem.php',
         'App\\Models\\OrderTicket' => __DIR__ . '/../..' . '/app/Models/OrderTicket.php',
+        'App\\Models\\OurTeam' => __DIR__ . '/../..' . '/app/Models/OurTeam.php',
         'App\\Models\\Page' => __DIR__ . '/../..' . '/app/Models/Page.php',
+        'App\\Models\\PeakSeason' => __DIR__ . '/../..' . '/app/Models/PeakSeason.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\ProductCollection' => __DIR__ . '/../..' . '/app/Models/ProductCollection.php',
         'App\\Models\\ProductDetail' => __DIR__ . '/../..' . '/app/Models/ProductDetail.php',
         'App\\Models\\ProductReview' => __DIR__ . '/../..' . '/app/Models/ProductReview.php',
+        'App\\Models\\Report' => __DIR__ . '/../..' . '/app/Models/Report.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\Setting' => __DIR__ . '/../..' . '/app/Models/Setting.php',
         'App\\Models\\Slider' => __DIR__ . '/../..' . '/app/Models/Slider.php',

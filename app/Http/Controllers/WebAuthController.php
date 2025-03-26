@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-
+use Illuminate\Auth\Events\Registered;
 class WebAuthController extends Controller
 {
     public function login()
@@ -42,6 +42,8 @@ class WebAuthController extends Controller
 
         return view('theme.register');
     }
+
+
 
     public function createAccount(Request $request)
     {
@@ -76,76 +78,87 @@ class WebAuthController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'country' => $request->country,
             'password' => Hash::make($request->password),
-            'role_id' => 0, // Assuming 'customer' role has id 1
+            'role_id' => 0, // Assuming 'customer' role has id 0
             'created_by' => 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
+        // Generate a unique verification token
+        $verificationToken = Str::random(60);
+
+        // Save the verification token to the user's record
+        $user->verification_token = $verificationToken;
+        $user->save();
+
+        // Trigger the Registered event (Optional, you may remove if not required)
+        event(new Registered($user));
+
+        // Get the email template from the database (ID = 5)
+        $template = DB::table('email_templates')->where('id', 5)->first();
+
+        if ($template) {
+            // Replace placeholders in the email body
+            $emailBody = str_replace(
+                ['{COMPANY_NAME}', '{CUSTOMER_NAME}', '{USERNAME}', '{EMAIL}', '{VERIFICATION_LINK}'],
+                ['Your Company Name', $user->name, $user->name, $user->email, route('verification.verify', ['token' => $verificationToken])], // Adding the token in the verification URL
+                $template->body
+            );
+
+            // Send email using Mail::html() for HTML content
+            Mail::html($emailBody, function ($message) use ($user, $template) {
+                $message->to($user->email)
+                    ->subject($template->subject);
+            });
+        }
+
         return redirect('/login')->with('success', 'Account created successfully. You can now login.');
     }
 
+
     public function webLogin(Request $request)
     {
-        if (Auth::check()) {
-            $role_id = Auth::user()->role_id;
-            if ($role_id == 0) {
-                return redirect('/admin/dashboard');
-            } else {
-                return redirect('/dashboard');
-            }
-        }
 
+
+        // Validate login input
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255',
             'password' => 'required|string|min:8|max:255',
         ]);
 
         if ($validator->fails()) {
-            return back()
-            ->withErrors($validator)
-            ->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
+        // Find user by email
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email',$request->email)->first();
-        // dd($user);
-        if($user == null ){
-            return back()
-            ->withErrors([
-                "email" => ["Wrong Email or password"]
-                ])->withInput();
+        // If user doesn't exist, return error
+        if (!$user) {
+            return back()->withErrors([
+                'email' => ['Incorrect email or password']
+            ])->withInput();
+        }
+
+        // Check if the user is a valid customer (role_id != 0)
+        // if ($user->role_id == 0) {
+        //     return back()->withErrors([
+        //         'email' => ['Enter a valid user email!']
+        //     ])->withInput();
+        // }
+
+        // Verify password and attempt login
+        if (Hash::check($request->password, $user->password)) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                // Redirect based on user role
+                return redirect($user->role_id == 0 ? '/' : '/');
             }
-        if($user->role_id == 0){
-            return back()
-            ->withErrors([
-                "email" => ["Enter a valid user email !"]
-                ])->withInput();
-        }
-            if(Hash::check($request->password, $user->password)) {
-
-
-            if (Auth::attempt([
-                'email' =>$request->email,
-                'password' => $request->password])){
-                    if($user->role_id == 1){
-                        return redirect('/');
-
-                    }else{
-                        return redirect('/admin/dashboard');
-
-                    }
-            }
-
-        } else {
-
-               return back()
-                ->withErrors([
-                    "password" => ["Wrong Password"]
-                ])->withInput();
         }
 
-
+        // Incorrect password error
+        return back()->withErrors([
+            'password' => ['Incorrect password']
+        ])->withInput();
     }
 
     public function forgotPassword()

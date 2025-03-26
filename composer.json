@@ -34,7 +34,8 @@
         },
         "files": [
         "app/Helpers/MenuHelper.php",
-        "app/Helpers/GlobalHelper.php"
+        "app/Helpers/GlobalHelper.php",
+        "app/Helpers/EmailHelper.php"
     ]
     },
     "autoload-dev": {

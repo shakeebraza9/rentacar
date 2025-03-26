@@ -29,6 +29,7 @@ class User extends Authenticatable
         'country',
         'created_by',
         'permissions',
+        'verification_token',
     ];
 
     /**
